@@ -1,0 +1,18 @@
+<div class="left-sidebar-block sidebar-help-panel" ng-show="vmLeftDrawSidebar.helpVisibilityState==='ADDTEXT'">
+  <i class="fa fa-lightbulb-o fa-lg"></i> Click on canvas to insert new text
+</div>
+
+<div class="left-sidebar-block" ng-show="vmLeftDrawSidebar.panelVisibility.text">
+  <h3 class="left-sidebar-block__header">Text editor</h3>
+  <text-editor></text-editor>
+</div>
+
+<div class="left-sidebar-block" ng-show="vmLeftDrawSidebar.panelVisibility.product">
+  <h3 class="left-sidebar-block__header">Product selector</h3>
+  <product-select></product-select>
+</div>
+
+<div class="left-sidebar-block" ng-show="vmLeftDrawSidebar.panelVisibility.object">
+  <h3 class="left-sidebar-block__header">Object editor</h3>
+  <object-editor></object-editor>
+</div>

@@ -1,0 +1,5 @@
+/node_modules
+/dist
+npm_debug.log
+/src/config.json
+/report

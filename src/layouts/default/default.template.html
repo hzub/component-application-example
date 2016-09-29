@@ -1,0 +1,34 @@
+<!--  Wrapper -->
+<div class="page-wrapper">
+  <!-- Navigation -->
+
+  <nav class="top-nav">
+    <div ng-include="'layouts/default/partials/primary-nav.html'"></div>
+    <div ng-include="'layouts/default/partials/secondary-nav.html'"></div>
+  </nav>
+
+
+  <!-- Page wraper -->
+  <!-- ng-class with current state name give you the ability to extended customization your view -->
+  <div class="container gray-bg {{$state.current.name}}">
+
+    <div class="row m-t">
+      <div class="col-md-4 col-lg-4">
+        <div ui-view="leftSidebar"></div>
+      </div>
+
+      <div class="col-md-8 col-lg-8">
+        <!-- Main view  -->
+        <div ui-view></div>
+      </div>
+    </div>
+    <!-- Footer -->
+
+  </div>
+  <!-- End page wrapper-->
+
+  <div ui-view="bottomBar">
+  </div>
+
+</div>
+<!-- End wrapper -->

@@ -1,0 +1,35 @@
+ul.uib-datepicker-popup {
+  .btn-default {
+    background-color: white;
+    border-color: #f0f0f0;
+    color: #1ab394;
+    border-radius: 0;
+    .text-info {
+      color: black;
+    }
+  }
+  .btn-default.active {
+    background-color: #1ab394;
+    color: white;
+    .text-info {
+      color: white;
+    }
+  }
+  .btn-success.uib-close,
+  .btn-info.uib-datepicker-current {
+    background-color: #1ab394;
+    border-color: #1ab394;
+  }
+  & > li:focus,
+  .uib-datepicker:focus {
+    outline: none;
+  }
+  .uib-button-bar {
+    padding-bottom: 8px;
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+}

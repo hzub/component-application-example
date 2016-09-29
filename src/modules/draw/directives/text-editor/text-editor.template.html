@@ -1,0 +1,57 @@
+<form class="form-horizontal">
+    <div class="row m-b">
+        <div class="col-lg-3 col-md-3 control-label">
+            Text
+        </div>
+        <div class="col-lg-9 col-md-9">
+            <textarea class="js-main-input form-control" ng-model="vmTextEditor.textValue" ng-change="vmTextEditor.updateText()"></textarea>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-lg-3 col-md-3 control-label">Color</div>
+        <div class="col-lg-3 col-md-3">
+            <spectrum-colorpicker ng-model="vmTextEditor.colorValue" ng-change="vmTextEditor.updateColor()"></spectrum-colorpicker>
+        </div>
+        <div class="col-lg-3 col-md-3 control-label">Size</div>
+        <div class="col-lg-3 col-md-3">
+            <input class="form-control" type="number" ng-model="vmTextEditor.sizeValue" ng-change="vmTextEditor.updateSize()">
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-lg-3 col-md-3 control-label">
+            Style
+        </div>
+        <div class="col-lg-9 col-md-9">
+            <button ng-click="vmTextEditor.updateAlignment('left')" class="btn btn-default" ng-class="{'btn-primary': vmTextEditor.alignmentValue==='left'}">
+                <i class="fa fa-align-left"></i>
+            </button>
+            <button ng-click="vmTextEditor.updateAlignment('center')" class="btn btn-default" ng-class="{'btn-primary': vmTextEditor.alignmentValue==='center'}">
+                <i class="fa fa-align-center"></i>
+            </button>
+            <button ng-click="vmTextEditor.updateAlignment('right')" class="btn btn-default" ng-class="{'btn-primary': vmTextEditor.alignmentValue==='right'}">
+                <i class="fa fa-align-right"></i>
+            </button>
+            <div class="pull-right">
+                <button ng-click="vmTextEditor.toggleBold()" class="btn btn-default" ng-class="{'btn-primary': vmTextEditor.boldValue}">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button ng-click="vmTextEditor.toggleItalic()" class="btn btn-default" ng-class="{'btn-primary': vmTextEditor.italicValue}">
+                    <i class="fa fa-italic"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-lg-3 col-md-3 control-label">
+            Center
+        </div>
+        <div class="col-lg-9 col-md-9">
+            <button ng-click="vmTextEditor.centerVertically()" class="btn btn-default">
+                Vertically
+            </button>
+            <button ng-click="vmTextEditor.centerHorizontally()" class="btn btn-default">
+                Horizontally
+            </button>
+        </div>
+    </div>
+</form>
