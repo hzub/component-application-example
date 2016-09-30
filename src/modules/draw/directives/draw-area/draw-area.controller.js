@@ -20,6 +20,7 @@ class DrawAreaController {
     this.bindWindowEvents();
     this.orientationLibrary = [];
     this.selectedOrientation = undefined;
+    this.panning = false;
 
     this.productsService.onProductChange(product => {
       this.orientationLibrary = [];
@@ -86,11 +87,27 @@ class DrawAreaController {
   }
 
   bindEvents(canvas) {
+    canvas.on('mouse:move', e => {
+      if (this.panning && e && e.e) {
+        const delta = new fabric.Point(e.e.movementX, e.e.movementY);
+        canvas.relativePan(delta);
+      }
+    });
+
+    canvas.on('mouse:up', () => {
+      if (this.panning) {
+        this.panning = false;
+      }
+    });
+
     canvas.on('mouse:down', options => {
       this.$rootScope.$apply(() => {
         const drawState = this.drawService.getState();
 
-        if (drawState === 'ADDTEXT') {
+        if (drawState === 'PAN') {
+          this.panning = true;
+          this.drawService.setState('DEFAULT');
+        } else if (drawState === 'ADDTEXT') {
           this.drawService.addNewText(options);
         } else {
           this.drawService.selectEntity(options.target);

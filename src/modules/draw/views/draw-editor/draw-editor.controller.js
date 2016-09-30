@@ -1,24 +1,32 @@
 import $view from './draw-editor.view.html';
 
-const $inject = ['drawService'];
+const $inject = ['$rootScope', 'drawService'];
 
 class DrawEditorController {
-  constructor(drawService) {
+  constructor($rootScope, drawService) {
     Object.assign(this, {
+      $rootScope,
       drawService,
     });
 
-    drawService.onSelectEntity(() => {
-       // console.info("ENT SELECTED", entity);
+    this.$rootScope.$on('draw:stateChanged', (e, params) => {
+      console.info("HALOO", params.state);
+      this.stateChange(params.state);
     });
   }
 
-  addNewText() {
-    this.drawService.setState('ADDTEXT');
+  stateChange(state) {
+    this.isPanning = state === 'PAN';
   }
 
-  addTestBox() {
-    this.drawService.addBox(100, 50);
+  zoomIn() {
+    this.drawService.zoomIn();
+  }
+  zoomOut() {
+    this.drawService.zoomOut();
+  }
+  pan() {
+    this.drawService.setState('PAN');
   }
 }
 

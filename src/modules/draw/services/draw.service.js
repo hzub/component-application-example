@@ -18,7 +18,6 @@ class DrawService {
     this._lastDeletedEntity = undefined;
     this.onSelectEntity.callbacks = [];
     this.idGenerator = 0;
-
   }
 
   getState() {
@@ -76,6 +75,27 @@ class DrawService {
     circle.id = this.getEntityId();
 
     this._canvas.add(circle);
+  }
+
+  zoomIn() {
+    this._zoom++;
+    this.redrawZoom();
+  }
+zoomOut(zoom) {
+    this._zoom--;
+    if (this._zoom < 1) {
+      this._zoom=1;
+    }
+    this.redrawZoom();
+  }
+
+  redrawZoom() {
+    let zoom = 1.0;
+    for (let i = 0; i < this._zoom - 1; i++) {
+      zoom *= 1.1;
+    }
+    this._canvas.setZoom(zoom);
+    this._canvas.renderAll();
   }
 
   deleteSelectedEntity() {
@@ -225,6 +245,7 @@ class DrawService {
   }
 
   setCanvas(canvas) {
+    this._zoom = 1;
     this._canvas = canvas;
   }
 }
