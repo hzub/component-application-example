@@ -89,8 +89,17 @@ class DrawAreaController {
   bindEvents(canvas) {
     canvas.on('mouse:move', e => {
       if (this.panning && e && e.e) {
-        const delta = new fabric.Point(e.e.movementX, e.e.movementY);
-        canvas.relativePan(delta);
+        // e.e.movementX, e.e.movementY;
+        //
+        //
+        /*var vpt = canvas.viewportTransform.slice(0);
+        vpt[4] = -point.x;
+        vpt[5] = -point.y;
+        return this.setViewportTransform(vpt);
+
+        console.info(canvas.viewportTransform);
+        canvas.relativePan(delta);*/
+        this.drawService.relativePan(e.e.movementX, e.e.movementY);
       }
     });
 
