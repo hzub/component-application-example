@@ -3,12 +3,12 @@ import _ from 'lodash';
 
 const fabric = fabricModule.fabric;
 
-const $inject = ['$rootScope'];
+const $inject = ['$rootScope', 'fontService'];
 
 class DrawService {
-  constructor($rootScope) {
+  constructor($rootScope, fontService) {
     Object.assign(this, {
-      $rootScope,
+      $rootScope, fontService,
     });
 
     this._canvas = null;
@@ -18,6 +18,7 @@ class DrawService {
     this._lastDeletedEntity = undefined;
     this.onSelectEntity.callbacks = [];
     this.idGenerator = 0;
+
   }
 
   getState() {
@@ -123,6 +124,15 @@ class DrawService {
     text.type = 'text';
     text.lockUniScaling = true;
     text.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+
+    const defaultFont = this.fontService.getDefaultFont();
+
+    text.fontObject = defaultFont;
+
+    this.fontService.loadFont(defaultFont).then(() => {
+      text.setFontFamily(defaultFont.variants[0].fontface);
+      this.render();
+    });
 
     this._canvas.add(text);
     this._canvas.setActiveObject(text);

@@ -1,10 +1,21 @@
-<form class="form-horizontal">
+<form class="form-horizontal" ng-show="vmTextEditor.state === 'DEFAULT'">
     <div class="row m-b">
         <div class="col-lg-3 col-md-3 control-label">
             Text
         </div>
         <div class="col-lg-9 col-md-9">
             <textarea class="js-main-input form-control" ng-model="vmTextEditor.textValue" ng-change="vmTextEditor.updateText()"></textarea>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-lg-3 col-md-3 control-label">
+            Font
+        </div>
+        <div class="col-lg-5 col-md-9 font-preview">
+            <img ng-src="{{vmTextEditor.fontValue.image}}"/>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <button class="btn btn-default pull-right" ng-click="vmTextEditor.selectFont()">Change</button>
         </div>
     </div>
     <div class="row m-b">
@@ -55,3 +66,29 @@
         </div>
     </div>
 </form>
+<form class="form-horizontal" ng-show="vmTextEditor.state === 'FONT'">
+    <div class="row m-b">
+        <div class="col-lg-3 col-md-3 control-label">
+            Category
+        </div>
+        <div class="col-lg-9 col-md-9">
+            <select class="form-control" ng-options="font as font.name for font in vmTextEditor.fonts" ng-model="vmTextEditor.fontCategory"></select>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-lg-12 col-md-12 font-button-list">
+            <button class="btn"
+            ng-repeat="font in vmTextEditor.fontCategory.fonts"
+            ng-click="vmTextEditor.changeFont(font)"
+            ng-class="{'btn-link': font.id !== vmTextEditor.fontValue.id, 'btn-default': font.id === vmTextEditor.fontValue.id}">
+              <img ng-src="{{font.image}}" />
+            </button>
+        </div>
+    </div>
+    <div class="clearfix">
+        <button ng-click="vmTextEditor.saveFont()" class="btn btn-primary pull-right">
+            Back
+        </button>
+    </div>
+</form>
+

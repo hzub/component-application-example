@@ -1,6 +1,7 @@
 import RoutingConfiguration from './draw.routes';
 
 import DrawService from './services/draw.service.js';
+import FontService from './services/font.service.js';
 import ProductsService from './services/products.service.js';
 import DrawTextService from './services/draw.text.service.js';
 
@@ -23,6 +24,7 @@ const moduleName = 'designerApp.draw';
 angular.module(moduleName, [])
   .config(RoutingConfiguration)
   .service('drawService', DrawService)
+  .service('fontService', FontService)
   .service('productsService', ProductsService)
   .service('drawTextService', DrawTextService)
   .directive('drawArea', DrawAreaDirective)

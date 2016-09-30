@@ -27,10 +27,18 @@ class httpService {
     return configuration;
   }
 
+  transformUrl(url) {
+    if (url.indexOf('http:') !== 0 && url.indexOf('https:') !== 0) {
+      return this.configService('backendPrefix') + url;
+    }
+
+    return url;
+  }
+
   get(url, params) {
     let requestConfiguration = {
       method: 'GET',
-      url: this.configService('backendPrefix') + url,
+      url: this.transformUrl(url),
       params,
     };
 
@@ -44,7 +52,7 @@ class httpService {
   post(url, params) {
     let requestConfiguration = {
       method: 'POST',
-      url: this.configService('backendPrefix') + url,
+      url: this.transformUrl(url),
       data: params,
     };
 
@@ -59,7 +67,7 @@ class httpService {
   put(url, params) {
     let requestConfiguration = {
       method: 'PUT',
-      url: this.configService('backendPrefix') + url,
+      url: this.transformUrl(url),
       data: params,
     };
 
@@ -74,7 +82,7 @@ class httpService {
   delete(url, params) {
     let requestConfiguration = {
       method: 'DELETE',
-      url: this.configService('backendPrefix') + url,
+      url: this.transformUrl(url),
       data: params,
     };
 

@@ -1,9 +1,10 @@
-const $inject = ['drawService'];
+const $inject = ['drawService', 'fontService'];
 
 class DrawTextService {
-  constructor(drawService) {
+  constructor(drawService, fontService) {
     Object.assign(this, {
       drawService,
+      fontService,
     });
   }
 
@@ -35,6 +36,15 @@ class DrawTextService {
   updateItalic(entity, italic) {
     entity.setFontStyle(italic ? 'italic' : 'normal');
     this.drawService.render();
+  }
+
+  updateFont(entity, font) {
+    entity.fontObject = font;
+
+    this.fontService.loadFont(font).then(() => {
+      entity.setFontFamily(font.variants[0].fontface);
+      this.drawService.render();
+    });
   }
 
   resizeUniform(entity) {

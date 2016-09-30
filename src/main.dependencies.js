@@ -7,6 +7,7 @@ import 'font-awesome/css/font-awesome.css';
 
 import 'toastr';
 import 'angular';
+import 'angular-load';
 
 import 'angular-spectrum-colorpicker';
 
@@ -19,5 +20,6 @@ import 'toastr/toastr.less';
 export default [
   angularUiRouter,
   angularUiBootstrap,
+  'angularLoad',
   'angularSpectrumColorpicker',
 ];

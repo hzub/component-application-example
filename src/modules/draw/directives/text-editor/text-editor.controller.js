@@ -1,16 +1,33 @@
-const $inject = ['$rootScope', '$element', 'drawService', 'drawTextService'];
+import _ from 'lodash';
+
+const $inject = ['$rootScope', '$element', 'fontService', 'drawService', 'drawTextService'];
+
+const STATES = {
+  DEFAULT: 'DEFAULT',
+  FONT: 'FONT',
+};
 
 class TextEditorController {
-  constructor($rootScope, $element, drawService, drawTextService) {
+  constructor($rootScope, $element, fontService, drawService, drawTextService) {
     Object.assign(this, {
-      $rootScope, $element, drawService, drawTextService,
+      $rootScope,
+      $element,
+      fontService,
+      drawService,
+      drawTextService,
     });
 
     this.textValue = '';
     this.selectedEntity = null;
     this.colorValue = 'red';
 
+    this.state = STATES.DEFAULT;
+
     this.drawService.onSelectEntity(this.entitySelected.bind(this));
+
+    this.fontService.getFonts().then(fonts => {
+      this.fonts = fonts;
+    });
 
     this.$rootScope.$on('draw:entityUpdated', (e, params) => {
       if (this.selectedEntity && params.entity.id === this.selectedEntity.id) {
@@ -18,6 +35,21 @@ class TextEditorController {
         this.restoreModel();
       }
     });
+  }
+
+  saveFont() {
+    this.state = STATES.DEFAULT;
+  }
+
+  selectFont() {
+    this.state = STATES.FONT;
+  }
+
+  changeFont(font) {
+    if (this.selectedEntity) {
+      this.fontValue = font;
+      this.drawTextService.updateFont(this.selectedEntity, font);
+    }
   }
 
   updateText() {
@@ -84,9 +116,9 @@ class TextEditorController {
     this.alignmentValue = this.drawTextService.getAlignment(this.selectedEntity);
     this.boldValue = this.drawTextService.getBold(this.selectedEntity);
     this.italicValue = this.drawTextService.getItalic(this.selectedEntity);
+    this.fontValue = this.selectedEntity.fontObject;
+    this.fontCategory = _.find(this.fonts, { id: this.fontValue.categories[0].id });
   }
-
-
 
   entitySelected(entity, previousEntity) {
     if (previousEntity && previousEntity === this.selectedEntity) {
@@ -102,7 +134,6 @@ class TextEditorController {
     } else {
       this.selectedEntity = null;
     }
-
   }
 
 }
@@ -110,4 +141,3 @@ class TextEditorController {
 TextEditorController.$inject = $inject;
 
 export default TextEditorController;
-
