@@ -4,9 +4,17 @@ const $inject = ['$rootScope', 'drawService'];
 
 class SecondaryNavigationController {
 
-  constructor($rootScope, drawService) {
+  static $inject = [
+    '$rootScope',
+    'DRAW_STATES',
+    'drawService'
+  ];
+
+  static $view = $view;
+
+  constructor($rootScope, DRAW_STATES, drawService) {
     Object.assign(this, {
-      $rootScope, drawService,
+      $rootScope, DRAW_STATES, drawService,
     });
 
     this.state = this.drawService.getState();
@@ -22,7 +30,7 @@ class SecondaryNavigationController {
   }
 
   addText() {
-    this.drawService.setState('ADDTEXT');
+    this.drawService.setState(this.DRAW_STATES.ADDTEXT);
   }
 
   select() {
@@ -32,7 +40,11 @@ class SecondaryNavigationController {
 
   selectProduct() {
     this.drawService.selectEntity(null);
-    this.drawService.setState('SELECTPRODUCT');
+    this.drawService.setState(this.DRAW_STATES.SELECTPRODUCT);
+  }
+
+  addShape() {
+    this.drawService.setState(this.DRAW_STATES.ADDSHAPE)
   }
 
   addTestBox() {
@@ -50,7 +62,5 @@ class SecondaryNavigationController {
   }
 }
 
-SecondaryNavigationController.$inject = $inject;
-SecondaryNavigationController.$view = $view;
 
 export default SecondaryNavigationController;

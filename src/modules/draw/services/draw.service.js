@@ -5,17 +5,24 @@ import utilConstraints from './util.constraints.js';
 
 const fabric = fabricModule.fabric;
 
-const $inject = ['$rootScope', 'fontService'];
-
 class DrawService {
-  constructor($rootScope, fontService) {
+  static $inject = [
+    'DRAW_STATES',
+    'DRAW_ACTIONS',
+    '$rootScope',
+    'fontService'
+  ];
+
+  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService) {
     Object.assign(this, {
+      DRAW_STATES,
+      DRAW_ACTIONS,
       $rootScope,
       fontService,
     });
 
     this._canvas = null;
-    this.state = 'SELECT';
+    this.state = DRAW_STATES.SELECT;
 
     this._selectedEntity = undefined;
     this._lastDeletedEntity = undefined;
@@ -45,6 +52,7 @@ class DrawService {
       entity.lockMovementY = false;
       entity.lockScalingX = false;
       entity.lockRotation = false;
+
     }
   }
 
@@ -66,10 +74,13 @@ class DrawService {
   }
 
   changeCursorForState() {
-    if (this.state === 'ADDTEXT') {
+    switch (this.state) {
+    case this.DRAW_STATES.ADDTEXT:
       this._canvas.defaultCursor = 'crosshair';
-    } else {
+      break;
+    default:
       this._canvas.defaultCursor = 'default';
+      break;
     }
   }
 
@@ -96,6 +107,17 @@ class DrawService {
 
     this.onSelectEntity.callbacks.forEach(cb => {
       cb.call(this, entity, previousEntity);
+    });
+  }
+
+  addSVGByUrl(url) {
+    // WIP...
+    // TODO (alexnadr2110pro): implement this, be man!
+    fabric.loadSVGFromURL(url, (...args) => {
+
+      this._canvas.add(new fabric
+        .PathGroup(...args)
+        .set({left: 100, top: 100}));
     });
   }
 
@@ -129,6 +151,7 @@ class DrawService {
 
   redrawZoom() {
     utilZoom.redrawZoom(this._canvas, this._zoom);
+
     this._canvas.renderAll();
   }
 
@@ -178,7 +201,7 @@ class DrawService {
     text.id = this.getEntityId();
     text.type = 'text';
     text.lockUniScaling = true;
-    text.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+    text.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
 
     const defaultFont = this.fontService.getDefaultFont();
 
@@ -193,12 +216,13 @@ class DrawService {
     this._canvas.setActiveObject(text);
     this.selectEntity(text);
 
-    this.setState('SELECT');
+    this.setState(this.DRAW_STATES.SELECT);
   }
 
   render() {
     this._canvas.renderAll();
   }
+
 
   drawCanvasConstraints(canvas, orientation) {
     utilConstraints.drawCanvasConstraints(canvas, orientation);
@@ -209,7 +233,5 @@ class DrawService {
     this._canvas = canvas;
   }
 }
-
-DrawService.$inject = $inject;
 
 export default DrawService;
