@@ -1,22 +1,33 @@
 import $view from './secondary-navigation.partial.html';
 
-const $inject = ['drawService'];
 
 class SecondaryNavigationController {
 
-  constructor(drawService) {
+  static $inject = [
+    'DRAW_STATES',
+    'drawService'
+  ];
+
+  static $view = $view;
+
+  constructor(DRAW_STATES, drawService) {
     Object.assign(this, {
+      DRAW_STATES,
       drawService,
     });
   }
 
   addText() {
-    this.drawService.setState('ADDTEXT');
+    this.drawService.setState(this.DRAW_STATES.ADDTEXT);
   }
 
   selectProduct() {
     this.drawService.selectEntity(null);
-    this.drawService.setState('SELECTPRODUCT');
+    this.drawService.setState(this.DRAW_STATES.SELECTPRODUCT);
+  }
+
+  addShape() {
+    this.drawService.setState(this.DRAW_STATES.ADDSHAPE)
   }
 
   addTestBox() {
@@ -25,7 +36,5 @@ class SecondaryNavigationController {
 
 }
 
-SecondaryNavigationController.$inject = $inject;
-SecondaryNavigationController.$view = $view;
 
 export default SecondaryNavigationController;

@@ -21,9 +21,6 @@ module.exports = {
       test: /\.js$/,
       exclude: [/node_modules/],
       loader: 'babel-loader',
-      query: {
-        presets: ['es2015'],
-      },
     }, {
       test: /\.less$/,
       loader: ExtractTextPlugin.extract('css-loader!less-loader'),
@@ -43,7 +40,11 @@ module.exports = {
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'url?limit=10000&mimetype=image/svg+xml&name=./assets/fonts/[hash].[ext]',
     }, {
+      test: /src[\/\\]components[\/\\].+\.html$/,
+      loader: 'raw',
+    }, {
       test: /src[\/\\].+\.html$/,
+      exclude: /src[\/\\]components/,
       loader: 'ngtemplate?relativeTo=' + (path.join(__dirname, '../src')) + '/!html?interpolate',
     }, {
       test: /\.(png|jpg|gif)$/,
