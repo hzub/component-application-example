@@ -3,17 +3,24 @@ import _ from 'lodash';
 
 const fabric = fabricModule.fabric;
 
-const $inject = ['$rootScope', 'fontService'];
-
 class DrawService {
-  constructor($rootScope, fontService) {
+  static $inject = [
+    'DRAW_STATES',
+    'DRAW_ACTIONS',
+    '$rootScope',
+    'fontService'
+  ];
+
+  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService) {
     Object.assign(this, {
+      DRAW_STATES,
+      DRAW_ACTIONS,
       $rootScope,
       fontService,
     });
 
     this._canvas = null;
-    this.state = 'SELECT';
+    this.state = DRAW_STATES.SELECT;
 
     this._selectedEntity = undefined;
     this._lastDeletedEntity = undefined;
@@ -53,8 +60,8 @@ class DrawService {
       vpt[4] = 0;
     }
 
-    if (vpt[4] < constraintW - constraintW*zoom) {
-      vpt[4] = constraintW - constraintW*zoom;
+    if (vpt[4] < constraintW - constraintW * zoom) {
+      vpt[4] = constraintW - constraintW * zoom;
     }
 
     vpt[5] = -(-y - this._canvas.viewportTransform[5]);
@@ -62,8 +69,8 @@ class DrawService {
       vpt[5] = 0;
     }
 
-    if (vpt[5] < constraintH - constraintH*zoom) {
-      vpt[5] = constraintH - constraintH*zoom;
+    if (vpt[5] < constraintH - constraintH * zoom) {
+      vpt[5] = constraintH - constraintH * zoom;
     }
 
     return this._canvas.setViewportTransform(vpt);
@@ -80,10 +87,13 @@ class DrawService {
   }
 
   changeCursorForState() {
-    if (this.state === 'ADDTEXT') {
+    switch (this.state) {
+    case this.DRAW_STATES.ADDTEXT:
       this._canvas.defaultCursor = 'crosshair';
-    } else {
+      break;
+    default:
       this._canvas.defaultCursor = 'default';
+      break;
     }
   }
 
@@ -110,6 +120,17 @@ class DrawService {
 
     this.onSelectEntity.callbacks.forEach(cb => {
       cb.call(this, entity, previousEntity);
+    });
+  }
+
+  addSVGByUrl(url) {
+    // WIP...
+    // TODO (alexnadr2110pro): implement this, be man!
+    fabric.loadSVGFromURL(url, (...args) => {
+
+      this._canvas.add(new fabric
+        .PathGroup(...args)
+        .set({left: 100, top: 100}));
     });
   }
 
@@ -157,16 +178,16 @@ class DrawService {
       vpt[4] = 0;
     }
 
-    if (vpt[4] < constraintW - constraintW*zoom) {
-      vpt[4] = constraintW - constraintW*zoom;
+    if (vpt[4] < constraintW - constraintW * zoom) {
+      vpt[4] = constraintW - constraintW * zoom;
     }
 
     if (vpt[5] > 0) {
       vpt[5] = 0;
     }
 
-    if (vpt[5] < constraintH - constraintH*zoom) {
-      vpt[5] = constraintH - constraintH*zoom;
+    if (vpt[5] < constraintH - constraintH * zoom) {
+      vpt[5] = constraintH - constraintH * zoom;
     }
 
     this._canvas.setViewportTransform(vpt);
@@ -220,7 +241,7 @@ class DrawService {
     text.id = this.getEntityId();
     text.type = 'text';
     text.lockUniScaling = true;
-    text.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+    text.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
 
     const defaultFont = this.fontService.getDefaultFont();
 
@@ -235,7 +256,7 @@ class DrawService {
     this._canvas.setActiveObject(text);
     this.selectEntity(text);
 
-    this.setState('SELECT');
+    this.setState(this);
   }
 
   render() {
@@ -318,19 +339,57 @@ class DrawService {
       hoverCursor: 'default',
     };
 
-    const leftWorkAreaLine = new fabric.Line([left, 0, left, workareaHeight], workspaceLineDefinition);
-    const rightWorkAreaLine = new fabric.Line([right, 0, right, workareaHeight], workspaceLineDefinition);
+    const leftWorkAreaLine = new fabric.Line([
+      left,
+      0,
+      left,
+      workareaHeight
+    ], workspaceLineDefinition);
+    const rightWorkAreaLine = new fabric.Line([
+      right,
+      0,
+      right,
+      workareaHeight
+    ], workspaceLineDefinition);
     const topWorkAreaLine = new fabric.Line([0, top, workareaWidth, top], workspaceLineDefinition);
-    const bottomWorkAreaLine = new fabric.Line([0, bottom, workareaWidth, bottom], workspaceLineDefinition);
+    const bottomWorkAreaLine = new fabric.Line([
+      0,
+      bottom,
+      workareaWidth,
+      bottom
+    ], workspaceLineDefinition);
 
     canvas.add(leftWorkAreaLine, rightWorkAreaLine, topWorkAreaLine, bottomWorkAreaLine);
 
-    const leftPrintableAreaLine = new fabric.Line([left + printableOffsetX, 0, left + printableOffsetX, workareaHeight], printableAreaLineDefinition);
-    const rightPrintableAreaLine = new fabric.Line([right - printableOffsetX, 0, right - printableOffsetX, workareaHeight], printableAreaLineDefinition);
-    const topPrintableAreaLine = new fabric.Line([0, top + printableOffsetY, workareaWidth, top + printableOffsetY], printableAreaLineDefinition);
-    const bottomPrintableAreaLine = new fabric.Line([0, bottom - printableOffsetY, workareaWidth, bottom - printableOffsetY], printableAreaLineDefinition);
+    const leftPrintableAreaLine = new fabric.Line([
+      left + printableOffsetX,
+      0,
+      left + printableOffsetX,
+      workareaHeight
+    ], printableAreaLineDefinition);
+    const rightPrintableAreaLine = new fabric.Line([
+      right - printableOffsetX,
+      0,
+      right - printableOffsetX,
+      workareaHeight
+    ], printableAreaLineDefinition);
+    const topPrintableAreaLine = new fabric.Line([
+      0,
+      top + printableOffsetY,
+      workareaWidth,
+      top + printableOffsetY
+    ], printableAreaLineDefinition);
+    const bottomPrintableAreaLine = new fabric.Line([
+      0,
+      bottom - printableOffsetY,
+      workareaWidth,
+      bottom - printableOffsetY
+    ], printableAreaLineDefinition);
 
-    canvas.add(leftPrintableAreaLine, rightPrintableAreaLine, topPrintableAreaLine, bottomPrintableAreaLine);
+    canvas.add(leftPrintableAreaLine,
+      rightPrintableAreaLine,
+      topPrintableAreaLine,
+      bottomPrintableAreaLine);
   }
 
   setCanvas(canvas) {
@@ -338,7 +397,5 @@ class DrawService {
     this._canvas = canvas;
   }
 }
-
-DrawService.$inject = $inject;
 
 export default DrawService;

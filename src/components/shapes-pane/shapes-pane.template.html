@@ -1,0 +1,14 @@
+<div class="row m-b" ng-show="$ctrl.state === $ctrl.STATES.IDLE">
+  <div class="col-lg-9 col-md-9">
+    <button ng-click="$ctrl.showClipartSelector()" class="btn btn-default">
+      Add Clipart
+    </button>
+    <button class="btn btn-default pull-right">
+      Add Image
+    </button>
+  </div>
+</div>
+
+<clipart-select on-select="$ctrl.onClipartSelect(clipart)"
+                on-cancel="$ctrl.onClipartSelectCancel()"
+                ng-show="$ctrl.state === $ctrl.STATES.CLIPART_SELECT"></clipart-select>

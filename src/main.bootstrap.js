@@ -6,6 +6,11 @@ import drawModule from './modules/draw/draw.module';
 import coreModule from './modules/core/core.module';
 import elementsModule from './modules/elements/elements.module';
 
+import {
+  SHAPES_PANE
+} from './components';
+
+
 import defaultLayoutModule from './layouts/default/default.module';
 
 angular.module('designerApp', [
@@ -14,6 +19,8 @@ angular.module('designerApp', [
   drawModule,
   coreModule,
   elementsModule,
+
+  SHAPES_PANE,
 
   defaultLayoutModule,
 ]);

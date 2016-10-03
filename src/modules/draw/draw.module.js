@@ -1,5 +1,9 @@
 import RoutingConfiguration from './draw.routes';
 
+
+import { DRAW_STATES } from './draw-states.constant';
+import { DRAW_ACTIONS } from './draw-actions.constant';
+
 import DrawService from './services/draw.service.js';
 import FontService from './services/font.service.js';
 import ProductsService from './services/products.service.js';
@@ -22,6 +26,8 @@ const moduleName = 'designerApp.draw';
  * - draw:entityUpdated
  */
 angular.module(moduleName, [])
+  .constant('DRAW_STATES', DRAW_STATES)
+  .constant('DRAW_ACTIONS', DRAW_ACTIONS)
   .config(RoutingConfiguration)
   .service('drawService', DrawService)
   .service('fontService', FontService)
@@ -30,8 +36,7 @@ angular.module(moduleName, [])
   .directive('drawArea', DrawAreaDirective)
   .directive('textEditor', TextEditorDirective)
   .directive('productSelect', ProductSelectDirective)
-  .directive('leftDrawSidebar', LeftDrawSidebarDirective)
-;
+  .directive('leftDrawSidebar', LeftDrawSidebarDirective);
 
 export default moduleName;
 
