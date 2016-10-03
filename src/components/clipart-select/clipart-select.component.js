@@ -31,7 +31,6 @@ export class ClipartSelectComponent {
   }
 
   onCategorySelect() {
-    console.debug(this.selectedCategory);
     this._setClipartsGroup(this.selectedCategory.slug);
   }
 

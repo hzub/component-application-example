@@ -2,6 +2,10 @@
   <i class="fa fa-lightbulb-o fa-lg"></i> Click on canvas to insert new text
 </div>
 
+<div class="left-sidebar-block sidebar-help-panel" ng-show="vmLeftDrawSidebar.helpVisibilityState==='PAN'">
+  <i class="fa fa-lightbulb-o fa-lg"></i> Click and drag your mouse to move the image around the workspace, use the mouse wheel to zoom
+</div>
+
 <div class="left-sidebar-block" ng-show="vmLeftDrawSidebar.panelVisibility.text">
   <h3 class="left-sidebar-block__header">Text editor</h3>
   <text-editor></text-editor>

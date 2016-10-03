@@ -56,8 +56,6 @@ export class ClipartService {
   }
 
   _handleError(error) {
-    console.warn({error});
-
     this._setState({});
     this._clearPromise();
     this._globalLoader.hide();

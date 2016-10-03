@@ -29,6 +29,16 @@ class DrawService {
     this.onSelectEntity.callbacks = [];
     this.idGenerator = 0;
     this.lockedObjects = [];
+
+    this.$rootScope.$on('draw:stateChanged', (e, params) => {
+      switch (params.state) {
+        case this.DRAW_STATES.ADDSHAPE:
+        case this.DRAW_STATES.SELECTPRODUCT:
+        case this.DRAW_STATES.PAN:
+          this.deselectEntity();
+          break;
+      }
+    });
   }
 
   lockEntity(entity) {
@@ -43,6 +53,11 @@ class DrawService {
     entity.lockScalingX = true;
     entity.lockRotation = true;
     this.lockedObjects.push(entity);
+  }
+
+  deselectEntity() {
+    this._canvas.deactivateAll();
+    this._canvas.renderAll();
   }
 
   unlockEntities() {
@@ -74,13 +89,16 @@ class DrawService {
   }
 
   changeCursorForState() {
-    switch (this.state) {
-    case this.DRAW_STATES.ADDTEXT:
-      this._canvas.defaultCursor = 'crosshair';
-      break;
-    default:
-      this._canvas.defaultCursor = 'default';
-      break;
+    switch (this.getState()) {
+      case this.DRAW_STATES.PAN:
+        this._canvas.defaultCursor = 'pointer';
+        break;
+      case this.DRAW_STATES.ADDTEXT:
+        this._canvas.defaultCursor = 'crosshair';
+        break;
+      default:
+        this._canvas.defaultCursor = 'default';
+        break;
     }
   }
 
@@ -115,9 +133,17 @@ class DrawService {
     // TODO (alexnadr2110pro): implement this, be man!
     fabric.loadSVGFromURL(url, (...args) => {
 
-      this._canvas.add(new fabric
+      const newClipartObject = new fabric
         .PathGroup(...args)
-        .set({left: 100, top: 100}));
+        .set({ left: 100, top: 100 });
+
+      this.prepareNewEntity(newClipartObject);
+
+      newClipartObject.type = 'path-group';
+
+      this._canvas.add(newClipartObject);
+      this.selectEntity(newClipartObject);
+      this.setState(this.DRAW_STATES.SELECT);
     });
   }
 
@@ -132,6 +158,20 @@ class DrawService {
     circle.id = this.getEntityId();
 
     this._canvas.add(circle);
+  }
+
+  flipHorizontally(entity) {
+    if (entity) {
+      entity.set('flipX', !entity.getFlipX());
+      this.render();
+    }
+  }
+
+  flipVertically(entity) {
+    if (entity) {
+      entity.set('flipY', !entity.getFlipY());
+      this.render();
+    }
   }
 
   zoomIn() {
@@ -190,6 +230,12 @@ class DrawService {
     this.render();
   }
 
+  prepareNewEntity(entity) {
+    entity.id = this.getEntityId();
+    entity.lockUniScaling = true;
+    entity.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+  }
+
   addNewText(event) {
     const pointer = this._canvas.getPointer(event.e);
 
@@ -198,14 +244,13 @@ class DrawService {
       top: pointer.y,
     });
 
-    text.id = this.getEntityId();
     text.type = 'text';
-    text.lockUniScaling = true;
-    text.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
 
     const defaultFont = this.fontService.getDefaultFont();
 
     text.fontObject = defaultFont;
+
+    this.prepareNewEntity(text);
 
     this.fontService.loadFont(defaultFont).then(() => {
       text.setFontFamily(defaultFont.variants[0].fontface);

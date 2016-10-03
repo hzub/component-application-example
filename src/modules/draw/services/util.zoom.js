@@ -1,4 +1,5 @@
 export default class utilZoom {
+
   static relativePan(canvas, canvasZoom, x, y) {
     const constraintW = canvas.width;
     const constraintH = canvas.height;
@@ -54,6 +55,5 @@ export default class utilZoom {
     }
 
     canvas.setViewportTransform(viewportTransform);
-
   }
 }

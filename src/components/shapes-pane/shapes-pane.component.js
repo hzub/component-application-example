@@ -38,6 +38,5 @@ export class AddShapeComponent {
 
   onClipartSelectCancel() {
     this.hideClipartSelector();
-    console.debug('clipart selection canceled');
   }
 }

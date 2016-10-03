@@ -3,15 +3,29 @@ import $ from 'jquery';
 import _ from 'lodash';
 
 const fabric = fabricModule.fabric;
-const CANVAS_ID = 'draw-area-canvas';
 
-const $inject = ['$rootScope', '$element', 'drawService', 'drawTextService', 'productsService'];
+const $inject = [
+  '$rootScope',
+  '$element',
+  'DRAW_STATES',
+  'drawService',
+  'drawTextService',
+  'productsService',
+];
 
 class DrawAreaController {
-  constructor($rootScope, $element, drawService, drawTextService, productsService) {
+  constructor(
+    $rootScope,
+    $element,
+    DRAW_STATES,
+    drawService,
+    drawTextService,
+    productsService
+  ) {
     Object.assign(this, {
       $rootScope,
       $element,
+      DRAW_STATES,
       drawService,
       drawTextService,
       productsService,
@@ -22,7 +36,7 @@ class DrawAreaController {
     this.selectedOrientation = undefined;
     this.panning = false;
 
-    this.productsService.onProductChange(product => {
+    this.productsService.onProductChange(() => {
       this.orientationLibrary = [];
       this.init();
     });
@@ -75,18 +89,25 @@ class DrawAreaController {
     const canvas = new fabric.Canvas(canvasElement.id);
     this.drawService.drawCanvasConstraints(canvas, orientation);
 
-    this.bindEvents(canvas);
+    this.bindCanvasEvents(canvas);
 
     return canvas;
   }
 
-  cleanUpFabric() {
-    /*this.canvas.clear();
-    this.$element.empty();
-    this.$element.append(document.createElement('CANVAS'));*/
+  isInDrawArea(element) {
+
+    let currentElement = element;
+    while (currentElement) {
+      if (currentElement.tagName === 'DRAW-AREA') {
+        return true;
+      }
+      currentElement = currentElement.parentElement;
+    }
+
+    return false;
   }
 
-  bindEvents(canvas) {
+  bindCanvasEvents(canvas) {
     canvas.on('mouse:move', e => {
       if (this.panning && e && e.e) {
         this.drawService.relativePan(e.e.movementX, e.e.movementY);
@@ -112,6 +133,9 @@ class DrawAreaController {
           this.drawService.addNewText(options);
         } else {
           this.drawService.unlockEntities();
+
+          this.drawService.setState(this.DRAW_STATES.SELECT);
+
           this.drawService.selectEntity(options.target);
         }
       });
@@ -132,6 +156,18 @@ class DrawAreaController {
         this.$rootScope.$apply(() => {
           this.drawService.deleteSelectedEntity();
         });
+      }
+    });
+
+    window.addEventListener('mousewheel', (e) => {
+      if (this.isInDrawArea(e.target)) {
+        if (e.deltaY < 0) {
+          this.drawService.zoomIn();
+          this.drawService.relativePan(-e.offsetX * 0.1, -e.offsetY * 0.1);
+        } else {
+          this.drawService.relativePan(e.offsetX * 0.1, e.offsetY * 0.1);
+          this.drawService.zoomOut();
+        }
       }
     });
   }

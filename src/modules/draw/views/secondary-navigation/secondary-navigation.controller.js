@@ -18,7 +18,6 @@ class SecondaryNavigationController {
     });
 
     this.state = this.drawService.getState();
-    console.info("HALO", this.drawService.getState());
 
     this.$rootScope.$on('draw:stateChanged', (e, params) => {
       this.state = params.state;
