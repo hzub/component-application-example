@@ -121,6 +121,8 @@ class TextEditorController {
   }
 
   entitySelected(entity, previousEntity) {
+    this.state = STATES.DEFAULT;
+
     if (previousEntity && previousEntity === this.selectedEntity) {
       if (this.selectedEntity.type === 'text' && !this.selectedEntity.text) {
         this.drawService.deleteEntity(this.selectedEntity);

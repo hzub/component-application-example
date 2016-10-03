@@ -1,8 +1,8 @@
-const $inject = ['httpService'];
-
 // TODO: remove mock
 import mockBannerFrontUrl from '../../../assets/bannerbg_front.png';
 import mockBannerBackUrl from '../../../assets/bannerbg_back.png';
+
+const $inject = ['httpService'];
 
 class ProductsService {
   constructor(httpService) {
@@ -64,8 +64,8 @@ class ProductsService {
       "name": "Front",
       "width": 460,
       "height": 320,
-      "printable_width": 390,
-      "printable_height": 260,
+      "printable_width": 405,
+      "printable_height": 270,
       "printable_offset_x": 23,
       "printable_offset_y": 28,
       "workarea_width": 600,

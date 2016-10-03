@@ -8,25 +8,6 @@ class DrawEditorController {
       $rootScope,
       drawService,
     });
-
-    this.$rootScope.$on('draw:stateChanged', (e, params) => {
-      console.info("HALOO", params.state);
-      this.stateChange(params.state);
-    });
-  }
-
-  stateChange(state) {
-    this.isPanning = state === 'PAN';
-  }
-
-  zoomIn() {
-    this.drawService.zoomIn();
-  }
-  zoomOut() {
-    this.drawService.zoomOut();
-  }
-  pan() {
-    this.drawService.setState('PAN');
   }
 }
 

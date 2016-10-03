@@ -73,7 +73,7 @@ class DrawAreaController {
     canvasElement.setAttribute('height', orientation.workarea_height);
 
     const canvas = new fabric.Canvas(canvasElement.id);
-    this.drawService.setupCanvasConstraints(canvas, orientation);
+    this.drawService.drawCanvasConstraints(canvas, orientation);
 
     this.bindEvents(canvas);
 
@@ -89,16 +89,6 @@ class DrawAreaController {
   bindEvents(canvas) {
     canvas.on('mouse:move', e => {
       if (this.panning && e && e.e) {
-        // e.e.movementX, e.e.movementY;
-        //
-        //
-        /*var vpt = canvas.viewportTransform.slice(0);
-        vpt[4] = -point.x;
-        vpt[5] = -point.y;
-        return this.setViewportTransform(vpt);
-
-        console.info(canvas.viewportTransform);
-        canvas.relativePan(delta);*/
         this.drawService.relativePan(e.e.movementX, e.e.movementY);
       }
     });
@@ -106,6 +96,7 @@ class DrawAreaController {
     canvas.on('mouse:up', () => {
       if (this.panning) {
         this.panning = false;
+        this.drawService.unlockEntities();
       }
     });
 
@@ -115,10 +106,12 @@ class DrawAreaController {
 
         if (drawState === 'PAN') {
           this.panning = true;
-          this.drawService.setState('DEFAULT');
+          this.drawService.lockEntity(options.target);
         } else if (drawState === 'ADDTEXT') {
+          this.drawService.lockEntity(options.target);
           this.drawService.addNewText(options);
         } else {
+          this.drawService.unlockEntities();
           this.drawService.selectEntity(options.target);
         }
       });
