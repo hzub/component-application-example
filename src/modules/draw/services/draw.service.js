@@ -256,7 +256,7 @@ class DrawService {
     this._canvas.setActiveObject(text);
     this.selectEntity(text);
 
-    this.setState(this);
+    this.setState(this.DRAW_STATES.SELECT);
   }
 
   render() {
