@@ -79,7 +79,9 @@ class DrawService {
   }
 
   relativePan(x, y) {
-    return utilZoom.relativePan(this._canvas, this._zoom, x, y);
+    utilZoom.relativePan(this._canvas, this._zoom, x, y);
+
+    this.$rootScope.$broadcast('draw:viewportChanged');
   }
 
   setState(state) {
@@ -182,6 +184,7 @@ class DrawService {
   zoomIn() {
     this._zoom++;
     this.redrawZoom();
+    this.$rootScope.$broadcast('draw:viewportChanged');
   }
 
   zoomOut() {
@@ -192,6 +195,7 @@ class DrawService {
     }
 
     this.redrawZoom();
+    this.$rootScope.$broadcast('draw:viewportChanged');
   }
 
   relativeZoomIn(origin) {
@@ -233,6 +237,10 @@ class DrawService {
     this.$rootScope.$broadcast('draw:entityUpdated', {
       entity,
     });
+  }
+
+  getViewportTransformMatrix() {
+    return this._canvas.viewportTransform.slice(0);
   }
 
   centerEntityVertically(entity) {
@@ -283,6 +291,10 @@ class DrawService {
 
   render() {
     this._canvas.renderAll();
+  }
+
+  getDimensions() {
+    return [this._canvas.width, this._canvas.height];
   }
 
   showPrintAreaLines(doShow) {

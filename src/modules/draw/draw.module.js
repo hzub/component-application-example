@@ -12,6 +12,7 @@ import DrawTextService from './services/draw.text.service.js';
 import ProductSelectDirective from './directives/product-select/product-select.directive.js';
 import TextEditorDirective from './directives/text-editor/text-editor.directive.js';
 import DrawAreaDirective from './directives/draw-area/draw-area.directive.js';
+import DrawPreviewDirective from './directives/draw-preview/draw-preview.directive.js';
 
 import LeftDrawSidebarDirective from
   './directives/left-draw-sidebar/left-draw-sidebar.directive.js';
@@ -24,6 +25,7 @@ const moduleName = 'designerApp.draw';
  * events:
  * - draw:stateChanged
  * - draw:entityUpdated
+ * - draw:viewportChanged
  */
 angular.module(moduleName, [])
   .constant('DRAW_STATES', DRAW_STATES)
@@ -34,6 +36,7 @@ angular.module(moduleName, [])
   .service('productsService', ProductsService)
   .service('drawTextService', DrawTextService)
   .directive('drawArea', DrawAreaDirective)
+  .directive('drawPreview', DrawPreviewDirective)
   .directive('textEditor', TextEditorDirective)
   .directive('productSelect', ProductSelectDirective)
   .directive('leftDrawSidebar', LeftDrawSidebarDirective);
