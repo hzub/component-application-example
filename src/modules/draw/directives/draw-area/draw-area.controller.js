@@ -31,7 +31,6 @@ class DrawAreaController {
       productsService,
     });
 
-    this.bindWindowEvents();
     this.orientationLibrary = [];
     this.selectedOrientation = undefined;
     this.panning = false;
@@ -42,6 +41,8 @@ class DrawAreaController {
       this.orientationLibrary = [];
       this.init();
     });
+
+    this.bindWindowEvents();
   }
 
   init() {
@@ -85,8 +86,8 @@ class DrawAreaController {
   }
 
   initializeFabric(canvasElement, orientation) {
-    canvasElement.setAttribute('width', orientation.workarea_width);
-    canvasElement.setAttribute('height', orientation.workarea_height);
+    canvasElement.setAttribute('width', orientation.width);
+    canvasElement.setAttribute('height', orientation.height);
 
     const canvas = new fabric.Canvas(canvasElement.id);
     this.drawService.drawCanvasConstraints(canvas, orientation);
@@ -97,7 +98,6 @@ class DrawAreaController {
   }
 
   isInDrawArea(element) {
-
     let currentElement = element;
     while (currentElement) {
       if (currentElement.tagName === 'DRAW-AREA') {
@@ -137,6 +137,8 @@ class DrawAreaController {
         this.drawService.unlockEntities();
       }
     });
+
+
 
     canvas.on('mouse:down', options => {
       this.$rootScope.$apply(() => {
@@ -178,6 +180,16 @@ class DrawAreaController {
           this.drawService.deleteSelectedEntity();
         });
       }
+    });
+
+    console.info("HALO", this.drawAreaElement);
+
+    this.$element.on('mouseenter', () => {
+      this.drawService.showPrintAreaLines(true);
+    });
+
+    this.$element.on('mouseleave', () => {
+      this.drawService.showPrintAreaLines(false);
     });
 
     window.addEventListener('mousewheel', (e) => {

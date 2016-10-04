@@ -29,6 +29,7 @@ class DrawService {
     this.onSelectEntity.callbacks = [];
     this.idGenerator = 0;
     this.lockedObjects = [];
+    this.printableAreaLines = [];
 
     this.$rootScope.$on('draw:stateChanged', (e, params) => {
       switch (params.state) {
@@ -283,9 +284,21 @@ class DrawService {
     this._canvas.renderAll();
   }
 
+  showPrintAreaLines(doShow) {
+    if (!this.printableAreaLines) {
+      return;
+    }
+
+    this.printableAreaLines.forEach(line => {
+      line.set({ opacity: doShow ? 1 : 0 });
+    });
+
+    this.render();
+  }
 
   drawCanvasConstraints(canvas, orientation) {
-    utilConstraints.drawCanvasConstraints(canvas, orientation);
+    const lines = utilConstraints.drawCanvasConstraints(canvas, orientation);
+    this.printableAreaLines.push(...lines);
   }
 
   setCanvas(canvas) {
