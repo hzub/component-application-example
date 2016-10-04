@@ -1,10 +1,11 @@
-export default class utilZoom {
+const FACTOR = 1.05;
 
+class utilZoom {
   static relativePan(canvas, canvasZoom, x, y) {
     const constraintW = canvas.width;
     const constraintH = canvas.height;
 
-    const zoom = Math.pow(1.1, canvasZoom - 1);
+    const zoom = Math.pow(FACTOR, canvasZoom - 1);
 
     const vpt = canvas.viewportTransform.slice(0);
 
@@ -30,7 +31,7 @@ export default class utilZoom {
   }
 
   static redrawZoom(canvas, canvasZoom) {
-    const zoom = Math.pow(1.1, canvasZoom - 1);
+    const zoom = Math.pow(FACTOR, canvasZoom - 1);
     canvas.setZoom(zoom);
 
     const constraintW = canvas.width;
@@ -57,3 +58,7 @@ export default class utilZoom {
     canvas.setViewportTransform(viewportTransform);
   }
 }
+
+utilZoom.zoomFactor = FACTOR;
+
+export default utilZoom;

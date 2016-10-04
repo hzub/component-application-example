@@ -92,15 +92,18 @@ class DrawService {
 
   changeCursorForState() {
     switch (this.getState()) {
-    case this.DRAW_STATES.PAN:
-      this._canvas.defaultCursor = 'pointer';
-      break;
-    case this.DRAW_STATES.ADDTEXT:
-      this._canvas.defaultCursor = 'crosshair';
-      break;
-    default:
-      this._canvas.defaultCursor = 'default';
-      break;
+      case this.DRAW_STATES.PAN:
+        this._canvas.defaultCursor = 'pointer';
+        break;
+      case this.DRAW_STATES.ZOOM:
+        this._canvas.defaultCursor = 'zoom-in';
+        break;
+      case this.DRAW_STATES.ADDTEXT:
+        this._canvas.defaultCursor = 'crosshair';
+        break;
+      default:
+        this._canvas.defaultCursor = 'default';
+        break;
     }
   }
 
@@ -188,6 +191,18 @@ class DrawService {
     }
 
     this.redrawZoom();
+  }
+
+  relativeZoomIn(origin) {
+    this.zoomIn();
+    const delta = utilZoom.zoomFactor - 1.0;
+    this.relativePan(-origin[0] * delta, -origin[1] * delta);
+  }
+
+  relativeZoomOut(origin) {
+    const delta = utilZoom.zoomFactor - 1.0;
+    this.relativePan(origin[0] * delta, origin[1] * delta);
+    this.zoomOut();
   }
 
   redrawZoom() {
