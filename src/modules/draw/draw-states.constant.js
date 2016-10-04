@@ -4,4 +4,5 @@ export const DRAW_STATES = {
   ADDSHAPE: 'ADDSHAPE',
   SELECT: 'SELECT',
   PAN: 'PAN',
+  ZOOM: 'ZOOM',
 };

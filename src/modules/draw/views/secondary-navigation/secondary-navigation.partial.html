@@ -11,11 +11,8 @@
     <button class="btn" ng-click="vmNavigation.addShape()" ng-class="vmNavigation.getButtonStyle('ADDSHAPE', 'btn-primary', 'btn-link')">
         <i class="fa fa-asterisk"></i> Add shape
     </button>
-    <button ng-click="vmNavigation.zoomIn()" class="btn btn-link">
-        <i class="fa fa-search-plus"></i> Zoom in
-    </button>
-    <button ng-click="vmNavigation.zoomOut()" class="btn btn-link">
-        <i class="fa fa-search-minus"></i> Zoom out
+    <button ng-click="vmNavigation.zoom()" class="btn btn-link" ng-class="vmNavigation.getButtonStyle('ZOOM', 'btn-primary', 'btn-link')">
+        <i class="fa fa-search-plus"></i> Zoom
     </button>
     <button ng-click="vmNavigation.pan()" class="btn" ng-class="vmNavigation.getButtonStyle('PAN', 'btn-primary', 'btn-link')">
         <i class="fa fa-hand-paper-o"></i> Pan

@@ -35,6 +35,8 @@ class DrawAreaController {
     this.orientationLibrary = [];
     this.selectedOrientation = undefined;
     this.panning = false;
+    this.zooming = false;
+    this.zoomOrigin = null;
 
     this.productsService.onProductChange(() => {
       this.orientationLibrary = [];
@@ -112,11 +114,26 @@ class DrawAreaController {
       if (this.panning && e && e.e) {
         this.drawService.relativePan(e.e.movementX, e.e.movementY);
       }
+
+      if (this.zooming && e && e.e) {
+        if (e.e.movementX > 1) {
+          this.drawService.relativeZoomIn(this.zoomOrigin);
+        }
+
+        if (e.e.movementX < -1) {
+          this.drawService.relativeZoomOut(this.zoomOrigin);
+        }
+      }
     });
 
     canvas.on('mouse:up', () => {
       if (this.panning) {
         this.panning = false;
+        this.drawService.unlockEntities();
+      }
+
+      if (this.zooming) {
+        this.zooming = false;
         this.drawService.unlockEntities();
       }
     });
@@ -127,6 +144,10 @@ class DrawAreaController {
 
         if (drawState === 'PAN') {
           this.panning = true;
+          this.drawService.lockEntity(options.target);
+        } else if (drawState === 'ZOOM') {
+          this.zooming = true;
+          this.zoomOrigin = [options.e.offsetX, options.e.offsetY];
           this.drawService.lockEntity(options.target);
         } else if (drawState === 'ADDTEXT') {
           this.drawService.lockEntity(options.target);
@@ -160,13 +181,13 @@ class DrawAreaController {
     });
 
     window.addEventListener('mousewheel', (e) => {
-      if (this.isInDrawArea(e.target)) {
+      if (
+        this.drawService.getState() === 'PAN' && this.isInDrawArea(e.target)
+      ) {
         if (e.deltaY < 0) {
-          this.drawService.zoomIn();
-          this.drawService.relativePan(-e.offsetX * 0.1, -e.offsetY * 0.1);
+          this.drawService.relativeZoomIn([e.offsetX, e.offsetY]);
         } else {
-          this.drawService.relativePan(e.offsetX * 0.1, e.offsetY * 0.1);
-          this.drawService.zoomOut();
+          this.drawService.relativeZoomOut([e.offsetX, e.offsetY]);
         }
       }
     });

@@ -50,12 +50,10 @@ class SecondaryNavigationController {
     this.drawService.addBox(100, 50);
   }
 
-  zoomIn() {
-    this.drawService.zoomIn();
+  zoom() {
+    this.drawService.setState('ZOOM');
   }
-  zoomOut() {
-    this.drawService.zoomOut();
-  }
+
   pan() {
     this.drawService.setState('PAN');
   }
