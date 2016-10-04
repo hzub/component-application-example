@@ -71,7 +71,7 @@ class LeftSideBarController {
     _.assign(this.panelVisibility, visibility);
   }
 
-  _resetPanelVisibility(visibility) {
+  _resetPanelVisibility() {
     this.panelVisibility = {
       text: false,
       product: false,

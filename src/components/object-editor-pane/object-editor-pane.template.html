@@ -1,0 +1,13 @@
+<div ng-if="$ctrl.selectedEntity" class="object-editor-pane">
+  <color-control class="row object-editor-pane__control"
+                 entity="$ctrl.selectedEntity"
+                 render="$ctrl.render()"></color-control>
+
+  <flip-control class="row object-editor-pane__control"
+                entity="$ctrl.selectedEntity"></flip-control>
+
+  <knob-control class="row object-editor-pane__control"
+                entity="$ctrl.selectedEntity"
+                angle="$ctrl.selectedEntity.angle"
+                render="$ctrl.render()"></knob-control>
+</div>
