@@ -11,7 +11,6 @@ import DrawTextService from './services/draw.text.service.js';
 
 import ProductSelectDirective from './directives/product-select/product-select.directive.js';
 import TextEditorDirective from './directives/text-editor/text-editor.directive.js';
-import ObjectEditorDirective from './directives/object-editor/object-editor.directive.js';
 import DrawAreaDirective from './directives/draw-area/draw-area.directive.js';
 
 import LeftDrawSidebarDirective from
@@ -36,7 +35,6 @@ angular.module(moduleName, [])
   .service('drawTextService', DrawTextService)
   .directive('drawArea', DrawAreaDirective)
   .directive('textEditor', TextEditorDirective)
-  .directive('objectEditor', ObjectEditorDirective)
   .directive('productSelect', ProductSelectDirective)
   .directive('leftDrawSidebar', LeftDrawSidebarDirective);
 

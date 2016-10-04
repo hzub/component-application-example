@@ -7,7 +7,8 @@ import coreModule from './modules/core/core.module';
 import elementsModule from './modules/elements/elements.module';
 
 import {
-  SHAPES_PANE
+  SHAPES_PANE,
+  OBJECT_EDITOR_PANE
 } from './components';
 
 
@@ -21,6 +22,7 @@ angular.module('designerApp', [
   elementsModule,
 
   SHAPES_PANE,
+  OBJECT_EDITOR_PANE,
 
   defaultLayoutModule,
 ]);

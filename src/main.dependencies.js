@@ -1,4 +1,5 @@
 import 'expose?$!expose?jQuery!jquery';
+import 'jquery-knob/js/jquery.knob';
 
 import 'spectrum-colorpicker';
 import 'spectrum-colorpicker/spectrum.css';
@@ -16,6 +17,7 @@ import angularUiBootstrap from 'angular-ui-bootstrap';
 
 import 'bootstrap/less/bootstrap.less';
 import 'toastr/toastr.less';
+
 
 export default [
   angularUiRouter,

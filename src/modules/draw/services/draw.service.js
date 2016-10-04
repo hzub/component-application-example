@@ -1,4 +1,6 @@
 import fabricModule from 'fabric';
+import _ from 'lodash';
+
 
 import utilZoom from './util.zoom.js';
 import utilConstraints from './util.constraints.js';
@@ -32,11 +34,11 @@ class DrawService {
 
     this.$rootScope.$on('draw:stateChanged', (e, params) => {
       switch (params.state) {
-        case this.DRAW_STATES.ADDSHAPE:
-        case this.DRAW_STATES.SELECTPRODUCT:
-        case this.DRAW_STATES.PAN:
-          this.deselectEntity();
-          break;
+      case this.DRAW_STATES.ADDSHAPE:
+      case this.DRAW_STATES.SELECTPRODUCT:
+      case this.DRAW_STATES.PAN:
+        this.deselectEntity();
+        break;
       }
     });
   }
@@ -115,6 +117,7 @@ class DrawService {
 
   onSelectEntity(cb) {
     this.onSelectEntity.callbacks.push(cb);
+    return () => _.pull(this.onSelectEntity.callbacks, cb);
   }
 
   selectEntity(entity) {
@@ -126,9 +129,7 @@ class DrawService {
       return;
     }
 
-    this.onSelectEntity.callbacks.forEach(cb => {
-      cb.call(this, entity, previousEntity);
-    });
+    this.onSelectEntity.callbacks.forEach(cb => cb(entity, previousEntity));
   }
 
   addSVGByUrl(url) {
@@ -138,7 +139,7 @@ class DrawService {
 
       const newClipartObject = new fabric
         .PathGroup(...args)
-        .set({ left: 100, top: 100 });
+        .set({left: 100, top: 100});
 
       this.prepareNewEntity(newClipartObject);
 
@@ -248,7 +249,7 @@ class DrawService {
   prepareNewEntity(entity) {
     entity.id = this.getEntityId();
     entity.lockUniScaling = true;
-    entity.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+    entity.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
   }
 
   addNewText(event) {
