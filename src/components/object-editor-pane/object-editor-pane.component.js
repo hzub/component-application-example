@@ -45,6 +45,10 @@ export class ObjectEditorPaneComponent {
     this._unsubs = [];
   }
 
+  render() {
+    this.drawService.render();
+  }
+
   _updateSelectedEntity() {
     console.log('update selected');
     this.selectedEntity = this.drawService.getSelectedEntity();
