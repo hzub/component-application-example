@@ -3,10 +3,10 @@ import RoutingConfiguration from './draw.routes';
 import { DRAW_STATES } from './draw-states.constant';
 import { DRAW_ACTIONS } from './draw-actions.constant';
 
-import DrawService from './services/draw.service.js';
-import FontService from './services/font.service.js';
-import ProductsService from './services/products.service.js';
-import DrawTextService from './services/draw.text.service.js';
+import DrawService from './services/draw/draw.service.js';
+import FontService from './services/font/font.service.js';
+import ProductsService from './services/products/products.service.js';
+import DrawTextService from './services/draw-text/draw-text.service.js';
 
 import ProductSelectDirective from './directives/product-select/product-select.directive.js';
 import TextEditorDirective from './directives/text-editor/text-editor.directive.js';

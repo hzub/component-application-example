@@ -1,6 +1,6 @@
 // TODO: remove mock
-import mockBannerFrontUrl from '../../../assets/white-bg.png';
-import mockBannerBackUrl from '../../../assets/white-bg.png';
+import mockBannerFrontUrl from '../../../../assets/white-bg.png';
+import mockBannerBackUrl from '../../../../assets/white-bg.png';
 
 const $inject = ['httpService'];
 
@@ -60,24 +60,25 @@ class ProductsService {
   }
 
   getAvailableOrientations() {
+    // TODO: remove mock
     return [{
-      "name": "Front",
-      "width": 600,
-      "height": 500,
-      "printable_width": 550,
-      "printable_height": 450,
-      "printable_offset_x": 25,
-      "printable_offset_y": 25,
-      "background_url": mockBannerFrontUrl,
+      name: 'Front',
+      width: 600,
+      height: 500,
+      printable_width: 550,
+      printable_height: 450,
+      printable_offset_x: 25,
+      printable_offset_y: 25,
+      background_url: mockBannerFrontUrl,
     }, {
-      "name": "Back",
-      "width": 500,
-      "height": 400,
-      "printable_width": 450,
-      "printable_height": 350,
-      "printable_offset_x": 25,
-      "printable_offset_y": 25,
-      "background_url": mockBannerBackUrl,
+      name: 'Back',
+      width: 500,
+      height: 400,
+      printable_width: 450,
+      printable_height: 350,
+      printable_offset_x: 25,
+      printable_offset_y: 25,
+      background_url: mockBannerBackUrl,
     }];
   }
 }
