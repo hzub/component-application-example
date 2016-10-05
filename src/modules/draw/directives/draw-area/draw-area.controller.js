@@ -182,8 +182,6 @@ class DrawAreaController {
       }
     });
 
-    console.info("HALO", this.drawAreaElement);
-
     this.$element.on('mouseenter', () => {
       this.drawService.showPrintAreaLines(true);
     });

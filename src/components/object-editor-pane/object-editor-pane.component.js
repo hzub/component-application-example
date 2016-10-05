@@ -50,7 +50,6 @@ export class ObjectEditorPaneComponent {
   }
 
   _updateSelectedEntity() {
-    console.log('update selected');
     this.selectedEntity = this.drawService.getSelectedEntity();
   }
 }

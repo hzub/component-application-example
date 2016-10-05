@@ -1,10 +1,14 @@
 draw-preview {
-  pointer-events: none;
     .outer {
+        opacity: 0.3;
         position: relative;
         width: 150px;
         height: 150px;
-        background-color: rgba(0,0,0, 0.3);
+        background-color: rgba(0, 0, 0, 0.3);
+        transition: opacity 0.2s linear;
+        &:hover {
+            opacity: 1;
+        }
     }
     .inner {
         position: absolute;

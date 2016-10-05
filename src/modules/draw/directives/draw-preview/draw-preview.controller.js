@@ -11,10 +11,12 @@ class DrawPreviewController {
       $rootScope, $element, drawService,
     });
 
-   console.info($($element).find('.outer'));
-
     this.outerElement = $($element).find('.outer');
     this.innerElement = $($element).find('.inner');
+
+    this.clickOffset = undefined;
+
+    this.hookEvents();
   }
 
   render() {
@@ -25,6 +27,34 @@ class DrawPreviewController {
     this.innerElement.css('height', this.targetHeight + 'px');
     this.innerElement.css('left', this.targetX + 'px');
     this.innerElement.css('top', this.targetY + 'px');
+  }
+
+  hookEvents() {
+    this.innerElement.on('mousedown', e => {
+      this.clickOffset = [e.clientX, e.clientY];
+    });
+
+    $(window).on('mouseup', () => {
+      this.clickOffset = undefined;
+    });
+
+    $(window).on('mousemove', e => {
+      if (this.clickOffset) {
+        const vpt = this.drawService.getViewportTransformMatrix();
+        const size = this.drawService.getDimensions();
+
+        const deltaX = e.clientX - this.clickOffset[0];
+        const deltaY = e.clientY - this.clickOffset[1];
+
+        this.clickOffset = [e.clientX, e.clientY];
+
+        const zoom = vpt[0];
+
+        const scaleRatio = PREVIEW_WIDTH / size[0];
+
+        this.drawService.relativePan(-deltaX * zoom / scaleRatio, -deltaY * zoom / scaleRatio);
+      }
+    });
   }
 
   init() {
@@ -51,10 +81,8 @@ class DrawPreviewController {
       this.containerWidth = PREVIEW_WIDTH;
       this.containerHeight = PREVIEW_WIDTH / sizeRatio;
 
-      console.info(this.targetWidth, this.targetHeight, this.targetX, this.targetY);
-
       this.render();
-    }, 100);
+    }, 50);
 
     this.$rootScope.$on('draw:viewportChanged', throttledUpdate);
   }
