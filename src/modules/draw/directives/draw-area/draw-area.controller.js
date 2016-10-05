@@ -11,6 +11,7 @@ const $inject = [
   'drawService',
   'drawTextService',
   'productsService',
+  'stackSelectorService',
 ];
 
 class DrawAreaController {
@@ -20,7 +21,8 @@ class DrawAreaController {
     DRAW_STATES,
     drawService,
     drawTextService,
-    productsService
+    productsService,
+    stackSelectorService
   ) {
     Object.assign(this, {
       $rootScope,
@@ -29,6 +31,7 @@ class DrawAreaController {
       drawService,
       drawTextService,
       productsService,
+      stackSelectorService,
     });
 
     this.orientationLibrary = [];
@@ -138,8 +141,6 @@ class DrawAreaController {
       }
     });
 
-
-
     canvas.on('mouse:down', options => {
       this.$rootScope.$apply(() => {
         const drawState = this.drawService.getState();
@@ -164,6 +165,13 @@ class DrawAreaController {
       });
     });
 
+    canvas.on('object:moving', () => {
+      const hide = this.stackSelectorService.hide();
+      if (hide) { // no costly autoapply, we're check it inside
+        this.$rootScope.$apply();
+      }
+    });
+
     canvas.on('object:modified', event => {
       this.$rootScope.$apply(() => {
         if (event.target && event.target.type === 'text') {
@@ -181,6 +189,12 @@ class DrawAreaController {
         });
       }
     });
+
+    window.addEventListener('mousedown', e => {
+      if (this.isInDrawArea(e.target)) {
+        this.stackSelectorService.hide();
+      }
+    }, true);
 
     this.$element.on('mouseenter', () => {
       this.drawService.showPrintAreaLines(true);

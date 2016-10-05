@@ -5,7 +5,11 @@ import faRotateImageUrl from '../../../../assets/images/fa_rotate.png';
 import faResizeImageUrl from '../../../../assets/images/fa_resize.png';
 import faLayersImageUrl from '../../../../assets/images/fa_layers.png';
 
-export default function extendFabric($rootScope, drawService) {
+export default function extendFabric(directive) {
+  const $rootScope = directive.$rootScope;
+  const drawService = directive.drawService;
+  const stackSelectorService = directive.stackSelectorService;
+
   const topLeftImage = new Image();
   topLeftImage.src = faTimesImageUrl;
 
@@ -52,7 +56,7 @@ export default function extendFabric($rootScope, drawService) {
     };
 
   fabricModule.fabric.Canvas.prototype._getActionFromCorner =
-    function _getActionFromCorner(target, corner) {
+    function _getActionFromCorner(target, corner, e) {
       let action = 'drag';
       if (corner) {
 
@@ -68,7 +72,7 @@ export default function extendFabric($rootScope, drawService) {
 
         if (corner == 'bl') {
           action = 'layer';
-          showLayerChoice(target.top, target.left);
+          showLayerChoice(e.clientX, e.clientY);
 
         }
 
@@ -122,10 +126,9 @@ export default function extendFabric($rootScope, drawService) {
   };
 
 
-  function showLayerChoice() {
-    setTimeout(function() {
-      $('#layer-choice').show();
-    }, 300);
+  function showLayerChoice(top, left) {
+    stackSelectorService.show(top, left);
+    //$rootScope.$apply();
   }
 
   function deleteObject(target) {

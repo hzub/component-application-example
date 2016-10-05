@@ -35,11 +35,11 @@ class DrawService {
 
     this.$rootScope.$on('draw:stateChanged', (e, params) => {
       switch (params.state) {
-      case this.DRAW_STATES.ADDSHAPE:
-      case this.DRAW_STATES.SELECTPRODUCT:
-      case this.DRAW_STATES.PAN:
-        this.deselectEntity();
-        break;
+        case this.DRAW_STATES.ADDSHAPE:
+        case this.DRAW_STATES.SELECTPRODUCT:
+        case this.DRAW_STATES.PAN:
+          this.deselectEntity();
+          break;
       }
     });
   }
@@ -142,7 +142,7 @@ class DrawService {
 
       const newClipartObject = new fabric
         .PathGroup(...args)
-        .set({left: 100, top: 100});
+        .set({ left: 100, top: 100 });
 
       this.prepareNewEntity(newClipartObject);
 
@@ -216,6 +216,29 @@ class DrawService {
     this._canvas.renderAll();
   }
 
+  setStackPosition(command) {
+    var object = this._canvas.getActiveObject();
+    if (object == null) {
+      return;
+    }
+    switch (command) {
+      case 'bringToFront':
+        object.bringToFront();
+        break;
+      case 'sendBackwards':
+        object.sendBackwards();
+        break;
+      case 'bringForward':
+        object.bringForward();
+        break;
+      case 'sendToBack':
+        object.sendToBack();
+        break;
+    }
+    this.render();
+    this.deselectEntity();
+  }
+
   deleteSelectedEntity() {
     const selectedEntity = this.getSelectedEntity();
 
@@ -258,7 +281,7 @@ class DrawService {
   prepareNewEntity(entity) {
     entity.id = this.getEntityId();
     entity.lockUniScaling = true;
-    entity.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
+    entity.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
   }
 
   addNewText(event) {

@@ -3,8 +3,14 @@ import $template from './draw-area.template.html';
 
 import extendFabric from './fabric.extensions.js';
 
+const $inject = ['$rootScope', 'drawService', 'stackSelectorService'];
+
 class DateRangepickerDirective {
-  constructor($rootScope, drawService) {
+  constructor($rootScope, drawService, stackSelectorService) {
+    Object.assign(this, {
+      $rootScope, drawService, stackSelectorService,
+    });
+
     this.restrict = 'EA';
     this.scope = {};
     this.templateUrl = $template;
@@ -12,7 +18,7 @@ class DateRangepickerDirective {
     this.controllerAs = 'vmDrawArea';
     this.bindToController = true;
 
-    extendFabric($rootScope, drawService);
+    extendFabric(this);
   }
 
   link($scope, $element) {
@@ -26,6 +32,6 @@ class DateRangepickerDirective {
   }
 }
 
-DateRangepickerDirective.get.$inject = ['$rootScope', 'drawService'];
+DateRangepickerDirective.get.$inject = $inject;
 
 export default DateRangepickerDirective.get;

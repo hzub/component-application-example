@@ -1,6 +1,5 @@
 import RoutingConfiguration from './draw.routes';
 
-
 import { DRAW_STATES } from './draw-states.constant';
 import { DRAW_ACTIONS } from './draw-actions.constant';
 
@@ -13,6 +12,8 @@ import ProductSelectDirective from './directives/product-select/product-select.d
 import TextEditorDirective from './directives/text-editor/text-editor.directive.js';
 import DrawAreaDirective from './directives/draw-area/draw-area.directive.js';
 import DrawPreviewDirective from './directives/draw-preview/draw-preview.directive.js';
+import StackSelectorDirective from './directives/stack-selector/stack-selector.directive.js';
+import StackSelectorService from './directives/stack-selector/stack-selector.service.js';
 
 import LeftDrawSidebarDirective from
   './directives/left-draw-sidebar/left-draw-sidebar.directive.js';
@@ -35,11 +36,14 @@ angular.module(moduleName, [])
   .service('fontService', FontService)
   .service('productsService', ProductsService)
   .service('drawTextService', DrawTextService)
+  .service('stackSelectorService', StackSelectorService)
   .directive('drawArea', DrawAreaDirective)
   .directive('drawPreview', DrawPreviewDirective)
   .directive('textEditor', TextEditorDirective)
   .directive('productSelect', ProductSelectDirective)
-  .directive('leftDrawSidebar', LeftDrawSidebarDirective);
+  .directive('leftDrawSidebar', LeftDrawSidebarDirective)
+  .directive('stackSelector', StackSelectorDirective)
+;
 
 export default moduleName;
 
