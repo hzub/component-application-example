@@ -25,10 +25,13 @@ class SaveService {
 
     const entityList = this.drawService.getCanvas().getObjects();
 
-    entityList.forEach(object => {
-      switch (object.type) {
+    entityList.forEach(entity => {
+
+      this.drawService.prepareNewEntity(entity);
+
+      switch (entity.type) {
         case 'text':
-          this.restoreText(object);
+          this.restoreText(entity);
           break;
         default:
       }
