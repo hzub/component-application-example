@@ -4,6 +4,7 @@ import { DRAW_STATES } from './draw-states.constant';
 import { DRAW_ACTIONS } from './draw-actions.constant';
 
 import DrawService from './services/draw/draw.service.js';
+import SaveService from './services/save/save.service.js';
 import FontService from './services/font/font.service.js';
 import ProductsService from './services/products/products.service.js';
 import DrawTextService from './services/draw-text/draw-text.service.js';
@@ -33,6 +34,7 @@ angular.module(moduleName, [])
   .constant('DRAW_ACTIONS', DRAW_ACTIONS)
   .config(RoutingConfiguration)
   .service('drawService', DrawService)
+  .service('saveService', SaveService)
   .service('fontService', FontService)
   .service('productsService', ProductsService)
   .service('drawTextService', DrawTextService)

@@ -17,10 +17,27 @@ class ProductsService {
     this.fonts = undefined;
     this.defaultFont = undefined;
     this.fontsPromise = this._getFonts();
+    this.pendingPromises = [];
+
+    this.clearUsedFonts();
   }
 
   getFonts() {
     return this.fontsPromise;
+  }
+
+  clearUsedFonts() {
+    this.usedFonts = [];
+  }
+
+  findFontByFaceName(name) {
+    let found = null;
+    this.fonts.forEach(category => {
+      found = found || _.find(category.fonts, font =>
+        !!_.find(font.variants, { fontface: name })
+      );
+    });
+    return found;
   }
 
   _getFonts() {
@@ -67,11 +84,18 @@ class ProductsService {
     _.each(font.variants, variant => {
       this.angularLoad.loadCSS(variant.stylesheet);
       const observer = new FontFaceObserver(variant.fontface).load();
+
       promises.push(observer);
+      this.pendingPromises.push(observer);
+
       observer.then(() => {
-        this.globalLoader.hide();
+        _.pull(this.pendingPromises, observer);
+        if (!this.pendingPromises.length) {
+          this.globalLoader.hide();
+        }
       });
     });
+
     return this.$q.all(promises);
   }
 
