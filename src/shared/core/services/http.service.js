@@ -1,9 +1,16 @@
-class httpService {
-  constructor($http, $q, $state, configService) {
+export class HttpService {
+  static $inject = [
+    '$http',
+    '$q',
+    '$state',
+    'ConfigService',
+  ];
+
+  constructor($http, $q, $state, ConfigService) {
     this.$http = $http;
     this.$q = $q;
     this.$state = $state;
-    this.configService = configService;
+    this.ConfigService = ConfigService;
   }
 
   extendRequest(configuration) {
@@ -29,7 +36,7 @@ class httpService {
 
   transformUrl(url) {
     if (url.indexOf('http:') !== 0 && url.indexOf('https:') !== 0) {
-      return this.configService('backendPrefix') + url;
+      return this.ConfigService.get('backendPrefix') + url;
     }
 
     return url;
@@ -95,11 +102,4 @@ class httpService {
   }
 }
 
-httpService.$inject = [
-  '$http',
-  '$q',
-  '$state',
-  'configService',
-];
-
-export default httpService;
+export default HttpService;

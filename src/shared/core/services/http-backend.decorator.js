@@ -1,6 +1,6 @@
-const $inject = ['$delegate'];
+httpBackendDecorator.$inject = ['$delegate'];
 
-function httpBackendDecorator($delegate) {
+export function httpBackendDecorator($delegate) {
   function newHttpBackend(...params) {
     const headers = params[4];
     const contentType = (headers != null ? headers['X-Force-Content-Type'] : null);
@@ -16,7 +16,5 @@ function httpBackendDecorator($delegate) {
 
   return newHttpBackend;
 }
-
-httpBackendDecorator.$inject = $inject;
 
 export default httpBackendDecorator;

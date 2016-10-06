@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import FontFaceObserver from 'fontfaceobserver';
 
-const $inject = ['$q', 'httpService', 'angularLoad', 'globalLoader'];
+const $inject = ['$q', 'HttpService', 'angularLoad', 'globalLoader'];
 
 const DEFAULT_FONT = 'Archivo Black';
 
 class ProductsService {
-  constructor($q, httpService, angularLoad, globalLoader) {
+  constructor($q, HttpService, angularLoad, globalLoader) {
     Object.assign(this, {
       $q,
-      httpService,
+      HttpService,
       angularLoad,
       globalLoader,
     });
@@ -24,7 +24,7 @@ class ProductsService {
   }
 
   _getFonts() {
-    return this.httpService.get('/designer/fonts').then(fonts => {
+    return this.HttpService.get('/designer/fonts').then(fonts => {
       this.saveFonts(fonts);
       return this.fonts;
     });

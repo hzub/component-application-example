@@ -1,16 +1,16 @@
 export class ClipartService {
 
   static $inject = [
-    'httpService',
+    'HttpService',
     'globalLoader',
   ];
 
   /**
-   * @param {httpService} httpService
+   * @param {HttpService} HttpService
    * @param {GlobalLoaderService} globalLoader
    */
-  constructor(httpService, globalLoader) {
-    this._httpService = httpService;
+  constructor(HttpService, globalLoader) {
+    this._HttpService = HttpService;
     this._globalLoader = globalLoader;
 
     this._PATH = '/designer/clip-art';
@@ -21,7 +21,7 @@ export class ClipartService {
     if (this._promise) return this._promise;
 
     this._globalLoader.show();
-    return this._promise = this._httpService.get(this._PATH)
+    return this._promise = this._HttpService.get(this._PATH)
       .then(data => this._handleResponse(data))
       .catch(error => this._handleError(error));
   }

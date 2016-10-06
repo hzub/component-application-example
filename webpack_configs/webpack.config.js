@@ -12,7 +12,7 @@ const DIST_DIR_NAME = 'dist';
 const SRC_DIR = path.resolve(ROOT_DIR, SRC_DIR_NAME);
 const DIST_DIR = path.resolve(ROOT_DIR, DIST_DIR_NAME);
 
-const MAIN_ENTRY = path.resolve(SRC_DIR, 'main.js')
+const MAIN_ENTRY = path.join(SRC_DIR, 'main.js')
 
 module.exports = {
   context: ROOT_DIR,
@@ -74,7 +74,7 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(SRC_DIR, 'index.js'),
+      template: path.join(SRC_DIR_NAME, 'index.ejs'),
     }),
     new ExtractTextPlugin('styles.css'),
     new CleanWebpackPlugin([DIST_DIR_NAME], {

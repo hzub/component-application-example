@@ -2,12 +2,12 @@
 import mockBannerFrontUrl from '../../../../assets/white-bg.png';
 import mockBannerBackUrl from '../../../../assets/white-bg.png';
 
-const $inject = ['httpService'];
+const $inject = ['HttpService'];
 
 class ProductsService {
-  constructor(httpService) {
+  constructor(HttpService) {
     Object.assign(this, {
-      httpService,
+      HttpService,
     });
 
     this.selectedProduct = undefined;
@@ -18,7 +18,7 @@ class ProductsService {
   }
 
   getProduct() {
-    return this.httpService.get('/designer/products/1').then(products => {
+    return this.HttpService.get('/designer/products/1').then(products => {
       // TODO: remove mock
       this.selectedProducts = products;
       return products;

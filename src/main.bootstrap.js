@@ -2,8 +2,11 @@ import angular from 'angular';
 
 import externalDependencies from './main.dependencies';
 
+import {
+  CORE,
+} from 'shared';
+
 import drawModule from './modules/draw/draw.module';
-import coreModule from './modules/core/core.module';
 import elementsModule from './modules/elements/elements.module';
 
 import {
@@ -17,8 +20,8 @@ import defaultLayoutModule from './layouts/default/default.module';
 angular.module('designerApp', [
   ...externalDependencies,
 
+  CORE,
   drawModule,
-  coreModule,
   elementsModule,
 
   SHAPES_PANE,

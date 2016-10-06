@@ -1,13 +1,13 @@
 import $template from './login.view.html';
 
-const $inject = ['$state', '$stateParams', 'httpService', 'authorizationService', 'configService'];
+const $inject = ['$state', '$stateParams', 'HttpService', 'authorizationService', 'ConfigService'];
 
 class loginController {
-  constructor($state, $stateParams, httpService, authorizationService, configService) {
+  constructor($state, $stateParams, HttpService, authorizationService, ConfigService) {
     this.$auth = authorizationService;
-    this.httpService = httpService;
+    this.HttpService = HttpService;
     this.$state = $state;
-    this.configService = configService;
+    this.ConfigService = ConfigService;
 
     // TODO: remove mocked data
     this.login = 'foo';
@@ -15,7 +15,7 @@ class loginController {
     this.loginResponse = null;
 
     if (authorizationService.getToken()) {
-      this.$state.go(this.configService('defaultState'));
+      this.$state.go(this.ConfigService.get('defaultState'));
     }
   }
   doLogin() {
@@ -23,7 +23,7 @@ class loginController {
       this.login,
       this.password
     ).then(() => {
-      this.$state.go(this.configService('defaultState'));
+      this.$state.go(this.ConfigService.get('defaultState'));
     }).catch(() => {
       this.loginResponse = 'Bad credentials!';
     });

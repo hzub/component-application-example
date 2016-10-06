@@ -1,14 +1,14 @@
 class authorizationService {
-  constructor($q, $http, $state, configService) {
+  constructor($q, $http, $state, ConfigService) {
     this.$q = $q;
     this.$http = $http;
     this.$state = $state;
-    this.configService = configService;
+    this.ConfigService = ConfigService;
 
     this.token = null;
     this.tenantId = null;
 
-    this.tokenStorageKey = this.configService('localStorageAuthKey');
+    this.tokenStorageKey = this.ConfigService.get('localStorageAuthKey');
 
     this.restoreToken();
   }
@@ -62,7 +62,7 @@ class authorizationService {
   login(_login, _password) {
     return this.$http({
       method: 'POST',
-      url: `${this.configService('backendPrefix')}/login`,
+      url: `${this.ConfigService.get('backendPrefix')}/login`,
       data: {
         login: _login,
         password: _password,
@@ -83,6 +83,6 @@ export default [
   '$q',
   '$http',
   '$state',
-  'configService',
+  'ConfigService',
   authorizationService,
 ];

@@ -1,4 +1,4 @@
-import CORE from '../../modules/core/core.module';
+import { CORE } from 'shared';
 import DRAW from '../../modules/draw/draw.module';
 import ELEMENTS from '../../modules/elements/elements.module';
 
