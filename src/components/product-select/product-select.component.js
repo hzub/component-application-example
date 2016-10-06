@@ -1,16 +1,22 @@
-const $inject = ['productsService'];
+export class ProductSelectComponent {
+  static NAME = 'productSelect';
+  static OPTIONS = {
+    controller: ProductSelectComponent,
+    template: require('./product-select.template.html'),
+    bindings: {}
+  }
 
-class ProductSelectController {
+  static $inject = ['productsService'];
+
   constructor(productsService) {
     Object.assign(this, {
       productsService,
     });
 
     this.products = [];
-    this.init();
   }
 
-  init() {
+  $onInit() {
     this.productsService.getProduct().then(productResponse => {
       this.products = productResponse.products;
     });
@@ -20,8 +26,3 @@ class ProductSelectController {
     this.productsService.changeProduct();
   }
 }
-
-ProductSelectController.$inject = $inject;
-
-export default ProductSelectController;
-

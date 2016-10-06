@@ -14,9 +14,9 @@ import {
   LEFT_DRAW_SIDEBAR,
 
   SHAPES_PANE,
-  OBJECT_EDITOR_PANE
+  OBJECT_EDITOR_PANE,
+  PRODUCT_SELECT
 } from './components';
-
 
 import defaultLayoutModule from './layouts/default/default.module';
 
@@ -29,7 +29,9 @@ angular.module('designerApp', [
 
   DRAW_AREA,
   DRAW_PREVIEW,
+
   LEFT_DRAW_SIDEBAR,
+  PRODUCT_SELECT,
 
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,
