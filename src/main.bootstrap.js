@@ -3,9 +3,9 @@ import angular from 'angular';
 import externalDependencies from './main.dependencies';
 
 import {
-  ELEMENTS,
-  DRAW,
   CORE,
+  ELEMENTS,
+  DRAW
 } from 'shared';
 
 import {
@@ -15,7 +15,8 @@ import {
 
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,
-  PRODUCT_SELECT
+  PRODUCT_SELECT,
+  TEXT_EDITOR
 } from './components';
 
 import defaultLayoutModule from './layouts/default/default.module';
@@ -32,6 +33,7 @@ angular.module('designerApp', [
 
   LEFT_DRAW_SIDEBAR,
   PRODUCT_SELECT,
+  TEXT_EDITOR,
 
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,

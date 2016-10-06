@@ -1,13 +1,25 @@
-import _ from 'lodash';
-
-const $inject = ['$rootScope', '$element', 'fontService', 'drawService', 'drawTextService'];
+import './text-editor.less';
 
 const STATES = {
   DEFAULT: 'DEFAULT',
   FONT: 'FONT',
 };
 
-class TextEditorController {
+export class TextEditorComponent {
+  static NAME = 'textEditor';
+  static OPTIONS = {
+    controller: TextEditorComponent,
+    template: require('./text-editor.template.html'),
+    bindings: {}
+  }
+
+  static $inject = [
+    '$rootScope',
+    '$element',
+    'fontService',
+    'drawService',
+    'drawTextService'
+  ];
   constructor($rootScope, $element, fontService, drawService, drawTextService) {
     Object.assign(this, {
       $rootScope,
@@ -137,9 +149,4 @@ class TextEditorController {
       this.selectedEntity = null;
     }
   }
-
 }
-
-TextEditorController.$inject = $inject;
-
-export default TextEditorController;
