@@ -11,7 +11,6 @@ import DrawTextService from './services/draw-text/draw-text.service.js';
 
 import ProductSelectDirective from './directives/product-select/product-select.directive.js';
 import TextEditorDirective from './directives/text-editor/text-editor.directive.js';
-import DrawPreviewDirective from './directives/draw-preview/draw-preview.directive.js';
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive.js';
 import StackSelectorService from './directives/stack-selector/stack-selector.service.js';
 
@@ -35,7 +34,6 @@ export const DRAW = angular.module('designerApp.shared.draw', [])
   .service('productsService', ProductsService)
   .service('drawTextService', DrawTextService)
   .service('stackSelectorService', StackSelectorService)
-  .directive('drawPreview', DrawPreviewDirective)
   .directive('textEditor', TextEditorDirective)
   .directive('productSelect', ProductSelectDirective)
   .directive('leftDrawSidebar', LeftDrawSidebarDirective)

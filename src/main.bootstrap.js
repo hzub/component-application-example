@@ -10,6 +10,7 @@ import {
 
 import {
   DRAW_AREA,
+  DRAW_PREVIEW,
   SHAPES_PANE,
   OBJECT_EDITOR_PANE
 } from './components';
@@ -25,6 +26,8 @@ angular.module('designerApp', [
   ELEMENTS,
 
   DRAW_AREA,
+  DRAW_PREVIEW,
+
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,
 
