@@ -11,6 +11,8 @@ import {
 import {
   DRAW_AREA,
   DRAW_PREVIEW,
+  LEFT_DRAW_SIDEBAR,
+
   SHAPES_PANE,
   OBJECT_EDITOR_PANE
 } from './components';
@@ -27,6 +29,7 @@ angular.module('designerApp', [
 
   DRAW_AREA,
   DRAW_PREVIEW,
+  LEFT_DRAW_SIDEBAR,
 
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,

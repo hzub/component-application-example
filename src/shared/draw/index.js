@@ -14,9 +14,6 @@ import TextEditorDirective from './directives/text-editor/text-editor.directive.
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive.js';
 import StackSelectorService from './directives/stack-selector/stack-selector.service.js';
 
-import LeftDrawSidebarDirective from
-  './directives/left-draw-sidebar/left-draw-sidebar.directive.js';
-
 /**
  * Draw module
  *
@@ -36,7 +33,6 @@ export const DRAW = angular.module('designerApp.shared.draw', [])
   .service('stackSelectorService', StackSelectorService)
   .directive('textEditor', TextEditorDirective)
   .directive('productSelect', ProductSelectDirective)
-  .directive('leftDrawSidebar', LeftDrawSidebarDirective)
   .directive('stackSelector', StackSelectorDirective)
     .name
   ;

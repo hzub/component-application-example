@@ -1,4 +1,13 @@
-class LeftSideBarController {
+import './left-draw-sidebar.less';
+
+export class LeftDrawSidebarComponent {
+  static NAME = 'leftDrawSidebar';
+  static OPTIONS = {
+    controller: LeftDrawSidebarComponent,
+    template: require('./left-draw-sidebar.template.html'),
+    bindings: {}
+  }
+
   static $inject = [
     '$rootScope',
     'DRAW_STATES',
@@ -33,20 +42,20 @@ class LeftSideBarController {
     this.helpVisibilityState = state;
 
     switch (state) {
-      case this.DRAW_STATES.SELECTPRODUCT:
-        this._resetPanelVisibility();
-        this._setPanelVisibility({ product: true });
-        break;
-      case this.DRAW_STATES.ADDSHAPE:
-        this._resetPanelVisibility();
-        this._setPanelVisibility({ shape: true });
-        break;
-      case this.DRAW_STATES.SELECT:
-        this._setPanelVisibility({ product: false, shape: false, });
-        break;
-      default:
-        this._resetPanelVisibility();
-        break;
+    case this.DRAW_STATES.SELECTPRODUCT:
+      this._resetPanelVisibility();
+      this._setPanelVisibility({product: true});
+      break;
+    case this.DRAW_STATES.ADDSHAPE:
+      this._resetPanelVisibility();
+      this._setPanelVisibility({shape: true});
+      break;
+    case this.DRAW_STATES.SELECT:
+      this._setPanelVisibility({product: false, shape: false,});
+      break;
+    default:
+      this._resetPanelVisibility();
+      break;
     }
   }
 
@@ -56,14 +65,14 @@ class LeftSideBarController {
     }
 
     switch (selection.type) {
-      case 'text':
-        this._setPanelVisibility({ text: true, shape: false, object: true, });
-        break;
-      case 'path-group':
-        this._setPanelVisibility({ text: false, shape: false, object: true, });
-        break;
-      default:
-        this._resetPanelVisibility();
+    case 'text':
+      this._setPanelVisibility({text: true, shape: false, object: true,});
+      break;
+    case 'path-group':
+      this._setPanelVisibility({text: false, shape: false, object: true,});
+      break;
+    default:
+      this._resetPanelVisibility();
     }
   }
 
@@ -80,5 +89,3 @@ class LeftSideBarController {
     };
   }
 }
-
-export default LeftSideBarController;
