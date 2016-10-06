@@ -18,8 +18,6 @@ import StackSelectorService from './directives/stack-selector/stack-selector.ser
 import LeftDrawSidebarDirective from
   './directives/left-draw-sidebar/left-draw-sidebar.directive.js';
 
-const moduleName = 'designerApp.draw';
-
 /**
  * Draw module
  *
@@ -28,7 +26,7 @@ const moduleName = 'designerApp.draw';
  * - draw:entityUpdated
  * - draw:viewportChanged
  */
-angular.module(moduleName, [])
+export const DRAW = angular.module('designerApp.shared.draw', [])
   .constant('DRAW_STATES', DRAW_STATES)
   .constant('DRAW_ACTIONS', DRAW_ACTIONS)
   .config(RoutingConfiguration)
@@ -43,7 +41,5 @@ angular.module(moduleName, [])
   .directive('productSelect', ProductSelectDirective)
   .directive('leftDrawSidebar', LeftDrawSidebarDirective)
   .directive('stackSelector', StackSelectorDirective)
+  .name
 ;
-
-export default moduleName;
-

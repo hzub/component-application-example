@@ -1,5 +1,7 @@
-import { CORE } from 'shared';
-import DRAW from '../../modules/draw/draw.module';
+import {
+  CORE,
+  DRAW
+} from 'shared';
 
 import { CLIPART_SELECT } from '../clipart-select';
 
