@@ -1,0 +1,23 @@
+<div class="input-group">
+    <input
+        type="text"
+        class="form-control"
+        uib-datepicker-popup="{{ vmRangepicker.format }}"
+        datepicker-options="vmRangepicker.fromPickerOptions"
+        is-open="vmRangepicker.fromPickerOpen"
+        ng-change="vmRangepicker.onFromPickerChange()"
+        ng-model="vmRangepicker.fromPickerDate"
+        ng-click="vmRangepicker.toggleFromPicker()"
+    />
+    <div class="input-group-addon">to</div>
+    <input
+        type="text"
+        class="form-control"
+        uib-datepicker-popup="{{ vmRangepicker.format }}"
+        datepicker-options="vmRangepicker.toPickerOptions"
+        is-open="vmRangepicker.toPickerOpen"
+        ng-change="vmRangepicker.onToPickerChange()"
+        ng-model="vmRangepicker.toPickerDate"
+        ng-click="vmRangepicker.toggleToPicker()"
+    />
+</div>
