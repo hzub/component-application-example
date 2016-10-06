@@ -1,11 +1,11 @@
 import fabricModule from 'fabric';
 
-import faTimesImageUrl from '../../../../assets/images/fa_times.png';
-import faRotateImageUrl from '../../../../assets/images/fa_rotate.png';
-import faResizeImageUrl from '../../../../assets/images/fa_resize.png';
-import faLayersImageUrl from '../../../../assets/images/fa_layers.png';
+import faTimesImageUrl from 'assets/images/fa_times.png';
+import faRotateImageUrl from 'assets/images/fa_rotate.png';
+import faResizeImageUrl from 'assets/images/fa_resize.png';
+import faLayersImageUrl from 'assets/images/fa_layers.png';
 
-export default function extendFabric(directive) {
+export function extendFabric(directive) {
   const $rootScope = directive.$rootScope;
   const drawService = directive.drawService;
   const stackSelectorService = directive.stackSelectorService;
@@ -60,10 +60,12 @@ export default function extendFabric(directive) {
       let action = 'drag';
       if (corner) {
 
-        action = (corner === 'ml' || corner === 'mr') ? 'scaleX' : (corner === 'mt' || corner === 'mb') ? 'scaleY' : corner === 'tl' ? 'rotate' : 'scale';
+        action = (corner === 'ml' || corner === 'mr') ? 'scaleX' : (corner === 'mt' || corner
+        === 'mb') ? 'scaleY' : corner === 'tl' ? 'rotate' : 'scale';
 
-        if (corner == 'tr')
+        if (corner == 'tr') {
           action = 'rotate';
+        }
 
         if (corner == 'tl') {
           action = 'delete';
@@ -85,6 +87,7 @@ export default function extendFabric(directive) {
     this._setCursorFromEvent(e, target);
 
     // TODO: why are we doing this?
+    // really, why? )
     var _this = this;
     setTimeout(function() {
       _this._setCursorFromEvent(e, target);
@@ -106,12 +109,15 @@ export default function extendFabric(directive) {
       tl: 7 // nw
     };
 
-    if (corner == 'tr')
+    if (corner == 'tr') {
       return 'copy';
-    if (corner == 'tl')
+    }
+    if (corner == 'tl') {
       return 'pointer';
-    if (corner == 'bl')
+    }
+    if (corner == 'bl') {
       return 'pointer';
+    }
 
     var n = Math.round((target.getAngle() % 360) / 45);
 
@@ -132,8 +138,8 @@ export default function extendFabric(directive) {
   }
 
   function deleteObject(target) {
-      target.setVisible(false);
-      drawService.deleteSelectedEntity();
-      $rootScope.$digest();
+    target.setVisible(false);
+    drawService.deleteSelectedEntity();
+    $rootScope.$digest();
   }
 }

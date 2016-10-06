@@ -10,6 +10,8 @@ class DrawEditorController {
       drawService,
     });
 
+    console.debug(this);
+
     this.showPreview = false;
 
     $rootScope.$on('draw:stateChanged', (e, params) => {

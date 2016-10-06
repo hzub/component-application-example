@@ -1,29 +1,31 @@
-import fabricModule from 'fabric';
-import $ from 'jquery';
-import _ from 'lodash';
+import { extendFabric } from './fabric.extensions';
 
-const fabric = fabricModule.fabric;
+export class DrawAreaComponent {
+  static NAME = 'drawArea';
+  static OPTIONS = {
+    controller: DrawAreaComponent,
+    template: require('./draw-area.template.html'),
+    bindings: {}
+  }
 
-const $inject = [
-  '$rootScope',
-  '$element',
-  'DRAW_STATES',
-  'drawService',
-  'drawTextService',
-  'productsService',
-  'stackSelectorService',
-];
+  static $inject = [
+    '$rootScope',
+    '$element',
+    'DRAW_STATES',
+    'drawService',
+    'drawTextService',
+    'productsService',
+    'stackSelectorService',
+  ];
 
-class DrawAreaController {
-  constructor(
-    $rootScope,
-    $element,
-    DRAW_STATES,
-    drawService,
-    drawTextService,
-    productsService,
-    stackSelectorService
-  ) {
+  constructor($rootScope,
+              $element,
+              DRAW_STATES,
+              drawService,
+              drawTextService,
+              productsService,
+              stackSelectorService) {
+
     Object.assign(this, {
       $rootScope,
       $element,
@@ -33,6 +35,8 @@ class DrawAreaController {
       productsService,
       stackSelectorService,
     });
+
+    extendFabric(this);
 
     this.orientationLibrary = [];
     this.selectedOrientation = undefined;
@@ -46,6 +50,7 @@ class DrawAreaController {
     });
 
     this.bindWindowEvents();
+    this.init();
   }
 
   init() {
@@ -217,7 +222,3 @@ class DrawAreaController {
     });
   }
 }
-
-DrawAreaController.$inject = $inject;
-
-export default DrawAreaController;

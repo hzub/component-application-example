@@ -5,10 +5,11 @@ import externalDependencies from './main.dependencies';
 import {
   ELEMENTS,
   DRAW,
-  CORE
+  CORE,
 } from 'shared';
 
 import {
+  DRAW_AREA,
   SHAPES_PANE,
   OBJECT_EDITOR_PANE
 } from './components';
@@ -23,6 +24,7 @@ angular.module('designerApp', [
   DRAW,
   ELEMENTS,
 
+  DRAW_AREA,
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,
 
