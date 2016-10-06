@@ -1,4 +1,4 @@
-class StackSelectorService {
+export class StackSelectorService {
   constructor() {
     this.listeners = [];
 
@@ -26,5 +26,3 @@ class StackSelectorService {
     return true;
   }
 }
-
-export default StackSelectorService;

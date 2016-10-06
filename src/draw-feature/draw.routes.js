@@ -2,7 +2,12 @@ import drawEditorView from './views/draw-editor/draw-editor.controller.js';
 import secondaryNavigationView from './views/secondary-navigation/secondary-navigation.controller';
 import orientationSelectView from './views/orientation-select/orientation-select.controller';
 
-function RoutingConfiguration($stateProvider) {
+RoutingConfiguration.$inject = [
+  '$stateProvider',
+  '$urlRouterProvider',
+];
+
+export function RoutingConfiguration($stateProvider) {
   $stateProvider
     .state('draw', {
       url: '/draw',
@@ -36,9 +41,3 @@ function RoutingConfiguration($stateProvider) {
   ;
 }
 
-RoutingConfiguration.$inject = [
-  '$stateProvider',
-  '$urlRouterProvider',
-];
-
-export default RoutingConfiguration;

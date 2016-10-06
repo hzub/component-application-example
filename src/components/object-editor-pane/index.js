@@ -1,6 +1,6 @@
 import {
   CORE,
-  DRAW,
+  DRAW_UTILS,
   ELEMENTS
 } from 'shared';
 
@@ -14,7 +14,7 @@ import { ObjectEditorPaneComponent } from './object-editor-pane.component';
 
 export const OBJECT_EDITOR_PANE = angular.module('components.object-editor-pane', [
     CORE,
-    DRAW,
+    DRAW_UTILS,
     ELEMENTS
   ])
   .component(ColorControlComponent.NAME, ColorControlComponent.OPTIONS)

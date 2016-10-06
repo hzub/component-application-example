@@ -1,8 +1,6 @@
-import { ConfigService, ConfigsRegistry } from './services/config.service';
-import { HttpService } from './services/http.service';
-import { httpBackendDecorator } from './services/http-backend.decorator';
-
-
+import { ConfigService, ConfigsRegistry } from './config.service';
+import { HttpService } from './http.service';
+import { httpBackendDecorator } from './http-backend.decorator';
 import { RoutingConfiguration } from './core.routes';
 
 import CONFIG from '../../config.json';
