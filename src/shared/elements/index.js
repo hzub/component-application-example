@@ -1,5 +1,5 @@
-import GlobalLoaderService from './directives/global-loader/global-loader.service.js';
-import knobDirective from './directives/knob/knob.directive';
+import GlobalLoaderService from './global-loader/global-loader.service.js';
+import knobDirective from './knob/knob.directive';
 
 /**
  * TODO: decide how to deal with the contents of this module in the context of "Components design".
