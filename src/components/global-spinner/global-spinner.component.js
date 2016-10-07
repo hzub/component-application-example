@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import './global-spinner.less';
 
 export class GlobalSpinnerComponent {
   static NAME = 'globalSpinner';
@@ -19,18 +19,8 @@ export class GlobalSpinnerComponent {
       globalSpinnerService
     });
 
-    this.spinnerElement = $element[0].querySelector('.js-spinner');
-
     this.globalSpinnerService.subscribe(doShow => {
-      this.showSpinner(doShow);
+      this.isShown = doShow;
     });
-  }
-
-  showSpinner(doShow) {
-    if (doShow) {
-      this.spinnerElement.classList.add('isShown');
-    } else {
-      this.spinnerElement.classList.remove('isShown');
-    }
   }
 }
