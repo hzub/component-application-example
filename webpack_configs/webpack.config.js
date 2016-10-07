@@ -39,7 +39,7 @@ module.exports = {
       }, {
         test: /\.js$/,
         exclude: [/node_modules/],
-        loader: 'babel-loader',
+        loaders: ['ng-annotate', 'babel-loader'],
       }, {
         test: /\.less$/,
         loader: ExtractTextPlugin.extract('css-loader!less-loader'),

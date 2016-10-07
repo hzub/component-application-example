@@ -1,26 +1,22 @@
 import fabricModule from 'fabric';
 import _ from 'lodash';
 
-
 import utilZoom from './util.zoom.js';
 import utilConstraints from './util.constraints.js';
+import { PubSub }  from '../pub-sub';
 
 const fabric = fabricModule.fabric;
 
-class DrawService {
-  static $inject = [
-    'DRAW_STATES',
-    'DRAW_ACTIONS',
-    '$rootScope',
-    'fontService'
-  ];
-
-  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService) {
+class DrawService extends PubSub {
+  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService, userDesignsService) {
+    'ngInject';
+    super();
     Object.assign(this, {
       DRAW_STATES,
       DRAW_ACTIONS,
       $rootScope,
       fontService,
+      userDesignsService
     });
 
     this._canvas = null;
@@ -340,6 +336,18 @@ class DrawService {
   setCanvas(canvas) {
     this._zoom = 1;
     this._canvas = canvas;
+  }
+
+  loadCanvasFromObject(canvas) {
+    this._canvas.loadFromJSON(canvas);
+
+    this.publish({
+      type: this.DRAW_ACTIONS.DESIGNRENDERED,
+    });
+  }
+
+  getObjects() {
+    return this._canvas.getObjects();
   }
 }
 

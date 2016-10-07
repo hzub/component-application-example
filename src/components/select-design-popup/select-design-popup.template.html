@@ -1,0 +1,13 @@
+<button class="btn btn-primary pull-right" ng-click="$ctrl.dismiss()">Cancel</button>
+<h2>Select saved design</h2>
+<div class="throbber" ng-show="$ctrl._loading"></div>
+<div class="design-list" ng-show="!$ctrl._loading">
+    <div ng-click="$ctrl.select(design)" ng-repeat="design in $ctrl.designList" class="design-entry">
+        <div class="design-thumbnail">
+        ( thumbnail )
+        </div>
+        <div class="design-meta">
+          {{design.name || design.updated_at}}
+        </div>
+    </div>
+</div>

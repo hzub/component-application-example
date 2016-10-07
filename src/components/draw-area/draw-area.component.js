@@ -1,5 +1,6 @@
 import { extendFabric } from './fabric.extensions';
 
+
 export class DrawAreaComponent {
   static NAME = 'drawArea';
   static OPTIONS = {
@@ -8,32 +9,26 @@ export class DrawAreaComponent {
     bindings: {}
   }
 
-  static $inject = [
-    '$rootScope',
-    '$element',
-    'DRAW_STATES',
-    'drawService',
-    'drawTextService',
-    'productsService',
-    'stackSelectorService',
-  ];
-
   constructor($rootScope,
-              $element,
-              DRAW_STATES,
-              drawService,
-              drawTextService,
-              productsService,
-              stackSelectorService) {
-
+    $element,
+    DRAW_STATES,
+    DESIGNS_ACTIONS,
+    drawService,
+    drawTextService,
+    productsService,
+    stackSelectorService,
+    userDesignsService) {
+    'ngInject';
     Object.assign(this, {
       $rootScope,
       $element,
       DRAW_STATES,
+      DESIGNS_ACTIONS,
       drawService,
       drawTextService,
       productsService,
       stackSelectorService,
+      userDesignsService,
     });
 
     extendFabric(this);
@@ -49,8 +44,26 @@ export class DrawAreaComponent {
       this.init();
     });
 
+    this.userDesignsService.subscribe(this.actionBroker.bind(this));
+
     this.bindWindowEvents();
     this.init();
+  }
+
+  actionBroker(action) {
+    switch (action.type) {
+      case this.DESIGNS_ACTIONS.DESIGNLOADED:
+        this.loadDesign(action.data);
+        break;
+      default:
+        break;
+    }
+  }
+
+  loadDesign(designData) {
+    const canvasObject = designData.data.canvas;
+
+    this.drawService.loadCanvasFromObject(canvasObject);
   }
 
   init() {

@@ -1,7 +1,8 @@
 import {
   CORE,
   DRAW_UTILS,
-  ELEMENTS
+  ELEMENTS,
+  USER_DESIGNS,
 } from 'shared';
 
 import {
@@ -12,7 +13,8 @@ import {
   SHAPES_PANE,
   OBJECT_EDITOR_PANE,
   PRODUCT_SELECT,
-  TEXT_EDITOR
+  TEXT_EDITOR,
+  SELECT_DESIGN_POPUP,
 } from 'components';
 
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive';
@@ -24,6 +26,7 @@ export const DRAW_FEATURE = angular
     CORE,
     DRAW_UTILS,
     ELEMENTS,
+    USER_DESIGNS,
 
     DRAW_AREA,
     DRAW_PREVIEW,
@@ -32,7 +35,8 @@ export const DRAW_FEATURE = angular
     SHAPES_PANE,
     OBJECT_EDITOR_PANE,
     PRODUCT_SELECT,
-    TEXT_EDITOR
+    TEXT_EDITOR,
+    SELECT_DESIGN_POPUP,
   ])
   .config(RoutingConfiguration)
   .service('stackSelectorService', StackSelectorService)

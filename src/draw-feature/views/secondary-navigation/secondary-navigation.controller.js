@@ -5,16 +5,31 @@ const $inject = ['$rootScope', 'drawService'];
 class SecondaryNavigationController {
 
   static $inject = [
+    '$uibModal',
     '$rootScope',
     'DRAW_STATES',
-    'drawService'
+    'SELECT_DESIGN_POPUP_OPTIONS',
+    'drawService',
+    'userDesignsService',
   ];
 
   static $view = $view;
 
-  constructor($rootScope, DRAW_STATES, drawService) {
+  constructor(
+    $uibModal,
+    $rootScope,
+    DRAW_STATES,
+    SELECT_DESIGN_POPUP_OPTIONS,
+    drawService,
+    userDesignsService
+  ) {
     Object.assign(this, {
-      $rootScope, DRAW_STATES, drawService,
+      $uibModal,
+      $rootScope,
+      DRAW_STATES,
+      SELECT_DESIGN_POPUP_OPTIONS,
+      drawService,
+      userDesignsService,
     });
 
     this.state = this.drawService.getState();
@@ -56,6 +71,12 @@ class SecondaryNavigationController {
 
   pan() {
     this.drawService.setState('PAN');
+  }
+
+  TESTload() {
+    this.$uibModal.open(this.SELECT_DESIGN_POPUP_OPTIONS).result.then(designObject => {
+      this.userDesignsService.load(designObject);
+    });
   }
 }
 
