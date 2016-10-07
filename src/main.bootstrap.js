@@ -1,28 +1,17 @@
 import angular from 'angular';
 
-import externalDependencies from './main.dependencies';
+import EXTERNAL_DEPENDENCIES from './main.dependencies';
 
-import drawModule from './modules/draw/draw.module';
-import coreModule from './modules/core/core.module';
-import elementsModule from './modules/elements/elements.module';
+import { CORE } from 'shared';
+import { DRAW_FEATURE } from 'draw-feature';
 
-import {
-  SHAPES_PANE,
-  OBJECT_EDITOR_PANE
-} from './components';
-
-
-import defaultLayoutModule from './layouts/default/default.module';
+import defaultLayoutModule from 'layouts/default/default.module';
 
 angular.module('designerApp', [
-  ...externalDependencies,
+  ...EXTERNAL_DEPENDENCIES,
 
-  drawModule,
-  coreModule,
-  elementsModule,
-
-  SHAPES_PANE,
-  OBJECT_EDITOR_PANE,
+  CORE,
+  DRAW_FEATURE,
 
   defaultLayoutModule,
 ]);

@@ -1,6 +1,8 @@
-import CORE from '../../modules/core/core.module';
-import DRAW from '../../modules/draw/draw.module';
-import ELEMENTS from '../../modules/elements/elements.module';
+import {
+  CORE,
+  DRAW_UTILS,
+  ELEMENTS
+} from 'shared';
 
 import {
   FlipControlComponent,
@@ -10,10 +12,9 @@ import {
 
 import { ObjectEditorPaneComponent } from './object-editor-pane.component';
 
-
 export const OBJECT_EDITOR_PANE = angular.module('components.object-editor-pane', [
     CORE,
-    DRAW,
+    DRAW_UTILS,
     ELEMENTS
   ])
   .component(ColorControlComponent.NAME, ColorControlComponent.OPTIONS)

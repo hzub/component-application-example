@@ -1,0 +1,94 @@
+<form class="form-horizontal" ng-show="$ctrl.state === 'DEFAULT'">
+    <div class="row m-b">
+        <div class="col-xs-3 control-label">
+            Text
+        </div>
+        <div class="col-xs-9">
+            <textarea class="js-main-input form-control" ng-model="$ctrl.textValue" ng-change="$ctrl.updateText()"></textarea>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-xs-3 control-label">
+            Font
+        </div>
+        <div class="col-xs-5 font-preview">
+            <img ng-src="{{$ctrl.fontValue.image}}"/>
+        </div>
+        <div class="col-xs-4">
+            <button class="btn btn-default pull-right" ng-click="$ctrl.selectFont()">Change</button>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-xs-3 control-label">Color</div>
+        <div class="col-xs-3">
+            <spectrum-colorpicker ng-model="$ctrl.colorValue" ng-change="$ctrl.updateColor()"></spectrum-colorpicker>
+        </div>
+        <div class="col-xs-3 control-label">Size</div>
+        <div class="col-xs-3">
+            <input class="form-control" type="number" ng-model="$ctrl.sizeValue" ng-change="$ctrl.updateSize()">
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-xs-3 control-label">
+            Style
+        </div>
+        <div class="col-xs-9">
+            <button ng-click="$ctrl.updateAlignment('left')" class="btn btn-default" ng-class="{'btn-primary': $ctrl.alignmentValue==='left'}">
+                <i class="fa fa-align-left"></i>
+            </button>
+            <button ng-click="$ctrl.updateAlignment('center')" class="btn btn-default" ng-class="{'btn-primary': $ctrl.alignmentValue==='center'}">
+                <i class="fa fa-align-center"></i>
+            </button>
+            <button ng-click="$ctrl.updateAlignment('right')" class="btn btn-default" ng-class="{'btn-primary': $ctrl.alignmentValue==='right'}">
+                <i class="fa fa-align-right"></i>
+            </button>
+            <div class="pull-right">
+                <button ng-click="$ctrl.toggleBold()" class="btn btn-default" ng-class="{'btn-primary': $ctrl.boldValue}">
+                    <i class="fa fa-bold"></i>
+                </button>
+                <button ng-click="$ctrl.toggleItalic()" class="btn btn-default" ng-class="{'btn-primary': $ctrl.italicValue}">
+                    <i class="fa fa-italic"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-xs-3 control-label">
+            Center
+        </div>
+        <div class="col-xs-9">
+            <button ng-click="$ctrl.centerVertically()" class="btn btn-default">
+                Vertically
+            </button>
+            <button ng-click="$ctrl.centerHorizontally()" class="btn btn-default">
+                Horizontally
+            </button>
+        </div>
+    </div>
+</form>
+<form class="form-horizontal" ng-show="$ctrl.state === 'FONT'">
+    <div class="row m-b">
+        <div class="col-xs-3 control-label">
+            Category
+        </div>
+        <div class="col-xs-9">
+            <select class="form-control" ng-options="font as font.name for font in $ctrl.fonts" ng-model="$ctrl.fontCategory"></select>
+        </div>
+    </div>
+    <div class="row m-b">
+        <div class="col-xs-12 font-button-list">
+            <button class="btn"
+            ng-repeat="font in $ctrl.fontCategory.fonts"
+            ng-click="$ctrl.changeFont(font)"
+            ng-class="{'btn-link': font.id !== $ctrl.fontValue.id, 'btn-default': font.id === $ctrl.fontValue.id}">
+              <img ng-src="{{font.image}}" />
+            </button>
+        </div>
+    </div>
+    <div class="clearfix">
+        <button ng-click="$ctrl.saveFont()" class="btn btn-primary pull-right">
+            Back
+        </button>
+    </div>
+</form>
+

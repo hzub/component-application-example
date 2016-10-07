@@ -41,8 +41,6 @@ export class ColorControlComponent {
   }
 
   updateColor(color) {
-    console.log('updateColor', {color});
-
     // this is svg
     if (this._isSVG()) {
       color.indexes

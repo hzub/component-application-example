@@ -1,0 +1,21 @@
+<div class="input-group">
+  <input type="text"
+         class="form-control"
+         uib-datepicker-popup="{{ $ctrl.format }}"
+         datepicker-options="$ctrl.fromPickerOptions"
+         is-open="$ctrl.fromPickerOpen"
+         ng-change="$ctrl.onFromPickerChange()"
+         ng-model="$ctrl.fromPickerDate"
+         ng-click="$ctrl.toggleFromPicker()" />
+
+  <div class="input-group-addon">to</div>
+
+  <input type="text"
+         class="form-control"
+         uib-datepicker-popup="{{ $ctrl.format }}"
+         datepicker-options="$ctrl.toPickerOptions"
+         is-open="$ctrl.toPickerOpen"
+         ng-change="$ctrl.onToPickerChange()"
+         ng-model="$ctrl.toPickerDate"
+         ng-click="$ctrl.toggleToPicker()" />
+</div>
