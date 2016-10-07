@@ -19,8 +19,12 @@ export class GlobalSpinnerComponent {
       globalSpinnerService
     });
 
-    this.globalSpinnerService.subscribe(doShow => {
+    this.unsubscribeFn = this.globalSpinnerService.subscribe(doShow => {
       this.isShown = doShow;
     });
+  }
+
+  $onDestroy() {
+    this.unsubscribeFn();
   }
 }
