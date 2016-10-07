@@ -6,6 +6,7 @@ import {
 
 import {
   DRAW_AREA,
+  GLOBAL_SPINNER,
   DRAW_PREVIEW,
   LEFT_DRAW_SIDEBAR,
 
@@ -26,6 +27,7 @@ export const DRAW_FEATURE = angular
     ELEMENTS,
 
     DRAW_AREA,
+    GLOBAL_SPINNER,
     DRAW_PREVIEW,
     LEFT_DRAW_SIDEBAR,
 

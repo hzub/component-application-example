@@ -1,14 +1,17 @@
-.global-loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background-color: white;
-    overflow: hidden;
-    display: none;
-    &.isShown {
-        display: block;
+.global-spinner {
+    &__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background-color: white;
+        overflow: hidden;
+        display: none;
+        z-index: 1000;
+        &.isShown {
+            display: block;
+        }
     }
     &__bar-1 {
         position: absolute;
