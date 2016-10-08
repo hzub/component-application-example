@@ -11,15 +11,25 @@ export class HttpService {
     this.$q = $q;
     this.$state = $state;
     this.ConfigService = ConfigService;
+
+    this.TOKEN_HEADERS = {
+      'X-Designer-Domain-Token': 'e6rz67',
+      'X-Designer-Token': 'cdacb03c-1562-47c7-bf1c-f7110d4914dc'
+    };
+  }
+
+  /**
+   * Returns X-Designer-*?-Token headers object
+   *
+   * @return {Object<string, string>} request headers object
+   */
+  getTokenHeaders() {
+    return _.clone(this.TOKEN_HEADERS);
   }
 
   extendRequest(configuration) {
-
-    Object.assign(configuration, {
-      headers: {
-        'X-Designer-Domain-Token': 'e6rz67',
-        'X-Designer-Token': 'cdacb03c-1562-47c7-bf1c-f7110d4914dc'
-      },
+    return _.assign({}, configuration, {
+      headers: this.getTokenHeaders()
     });
 
     /*if (token) {
@@ -30,8 +40,6 @@ export class HttpService {
         },
       });
     }*/
-
-    return configuration;
   }
 
   transformUrl(url) {
