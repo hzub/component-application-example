@@ -61,6 +61,7 @@ export class LeftDrawSidebarComponent {
 
   routeNewSelection(selection) {
     if (!selection) {
+      this._resetPanelVisibility();
       return;
     }
 

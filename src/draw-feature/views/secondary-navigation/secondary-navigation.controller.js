@@ -1,20 +1,19 @@
 import $view from './secondary-navigation.partial.html';
 
-const $inject = ['$rootScope', 'drawService'];
-
 class SecondaryNavigationController {
 
   static $inject = [
     '$rootScope',
     'DRAW_STATES',
-    'drawService'
+    'drawService',
+    'saveService',
   ];
 
   static $view = $view;
 
-  constructor($rootScope, DRAW_STATES, drawService) {
+  constructor($rootScope, DRAW_STATES, drawService, saveService) {
     Object.assign(this, {
-      $rootScope, DRAW_STATES, drawService,
+      $rootScope, DRAW_STATES, drawService, saveService,
     });
 
     this.state = this.drawService.getState();
@@ -56,6 +55,14 @@ class SecondaryNavigationController {
 
   pan() {
     this.drawService.setState('PAN');
+  }
+
+  save() {
+    this.saveService.save();
+  }
+
+  load() {
+    this.saveService.load();
   }
 }
 

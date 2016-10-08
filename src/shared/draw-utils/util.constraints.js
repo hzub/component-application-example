@@ -1,5 +1,4 @@
 import fabricModule from 'fabric';
-import _ from 'lodash';
 
 const fabric = fabricModule.fabric;
 
@@ -13,7 +12,7 @@ export default class utilConstraints {
     const printableOffsetX = orientation.printable_offset_x;
     const printableOffsetY = orientation.printable_offset_y;
 
-    canvas.setBackgroundColor({ source: orientation.background_url, repeat: 'repeat' }, function() {
+    canvas.setBackgroundColor({ source: orientation.background_url, repeat: 'repeat' }, () => {
       canvas.renderAll();
     });
 
@@ -24,6 +23,12 @@ export default class utilConstraints {
       hasControls: false,
       hoverCursor: 'default',
       opacity: 0,
+    };
+
+    printableAreaLineDefinition.toObject = baseToObject => function toObject() {
+      const object = baseToObject.call(this);
+      object.$removeFromSave = true;
+      return object;
     };
 
     const leftPrintableAreaLine =

@@ -1,7 +1,6 @@
 import fabricModule from 'fabric';
 import _ from 'lodash';
 
-
 import utilZoom from './util.zoom.js';
 import utilConstraints from './util.constraints.js';
 
@@ -347,6 +346,10 @@ class DrawService {
   setCanvas(canvas) {
     this._zoom = 1;
     this._canvas = canvas;
+  }
+
+  getCanvas() {
+    return this._canvas;
   }
 }
 
