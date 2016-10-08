@@ -2,16 +2,16 @@ export class ClipartService {
 
   static $inject = [
     'HttpService',
-    'globalLoader',
+    'globalSpinnerService',
   ];
 
   /**
    * @param {HttpService} HttpService
-   * @param {GlobalLoaderService} globalLoader
+   * @param {globalSpinnerServiceService} globalSpinnerService
    */
-  constructor(HttpService, globalLoader) {
+  constructor(HttpService, globalSpinnerService) {
     this._HttpService = HttpService;
-    this._globalLoader = globalLoader;
+    this._globalSpinnerService = globalSpinnerService;
 
     this._PATH = '/designer/clip-art';
     this._state = {};
@@ -20,7 +20,7 @@ export class ClipartService {
   loadAll() {
     if (this._promise) return this._promise;
 
-    this._globalLoader.show();
+    this._globalSpinnerService.show();
     return this._promise = this._HttpService.get(this._PATH)
       .then(data => this._handleResponse(data))
       .catch(error => this._handleError(error));
@@ -51,14 +51,14 @@ export class ClipartService {
     });
 
     this._setState({groups, categories});
-    this._globalLoader.hide();
+    this._globalSpinnerService.hide();
     this._clearPromise();
   }
 
   _handleError(error) {
     this._setState({});
     this._clearPromise();
-    this._globalLoader.hide();
+    this._globalSpinnerService.hide();
   }
 
   _clearPromise() {
