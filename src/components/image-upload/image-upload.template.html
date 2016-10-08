@@ -1,0 +1,53 @@
+<div class="image-upload">
+  <form name="imageUploadForm" ng-if="$ctrl.state === $ctrl.STATES.IDLE">
+    <!-- <input type="email"
+            name="email"
+            class="image-upload__email-input"
+            placeholder="email"
+            ng-required="true"
+            ng-model="$ctrl.data.email" />-->
+
+    <div class="image-upload__image-drop"
+         ng-if="!$ctrl.data.file"
+         ngf-select
+         ngf-drop
+         ng-model="$ctrl.data.file"
+         name="file"
+         ngf-pattern="'image/*'"
+         ngf-accept="'image/*'"
+         ngf-max-size="20MB"
+         ngf-min-height="100">
+
+      <span class="image-upload__image-drop-text"> Drag or click to select the image. </span>
+    </div>
+
+    <div class="image-upload__image-preview" ng-if="$ctrl.data.file">
+      <div class="image-upload__image-preview__remove" ng-click="$ctrl.removeFile()">
+        <i class="fa fa-close"></i>
+      </div>
+      <img class="image-upload__image-preview__thumb" ngf-thumbnail="$ctrl.data.file">
+    </div>
+    <div class="image-upload__image-info" ng-if="$ctrl.data.file">
+      <span class="image-upload__image-info__label">File name:</span>
+      <span class="image-upload__image-info__value">{{ $ctrl.data.file.name }}</span>
+    </div>
+
+    <div class="image-upload__buttons">
+      <button class="btn btn-primary"
+              type="submit"
+              ng-click="$ctrl.submit()"
+              ng-disabled="!$ctrl.data.file || imageUploadForm.$invalid">
+        Upload the image
+      </button>
+    </div>
+  </form>
+
+  <div class="image-upload__progress-bar" ng-show="$ctrl.state === $ctrl.STATES.UPLOADING">
+    <div class="image-upload__progress-bar__fill" ng-style="$ctrl.progressBarStyle"></div>
+  </div>
+
+  <div class="image-upload__error" ng-show="$ctrl.state === $ctrl.STATES.ERROR">
+    {{ $ctrl.error }}
+  </div>
+
+</div>

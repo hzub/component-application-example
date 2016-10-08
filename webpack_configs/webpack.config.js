@@ -20,7 +20,7 @@ module.exports = {
 
   resolve: {
     extensions: ['', '.js', '.scss', '.less'],
-    modulesDirectories: ['node_modules', 'src'],
+    modulesDirectories: ['node_modules', SRC_DIR_NAME],
     root: ROOT_DIR
   },
 

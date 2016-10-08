@@ -35,11 +35,11 @@ class DrawService {
 
     this.$rootScope.$on('draw:stateChanged', (e, params) => {
       switch (params.state) {
-        case this.DRAW_STATES.ADDSHAPE:
-        case this.DRAW_STATES.SELECTPRODUCT:
-        case this.DRAW_STATES.PAN:
-          this.deselectEntity();
-          break;
+      case this.DRAW_STATES.ADDSHAPE:
+      case this.DRAW_STATES.SELECTPRODUCT:
+      case this.DRAW_STATES.PAN:
+        this.deselectEntity();
+        break;
       }
     });
   }
@@ -95,18 +95,18 @@ class DrawService {
 
   changeCursorForState() {
     switch (this.getState()) {
-      case this.DRAW_STATES.PAN:
-        this._canvas.defaultCursor = 'pointer';
-        break;
-      case this.DRAW_STATES.ZOOM:
-        this._canvas.defaultCursor = 'zoom-in';
-        break;
-      case this.DRAW_STATES.ADDTEXT:
-        this._canvas.defaultCursor = 'crosshair';
-        break;
-      default:
-        this._canvas.defaultCursor = 'default';
-        break;
+    case this.DRAW_STATES.PAN:
+      this._canvas.defaultCursor = 'pointer';
+      break;
+    case this.DRAW_STATES.ZOOM:
+      this._canvas.defaultCursor = 'zoom-in';
+      break;
+    case this.DRAW_STATES.ADDTEXT:
+      this._canvas.defaultCursor = 'crosshair';
+      break;
+    default:
+      this._canvas.defaultCursor = 'default';
+      break;
     }
   }
 
@@ -135,14 +135,21 @@ class DrawService {
     this.onSelectEntity.callbacks.forEach(cb => cb(entity, previousEntity));
   }
 
+  addImageByUrl(url) {
+    fabric.Image.fromURL(url, (oImg) => {
+      this.prepareNewEntity(oImg);
+      this._canvas.add(oImg);
+      this.selectEntity(oImg);
+      this.setState(this.DRAW_STATES.SELECT);
+    });
+  }
+
   addSVGByUrl(url) {
-    // WIP...
-    // TODO (alexnadr2110pro): implement this, be man!
     fabric.loadSVGFromURL(url, (...args) => {
 
       const newClipartObject = new fabric
         .PathGroup(...args)
-        .set({ left: 100, top: 100 });
+        .set({left: 100, top: 100});
 
       this.prepareNewEntity(newClipartObject);
 
@@ -222,18 +229,18 @@ class DrawService {
       return;
     }
     switch (command) {
-      case 'bringToFront':
-        object.bringToFront();
-        break;
-      case 'sendBackwards':
-        object.sendBackwards();
-        break;
-      case 'bringForward':
-        object.bringForward();
-        break;
-      case 'sendToBack':
-        object.sendToBack();
-        break;
+    case 'bringToFront':
+      object.bringToFront();
+      break;
+    case 'sendBackwards':
+      object.sendBackwards();
+      break;
+    case 'bringForward':
+      object.bringForward();
+      break;
+    case 'sendToBack':
+      object.sendToBack();
+      break;
     }
     this.render();
     this.deselectEntity();
@@ -281,7 +288,7 @@ class DrawService {
   prepareNewEntity(entity) {
     entity.id = this.getEntityId();
     entity.lockUniScaling = true;
-    entity.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+    entity.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
   }
 
   addNewText(event) {
@@ -326,7 +333,7 @@ class DrawService {
     }
 
     this.printableAreaLines.forEach(line => {
-      line.set({ opacity: doShow ? 1 : 0 });
+      line.set({opacity: doShow ? 1 : 0});
     });
 
     this.render();

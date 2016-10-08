@@ -25,18 +25,33 @@ export class AddShapeComponent {
     this.state = this.STATES.CLIPART_SELECT;
   }
 
-  hideClipartSelector() {
+  showImageSelector() {
+    this.state = this.STATES.IMAGE_SELECT;
+  }
+
+  hideSelector() {
     this.state = this.STATES.IDLE;
   }
 
   onClipartSelect(clipart) {
-    this.hideClipartSelector();
+    this.hideSelector();
     if (!clipart) return;
 
     this.drawService.addSVGByUrl(clipart.path);
   }
 
   onClipartSelectCancel() {
-    this.hideClipartSelector();
+    this.hideSelector();
+  }
+
+  onImageSelect(clipart) {
+    this.hideSelector();
+    if (!clipart) return;
+
+    this.drawService.addSVGByUrl(clipart.path);
+  }
+
+  onImageSelectCancel() {
+    this.hideSelector();
   }
 }
