@@ -1,4 +1,3 @@
-import GlobalLoaderService from './global-loader/global-loader.service.js';
 import knobDirective from './knob/knob.directive';
 
 /**
@@ -6,6 +5,5 @@ import knobDirective from './knob/knob.directive';
  */
 export const ELEMENTS = angular.module('designerApp.shared.elements', [])
   .directive('knob', knobDirective)
-  .service('globalLoader', GlobalLoaderService)
   .name;
 

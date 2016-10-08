@@ -1,17 +1,17 @@
 import _ from 'lodash';
 import FontFaceObserver from 'fontfaceobserver';
 
-const $inject = ['$q', 'HttpService', 'angularLoad', 'globalLoader'];
+const $inject = ['$q', 'HttpService', 'angularLoad', 'globalSpinnerService'];
 
 const DEFAULT_FONT = 'Archivo Black';
 
 class ProductsService {
-  constructor($q, HttpService, angularLoad, globalLoader) {
+  constructor($q, HttpService, angularLoad, globalSpinnerService) {
     Object.assign(this, {
       $q,
       HttpService,
       angularLoad,
-      globalLoader,
+      globalSpinnerService,
     });
 
     this.fonts = undefined;
@@ -63,13 +63,13 @@ class ProductsService {
 
   loadFont(font) {
     const promises = [];
-    this.globalLoader.show();
+    this.globalSpinnerService.show();
     _.each(font.variants, variant => {
       this.angularLoad.loadCSS(variant.stylesheet);
       const observer = new FontFaceObserver(variant.fontface).load();
       promises.push(observer);
       observer.then(() => {
-        this.globalLoader.hide();
+        this.globalSpinnerService.hide();
       });
     });
     return this.$q.all(promises);

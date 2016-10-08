@@ -7,6 +7,7 @@ export { LEFT_DRAW_SIDEBAR } from './left-draw-sidebar';
 export { PRODUCT_SELECT } from './product-select';
 export { TEXT_EDITOR } from './text-editor';
 export { DATE_RANGE } from './date-rangepicker';
+export { GLOBAL_SPINNER } from './global-spinner';
 export { IMAGE_SELECT } from './image-select';
 export { IMAGE_UPLOAD } from './image-upload';
 
