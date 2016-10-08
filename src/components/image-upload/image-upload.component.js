@@ -6,7 +6,8 @@ export class ImageUploadComponent {
     controller: ImageUploadComponent,
     template: require('./image-upload.template.html'),
     bindings: {
-      onUpload: '&'
+      onUpload: '&',
+      email: '<'
     }
   }
 
@@ -14,7 +15,6 @@ export class ImageUploadComponent {
     '$timeout',
     'ImageUploadService'
   ];
-
 
   /**
    * @param {angular.ITimeoutService} $timeout
@@ -34,10 +34,7 @@ export class ImageUploadComponent {
       width: 0
     };
 
-    this.data = {
-      file: null,
-      email: null
-    };
+    this.file = null;
 
     this._unsub = [];
   }
@@ -54,27 +51,28 @@ export class ImageUploadComponent {
   }
 
   removeFile() {
-    this.data.file = null;
+    this.file = null;
   }
 
   submit() {
     this._setUploading();
-    this._ImageUploadService.upload(this.data);
+    this._ImageUploadService.upload(this.file, this.email);
   }
 
   _handleAction(action) {
     switch (action.type) {
     case this._ImageUploadService.ACTIONS.PROGRESS:
-      if (this.data.file.name === action.file.name) this._setProgress(action.progress);
+      if (this.file.name === action.file.name) this._setProgress(action.progress);
       break;
     case this._ImageUploadService.ACTIONS.UPLOADED:
-      if (this.data.file.name === action.fileName) this._setUploaded(action);
+      if (this.file.name === action.fileName) this._setUploaded(action);
       break;
     case this._ImageUploadService.ACTIONS.FAILED:
       this._setFailed(action);
       break;
     }
   }
+
 
   _setProgress(progress) {
     this.progressBarStyle.width = `${progress}%`;
@@ -90,7 +88,7 @@ export class ImageUploadComponent {
 
     this._setProgress(100);
 
-    this.data.file = null;
+    this.file = null;
     this.state = this.STATES.IDLE;
 
     this.onUpload({uploadedImages: [{fileName, url}]});
@@ -102,7 +100,7 @@ export class ImageUploadComponent {
     this._$timeout(() => {
       this.error = null;
       this.state = this.STATES.IDLE;
-      this.data.file = null;
+      this.file = null;
     }, 3000);
   }
 }

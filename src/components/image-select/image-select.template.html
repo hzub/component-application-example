@@ -1,21 +1,32 @@
 <div class="image-select">
 
   <div class="image-select__top-panel">
-    <button class="btn btn-default" ng-click="$ctrl.onCancel()">
-      Back
-    </button>
+    <button class="btn btn-default" ng-click="$ctrl.onCancel()">Back</button>
   </div>
 
+  <input type="email"
+         name="email"
+         class="image-upload__email-input"
+         placeholder="email"
+         ng-required="true"
+         ng-model="$ctrl.email"
+         ng-change="$ctrl.onEmailChange()"
+         ng-model-options="{ 'debounce': { 'default': 500, 'blur': 0 } }" />
+
   <image-upload class="image-select__upload"
+                email="$ctrl.email"
                 on-upload="$ctrl.onImagesUpload(uploadedImages)"
                 on-cancel="$ctrl.cancel()"></image-upload>
 
   <div class="image-select__list">
-    <div ng-repeat="img in $ctrl.imagesList track by img.id"
-         class="image-select__image-thumbnail"
+
+    <div class="image-select__image-thumbnail"
+         ng-repeat="img in $ctrl.imagesList track by img.id"
          ng-click="$ctrl.onSelect(img)">
+
       <img ng-src="{{ img.url }}" alt="img.name" />
     </div>
+
   </div>
 
 </div>

@@ -28,8 +28,12 @@ export class ImageUploadService extends PubSub {
   }
 
 
-  upload(data) {
-    this._Upload.upload(this._buildParams(data))
+  /**
+   * @param file
+   * @param email
+   */
+  upload(file, email) {
+    this._Upload.upload(this._buildParams(file, email))
       .progress(e => this._onProgress(e))
       .then(r => this._onSuccess(r))
       .catch(r => this._onError(r));
@@ -59,15 +63,22 @@ export class ImageUploadService extends PubSub {
     })
   }
 
-  _buildParams(data) {
+  _buildParams(file, email) {
+    const data = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      file
+    };
+
+    if (email) {
+      _.assign(data, {email});
+    } else {
+      _.assign(data, {created_by: 39})
+    }
+
     return {
       url: this._HttpService.transformUrl(this._UPLOAD_URL),
-      data: {
-        file: data.file,
-        created_by: 39,
-        "Content-Type": 'application/x-www-form-urlencoded',
-      },
-      headers: this._HttpService.getTokenHeaders()
+      headers: this._HttpService.getTokenHeaders(),
+      data
     };
   }
 }

@@ -30,19 +30,15 @@ export class ImageSelectComponent {
 
   $onInit() {
     this._unsubs.push(this._ImagesService.subscribe(e => this._handleAction(e)));
-    this._ImagesService.loadImages();
+    this._loadImages();
   }
 
   $onDestroy() {
     this._unsubs.forEach(f => f());
   }
 
-  _handleAction(action) {
-    switch (action.type) {
-    case this._ImagesService.ACTIONS.UPDATED:
-      this._setImagesList();
-      break;
-    }
+  onEmailChange() {
+    this._loadImages();
   }
 
   onImagesUpload(uploadedImages) {
@@ -53,11 +49,24 @@ export class ImageSelectComponent {
     this._DrawService.addImageByUrl(img.url);
   }
 
+
+  _handleAction(action) {
+    switch (action.type) {
+    case this._ImagesService.ACTIONS.UPDATED:
+      this._setImagesList();
+      break;
+    }
+  }
+
   _setImagesList() {
     this.imagesList = this._ImagesService.getImages();
   }
 
   _addImagesToList(uploadedImages) {
     this.imagesList.unshift(...uploadedImages);
+  }
+
+  _loadImages() {
+    this._ImagesService.loadImages({email: this.email});
   }
 }
