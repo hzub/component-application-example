@@ -26,16 +26,15 @@ export class State extends PubSub {
     REGISTERED_STATES[statePath] = stateInstance;
   }
 
+  ACTIONS = {
+    STATE_CHANGED: 'STATE_CHANGED'
+  };
 
   /**
    * @param {string} statePath in a form `foo.bar.baz'
    */
   constructor(statePath) {
     super();
-
-    this.ACTIONS = {
-      STATE_CHANGED: 'STATE_CHANGED'
-    };
 
     this._statePath = statePath;
 
