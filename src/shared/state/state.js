@@ -32,11 +32,15 @@ export class State extends PubSub {
 
   /**
    * @param {string} statePath in a form `foo.bar.baz'
+   * @param {actionsPrefix} [actionsPrefix] prefix actions with this prefix.
+   *   Otherwise, path-based auto-prefix will be used.
    */
-  constructor(statePath) {
+  constructor(statePath, actionsPrefix) {
     super();
 
     this._statePath = statePath;
+
+    this.ACTIONS = _prefixActions(this.ACTIONS, actionsPrefix || this._statePath.toUpperCase());
 
     State.registerState(this._statePath, this);
     this._initState();
@@ -92,7 +96,9 @@ export class State extends PubSub {
 
 
 //  ------------------------------------
-
+function _prefixActions(actions, prefix) {
+  return _.mapValues(actions, action => `${prefix}_${action}`);
+}
 
 function _createAffectedStatesFilter(statePath) {
   return (state, path) => _.startsWith(path, statePath) || _.startsWith(statePath, path);
