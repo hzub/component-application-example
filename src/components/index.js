@@ -11,3 +11,4 @@ export { SELECT_DESIGN_POPUP } from './select-design-popup';
 export { GLOBAL_SPINNER } from './global-spinner';
 export { IMAGE_SELECT } from './image-select';
 export { IMAGE_UPLOAD } from './image-upload';
+export { PRIMARY_NAV } from './primary-nav';

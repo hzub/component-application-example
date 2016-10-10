@@ -1,13 +1,23 @@
 import $view from './draw-editor.view.html';
 import './draw-editor.styles.less';
 
-const $inject = ['$rootScope', 'drawService'];
-
 class DrawEditorController {
-  constructor($rootScope, drawService) {
+  constructor(
+    $uibModal,
+    $rootScope,
+    drawService,
+    navigationService,
+    userDesignsService,
+    SELECT_DESIGN_POPUP_OPTIONS
+  ) {
+    'ngInject';
     Object.assign(this, {
+      $uibModal,
       $rootScope,
       drawService,
+      navigationService,
+      userDesignsService,
+      SELECT_DESIGN_POPUP_OPTIONS,
     });
 
     this.showPreview = false;
@@ -16,10 +26,18 @@ class DrawEditorController {
       const state = params.state;
       this.showPreview = state === 'PAN' || state === 'ZOOM';
     });
+
+    this.navigationService.setPrimaryButtons([{
+      label: 'Load design',
+      click: () => {
+        this.$uibModal.open(this.SELECT_DESIGN_POPUP_OPTIONS).result.then(designObject => {
+          this.userDesignsService.load(designObject);
+        });
+      }
+    }]);
   }
 }
 
-DrawEditorController.$inject = $inject;
 DrawEditorController.$view = $view;
 
 export default DrawEditorController;

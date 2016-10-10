@@ -3,6 +3,7 @@ import {
   DRAW_UTILS,
   ELEMENTS,
   USER_DESIGNS,
+  NAVIGATION,
 } from 'shared';
 
 import {
@@ -28,6 +29,7 @@ export const DRAW_FEATURE = angular
     DRAW_UTILS,
     ELEMENTS,
     USER_DESIGNS,
+    NAVIGATION,
 
     DRAW_AREA,
     GLOBAL_SPINNER,
