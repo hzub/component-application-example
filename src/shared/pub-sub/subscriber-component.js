@@ -9,14 +9,15 @@ export class SubscriberComponent {
     this._unsub = [];
   }
 
-
   /**
    * @abstract
    * You need to implement it on your own!
    *
    * @param {object} action
    */
-  _handleAction(action) { }
+  _handleAction(action) {
+    throw new Error('Not Implemented');
+  }
 
 
   /**
