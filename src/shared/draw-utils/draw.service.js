@@ -3,20 +3,19 @@ import _ from 'lodash';
 
 import utilZoom from './util.zoom.js';
 import utilConstraints from './util.constraints.js';
-import { PubSub } from '../pub-sub';
+import { StatefulService } from 'shared/state';
 
 const fabric = fabricModule.fabric;
 
-class DrawService extends PubSub {
-  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService, userDesignsService) {
+class DrawService extends StatefulService {
+  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService) {
     'ngInject';
-    super();
+    super('draw');
     Object.assign(this, {
       DRAW_STATES,
       DRAW_ACTIONS,
       $rootScope,
       fontService,
-      userDesignsService,
     });
 
     this._canvas = null;
@@ -117,6 +116,14 @@ class DrawService extends PubSub {
   onSelectEntity(cb) {
     this.onSelectEntity.callbacks.push(cb);
     return () => _.pull(this.onSelectEntity.callbacks, cb);
+  }
+
+  objectModified(entity) {
+    const canvasObjects = this._canvas.getObjects();
+
+    this.publish({
+      type: this.DRAW_ACTIONS.CONTENTSCHANGED,
+    });
   }
 
   selectEntity(entity) {
@@ -239,6 +246,7 @@ class DrawService extends PubSub {
       default:
         break;
     }
+    this.objectModified(object);
     this.render();
     this.deselectEntity();
   }
@@ -314,6 +322,7 @@ class DrawService extends PubSub {
     this.selectEntity(text);
 
     this.setState(this.DRAW_STATES.SELECT);
+    this.objectModified(text);
   }
 
   render() {
@@ -350,10 +359,20 @@ class DrawService extends PubSub {
     this._canvas.clear();
     this._canvas.loadFromJSON(_.cloneDeep(canvasObjectData));
 
-    this._canvas.getObjects().forEach(obj => this.prepareNewEntity(obj));
+    const canvasObjects = this._canvas.getObjects();
+
+    canvasObjects.forEach(obj => this.prepareNewEntity(obj));
+
+    this._state.setState({
+      objects: canvasObjects,
+    });
 
     this.publish({
       type: this.DRAW_ACTIONS.DESIGNRENDERED,
+    });
+
+    this.publish({
+      type: this.DRAW_ACTIONS.CONTENTSCHANGED,
     });
   }
 

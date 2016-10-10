@@ -1,18 +1,20 @@
 import { PubSub }  from '../pub-sub';
 import { DESIGNS_ACTIONS } from './user-designs.actions.constant';
 
-export default class UserDesignsService extends PubSub {
+export class UserDesignsService extends PubSub {
   static NAME = 'userDesignsService';
 
-  constructor($q, HttpService) {
+  constructor($q, HttpService, drawService) {
     'ngInject';
     super();
     Object.assign(this, {
       $q,
       HttpService,
+      drawService,
     });
 
     this._designsCache = undefined;
+
   }
 
   getDesigns() {

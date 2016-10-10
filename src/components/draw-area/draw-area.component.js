@@ -192,8 +192,11 @@ export class DrawAreaComponent {
 
     canvas.on('object:modified', event => {
       this.$rootScope.$apply(() => {
-        if (event.target && event.target.type === 'text') {
-          this.drawTextService.resizeUniform(event.target);
+        if (event.target) {
+          this.drawService.objectModified(event.target);
+          if (event.target.type === 'text') {
+            this.drawTextService.resizeUniform(event.target);
+          }
         }
       });
     });

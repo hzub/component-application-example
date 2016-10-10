@@ -18,16 +18,17 @@ export class PrimaryNavComponent extends SubscriberComponent {
     this._subscribeTo([this.navigationService]);
   }
 
-  _handleAction() {
+  _handleAction(action) {
+    switch (action.type) {
+      case this.navigationService._state.ACTIONS.STATE_CHANGED:
+        this.reloadButtons();
+        break;
+      default:
+        break;
+    }
+  }
+
+  reloadButtons() {
     this._buttons = this.navigationService.getPrimaryButtons();
-    console.info("qweqwe", this._buttons);
-  }
-
-  fireButton(btn) {
-    btn.action.call(btn);
-  }
-
-  $onInit() {
-    console.info("HALO", this.navigationService);
   }
 }

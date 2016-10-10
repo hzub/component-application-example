@@ -31,7 +31,8 @@
         "import/no-extraneous-dependencies": "off",
         "import/no-unresolved": "off",
         "import/prefer-default-export": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "global-require": "off"
     },
     "globals": {
         "angular": true
