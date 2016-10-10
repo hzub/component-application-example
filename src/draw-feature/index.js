@@ -7,6 +7,7 @@ import {
 
 import {
   DRAW_AREA,
+  GLOBAL_SPINNER,
   DRAW_PREVIEW,
   LEFT_DRAW_SIDEBAR,
 
@@ -29,6 +30,7 @@ export const DRAW_FEATURE = angular
     USER_DESIGNS,
 
     DRAW_AREA,
+    GLOBAL_SPINNER,
     DRAW_PREVIEW,
     LEFT_DRAW_SIDEBAR,
 

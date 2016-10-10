@@ -1,12 +1,13 @@
 export { DRAW_AREA } from './draw-area';
-export { SHAPES_PANE } from './shapes-pane'
-export { CLIPART_SELECT } from './clipart-select'
-export { OBJECT_EDITOR_PANE } from './object-editor-pane'
+export { SHAPES_PANE } from './shapes-pane';
+export { CLIPART_SELECT } from './clipart-select';
+export { OBJECT_EDITOR_PANE } from './object-editor-pane';
 export { DRAW_PREVIEW } from './draw-preview';
 export { LEFT_DRAW_SIDEBAR } from './left-draw-sidebar';
 export { PRODUCT_SELECT } from './product-select';
 export { TEXT_EDITOR } from './text-editor';
 export { DATE_RANGE } from './date-rangepicker';
 export { SELECT_DESIGN_POPUP } from './select-design-popup';
-
-
+export { GLOBAL_SPINNER } from './global-spinner';
+export { IMAGE_SELECT } from './image-select';
+export { IMAGE_UPLOAD } from './image-upload';
