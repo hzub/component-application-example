@@ -15,10 +15,11 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const SRC_DIR_NAME = 'src';
 const DIST_DIR_NAME = 'dist';
 
+
 const SRC_DIR = path.resolve(ROOT_DIR, SRC_DIR_NAME);
 const DIST_DIR = path.resolve(ROOT_DIR, DIST_DIR_NAME);
 
-const MAIN_ENTRY = path.join(SRC_DIR, 'main.js')
+const MAIN_ENTRY = path.join(SRC_DIR, 'main.js');
 
 
 const config = module.exports = {}

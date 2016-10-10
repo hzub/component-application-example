@@ -3,3 +3,4 @@
 npm_debug.log
 /src/config.json
 /report
+/coverage
