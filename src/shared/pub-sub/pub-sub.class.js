@@ -12,7 +12,7 @@ export class PubSub {
   }
 
   publish(message) {
-    this[_listeners].forEach(listener => listener(message, this));
+    this[_listeners].forEach(listener => listener(message));
   }
 
 
