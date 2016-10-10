@@ -19,6 +19,21 @@ describe('State', () => {
     stateFooQuix = new State('foo.quix');
   });
 
+  describe('instance.ACTIONS.STATE_CHANGED', () => {
+
+    it('should be auto-prefixed using uppercased statePath by default', () => {
+      expect(stateFoo.ACTIONS.STATE_CHANGED).toEqual('FOO_STATE_CHANGED');
+      expect(stateFooBarBaz.ACTIONS.STATE_CHANGED).toEqual('FOO.BAR.BAZ_STATE_CHANGED');
+    });
+
+    it('should be prefixed with custom prefix, provided to the constructor as the 2nd arg', () => {
+      const CUSTOM_PREFIX = 'CuSt0m=';
+      const customPrefixState = new State('custom.prefix.state', CUSTOM_PREFIX);
+
+      expect(customPrefixState.ACTIONS.STATE_CHANGED).toEqual(`${CUSTOM_PREFIX}_STATE_CHANGED`);
+    });
+
+  });
 
   describe('getState() / setState()', () => {
     it(`should get / set the state accordingly to state's path`, () => {
@@ -37,11 +52,10 @@ describe('State', () => {
       expect(stateFooBarBaz.getState()).toEqual(fooBarNewState.baz)
     });
 
-    it('should publish STATE_CHANGED action if the state was changed', () => {
+    it('should publish StateInstance.ACTIONS.STATE_CHANGED action if the state was changed', () => {
       const newFooBarState = {
         baz: 'new foo.bar.baz value'
       };
-
 
       const fooSubscriber = jasmine.createSpy('fooSubscriber');
       const fooBarSubscriber = jasmine.createSpy('fooBarSubscriber');
@@ -58,8 +72,8 @@ describe('State', () => {
 
       stateFooBar.setState(newFooBarState);
 
-      expect(fooSubscriber).toHaveBeenCalled();
-      expect(fooBarSubscriber).toHaveBeenCalled();
+      expect(fooSubscriber).toHaveBeenCalledWith({type: stateFoo.ACTIONS.STATE_CHANGED});
+      expect(fooBarSubscriber).toHaveBeenCalledWith({type: stateFooBar.ACTIONS.STATE_CHANGED});
 
       // foo.quix is not changed
       expect(fooQuixSubscriber).not.toHaveBeenCalled();
@@ -74,9 +88,7 @@ describe('State', () => {
 
       stateFoo.setState(newFooState);
 
-      expect(fooSubscriber).toHaveBeenCalledWith({
-        type: 'STATE_CHANGED'
-      });
+      expect(fooSubscriber).toHaveBeenCalled();
       expect(fooBarSubscriber).toHaveBeenCalled();
       expect(fooBarBazSubscriber).toHaveBeenCalled();
       expect(fooQuixSubscriber).toHaveBeenCalled();

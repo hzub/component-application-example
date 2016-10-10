@@ -9,11 +9,11 @@ export class StatefulService extends PubSub {
   /** @type {State} */
   _state;
 
-  constructor(statePath, persistable = false, customActionPrefix = null) {
+  constructor(statePath, persistable = false, actionsPrefix = null) {
     super();
     this._state = persistable
-      ? new PersistableState(statePath, customActionPrefix)
-      : new State(statePath, customActionPrefix);
+      ? new PersistableState(statePath, actionsPrefix)
+      : new State(statePath, actionsPrefix);
 
     this._state.subscribe(a => this.publish(a));
   }
