@@ -1,30 +1,29 @@
-import $view from './orientation-select.view.html';
+import './orientation-select.less';
 
-const $inject = ['productsService'];
+export class OrientationSelectComponent {
+  static NAME = 'orientationSelect';
+  static OPTIONS = {
+    controller: OrientationSelectComponent,
+    template: require('./orientation-select.template.html'),
+    bindings: {}
+  }
 
-class OrientationSelectController {
+  static $inject = [
+    'productsService'
+  ];
 
   constructor(productsService) {
     Object.assign(this, {
       productsService,
     });
-
-    this.init();
   }
-
   selectOrientation(orientation) {
     this.productsService.selectOrientation(orientation);
     this.selectedOrientation = orientation.name;
   }
 
-  init() {
+  $onInit() {
     this.orientations = this.productsService.getAvailableOrientations();
     this.selectedOrientation = this.productsService.getSelectedOrientation().name;
   }
-
 }
-
-OrientationSelectController.$inject = $inject;
-OrientationSelectController.$view = $view;
-
-export default OrientationSelectController;

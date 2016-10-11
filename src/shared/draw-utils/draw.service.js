@@ -196,6 +196,10 @@ class DrawService extends StatefulService {
     }
   }
 
+  getZoom() {
+    return this._zoom;
+  }
+
   zoomIn() {
     this._zoom++;
     this.redrawZoom();
