@@ -1,0 +1,7 @@
+{
+  "backendPrefix": "http://api.new-api.helloprinting.com/v1",
+  "env": "prod",
+  "localStorageAuthKey": "designerApp_token",
+  "defaultState": "default",
+  "backendDateFormat": "YYYY-MM-DD\"T\"hh:mm:ss"
+}

@@ -1,0 +1,133 @@
+.global-spinner {
+    &__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background-color: white;
+        overflow: hidden;
+        display: none;
+        z-index: 1000;
+        &.isShown {
+            display: block;
+        }
+    }
+    &__bar-1 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #388dc7;
+        animation: designer-horizontal-preloader-animation-scale-1 2s infinite, designer-horizontal-preloader-animation-1 2s infinite;
+    }
+    &__bar-2 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #388dc7;
+        animation: designer-horizontal-preloader-animation-scale-2 2s infinite, designer-horizontal-preloader-animation-2 2s infinite;
+    }
+}
+
+
+/*
+  Using animations from md-progress-linear @ Angular Material v1.1.0
+  Copyright (c) 2014-2016 Google, Inc. http://angularjs.org
+
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation
+  files (the "Software"), to deal in the Software without
+  restriction, including without limitation the rights to use,
+  copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom
+  the Software is furnished to do so, subject to the following
+  conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+@keyframes designer-horizontal-preloader-animation-scale-1 {
+    0% {
+        transform: scaleX(0.1);
+        animation-timing-function: linear;
+    }
+    36.6% {
+        transform: scaleX(0.1);
+        animation-timing-function: cubic-bezier(0.334731432, 0.124819821, 0.785843996, 1);
+    }
+    69.15% {
+        transform: scaleX(0.83);
+        animation-timing-function: cubic-bezier(0.225732004, 0, 0.233648906, 1.3709798);
+    }
+    100% {
+        transform: scaleX(0.1);
+    }
+}
+
+@keyframes designer-horizontal-preloader-animation-1 {
+    0% {
+        left: -378.6 * 100% / 360;
+        animation-timing-function: linear;
+    }
+    20% {
+        left: -378.6 * 100% / 360;
+        animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495818703);
+    }
+    69.15% {
+        left: 77.4 * 100% / 360;
+        animation-timing-function: cubic-bezier(0.302435, 0.38135197, 0.55, 0.956352125);
+    }
+    100% {
+        left: 343.6 * 100% / 360;
+    }
+}
+
+@keyframes designer-horizontal-preloader-animation-scale-2 {
+    0% {
+        transform: scaleX(0.1);
+        animation-timing-function: cubic-bezier(0.205028172, 0.057050836, 0.57660995, 0.453970841);
+    }
+    19.15% {
+        transform: scaleX(0.57);
+        animation-timing-function: cubic-bezier(0.152312994, 0.196431957, 0.648373778, 1.00431535);
+    }
+    44.15% {
+        transform: scaleX(0.91);
+        animation-timing-function: cubic-bezier(0.25775882, -0.003163357, 0.211761916, 1.38178961);
+    }
+    100% {
+        transform: scaleX(0.1);
+    }
+}
+
+@keyframes designer-horizontal-preloader-animation-2 {
+    0% {
+        left: -197.6 * 100% / 360;
+        animation-timing-function: cubic-bezier(0.15, 0, 0.5150584, 0.409684966);
+    }
+    25% {
+        left: -62.1 * 100% / 360;
+        animation-timing-function: cubic-bezier(0.3103299, 0.284057684, 0.8, 0.733718979);
+    }
+    48.35% {
+        left: 106.2 * 100% / 360;
+        animation-timing-function: cubic-bezier(0.4, 0.627034903, 0.6, 0.902025796);
+    }
+    100% {
+        left: 422.6 * 100% / 360;
+    }
+}

@@ -1,0 +1,20 @@
+<div class="secondary-nav__buttons">
+    <button class="btn " ng-click="vmNavigation.selectProduct()" ng-class="vmNavigation.getButtonStyle('SELECTPRODUCT', 'btn-primary', 'btn-link')">
+        <i class="fa fa-shopping-cart"></i> Select product
+    </button>
+    <button class="btn " ng-click="vmNavigation.select()" ng-class="vmNavigation.getButtonStyle('SELECT', 'btn-primary', 'btn-link')">
+        <i class="fa fa-hand-pointer-o"></i> Select object
+    </button>
+    <button class="btn " ng-click="vmNavigation.addText()" ng-class="vmNavigation.getButtonStyle('ADDTEXT', 'btn-primary', 'btn-link')">
+        <i class="fa fa-font"></i> Add text
+    </button>
+    <button class="btn" ng-click="vmNavigation.addShape()" ng-class="vmNavigation.getButtonStyle('ADDSHAPE', 'btn-primary', 'btn-link')">
+        <i class="fa fa-asterisk"></i> Add shape
+    </button>
+    <button ng-click="vmNavigation.zoom()" class="btn btn-link" ng-class="vmNavigation.getButtonStyle('ZOOM', 'btn-primary', 'btn-link')">
+        <i class="fa fa-search-plus"></i> Zoom
+    </button>
+    <button ng-click="vmNavigation.pan()" class="btn" ng-class="vmNavigation.getButtonStyle('PAN', 'btn-primary', 'btn-link')">
+        <i class="fa fa-hand-paper-o"></i> Pan
+    </button>
+</div>
