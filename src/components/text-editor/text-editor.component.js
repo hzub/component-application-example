@@ -17,17 +17,17 @@ export class TextEditorComponent extends SubscriberComponent {
   }
 
   static $inject = [
-    '$rootScope',
+    'DRAW_ACTIONS',
     '$element',
     'fontService',
     'drawService',
     'drawTextService',
   ];
 
-  constructor($rootScope, $element, fontService, drawService, drawTextService) {
+  constructor(DRAW_ACTIONS, $element, fontService, drawService, drawTextService) {
     super();
     Object.assign(this, {
-      $rootScope,
+      DRAW_ACTIONS,
       $element,
       fontService,
       drawService,
@@ -44,19 +44,21 @@ export class TextEditorComponent extends SubscriberComponent {
       this.fonts = fonts;
     });
 
-    this.$rootScope.$on('draw:entityUpdated', (e, params) => {
-      if (this.selectedEntity && params.entity.id === this.selectedEntity.id) {
-        this.selectedEntity = params.entity;
-        this.restoreModel();
-      }
-    });
-
     this._subscribeTo([this.drawService]);
+  }
 
+  _handleEntityUpdated(action) {
+    if (this.selectedEntity && action.entity.id === this.selectedEntity.id) {
+      this.selectedEntity = action.entity;
+      this.restoreModel();
+    }
   }
 
   _handleAction(action) {
     switch (action.type) {
+      case this.DRAW_ACTIONS.ENTITYUPDATED:
+        this._handleEntityUpdated(action);
+        break;
       case this.drawService._state.ACTIONS.STATE_CHANGED:
         this.entitySelected();
         break;

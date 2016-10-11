@@ -22,8 +22,6 @@ import {
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive';
 import { StackSelectorService } from './directives/stack-selector/stack-selector.service';
 import { RoutingConfiguration } from './draw.routes';
-import { OrientationSelectComponent } from './views/orientation-select/orientation-select.component';
-
 
 export const DRAW_FEATURE = angular
   .module('draw-feature', [

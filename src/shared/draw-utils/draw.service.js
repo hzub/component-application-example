@@ -10,15 +10,17 @@ const fabric = fabricModule.fabric;
 
 class DrawService extends StatefulService {
   static $inject = [
+    'APP_MODES',
     'DRAW_ACTIONS',
     '$rootScope',
     'fontService',
     'AppModeService',
   ];
 
-  constructor(DRAW_ACTIONS, $rootScope, fontService, AppModeService) {
+  constructor(APP_MODES, DRAW_ACTIONS, $rootScope, fontService, AppModeService) {
     super('draw');
     Object.assign(this, {
+      APP_MODES,
       DRAW_ACTIONS,
       $rootScope,
       fontService,
@@ -32,20 +34,30 @@ class DrawService extends StatefulService {
     this.lockedObjects = [];
     this.printableAreaLines = [];
 
-    AppModeService.subscribe(cos => {
-      //TODO!
-      console.info("DRAWSERWIS ZMIANA", cos);
-    })
+    AppModeService.subscribe(this._handleModeChange.bind(this));
+  }
 
-    /*this.$rootScope.$on('draw:stateChanged', (e, params) => {
-      switch (params.state) {
-      case this.DRAW_MODES.ADDSHAPE:
-      case this.DRAW_MODES.SELECTPRODUCT:
-      case this.DRAW_MODES.PAN:
+  _handleModeChange() {
+    const appMode = this.AppModeService.getMode();
+    switch (appMode) {
+      case this.APP_MODES.ADDSHAPE:
+      case this.APP_MODES.SELECTPRODUCT:
         this.deselectEntity();
         break;
-      }
-    });*/
+      case this.APP_MODES.PAN:
+        this.deselectEntity();
+        this._canvas.defaultCursor = 'pointer';
+        break;
+      case this.APP_MODES.ZOOM:
+        this._canvas.defaultCursor = 'zoom-in';
+        break;
+      case this.APP_MODES.ADDTEXT:
+        this._canvas.defaultCursor = 'crosshair';
+        break;
+      default:
+        this._canvas.defaultCursor = 'default';
+        break;
+    }
   }
 
   lockEntity(entity) {
@@ -78,41 +90,10 @@ class DrawService extends StatefulService {
     }
   }
 
-  /*getState() {
-    return this.state;
-  }*/
-
   relativePan(x, y) {
     utilZoom.relativePan(this._canvas, this._zoom, x, y);
 
-    //this.$rootScope.$broadcast('draw:viewportChanged');
     this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
-  }
-
-  setState(state) {
-    /*this.state = state;
-    this.$rootScope.$broadcast('draw:stateChanged', {
-      state,
-    });*/
-
-    //this.changeCursorForState();
-  }
-
-  changeCursorForState() {
-    /*switch (this.getState()) {
-    case this.DRAW_MODES.PAN:
-      this._canvas.defaultCursor = 'pointer';
-      break;
-    case this.DRAW_MODES.ZOOM:
-      this._canvas.defaultCursor = 'zoom-in';
-      break;
-    case this.DRAW_MODES.ADDTEXT:
-      this._canvas.defaultCursor = 'crosshair';
-      break;
-    default:
-      this._canvas.defaultCursor = 'default';
-      break;
-    }*/
   }
 
   getEntityId() {
@@ -120,13 +101,11 @@ class DrawService extends StatefulService {
   }
 
   getSelectedEntity() {
-    const state = this._state.getState();
-    return (state && state.selectedEntity) || null;
+    return this._selectedEntity || null;
   }
 
   getPreviousSelectedEntity() {
-    const state = this._state.getState();
-    return (state && state.previousSelectedEntity) || null;
+    return this._previousSelectedEntity || null;
   }
 
   selectEntity(entity) {
@@ -136,10 +115,12 @@ class DrawService extends StatefulService {
       return;
     }
 
-    //this.onSelectEntity.callbacks.forEach(cb => cb(entity, previousEntity));
+    this._selectedEntity = entity;
+    this._previousSelectedEntity = previousEntity;
+
     this._state.setState({
-      selectedEntity: entity,
-      previousSelectedEntity: previousEntity,
+      selectedEntityId: (entity && entity.id) || undefined,
+      previousSelectedEntityId: (previousEntity && previousEntity.id) || undefined,
     });
   }
 
@@ -148,7 +129,7 @@ class DrawService extends StatefulService {
       this.prepareNewEntity(oImg);
       this._canvas.add(oImg);
       this.selectEntity(oImg);
-      //this.setState(this.DRAW_MODES.SELECT);
+      this.AppModeService.setSelectMode();
     });
   }
 
@@ -165,7 +146,7 @@ class DrawService extends StatefulService {
 
       this._canvas.add(newClipartObject);
       this.selectEntity(newClipartObject);
-      //this.setState(this.DRAW_MODES.SELECT);
+      this.AppModeService.setSelectMode();
     });
   }
 
@@ -203,7 +184,7 @@ class DrawService extends StatefulService {
   zoomIn() {
     this._zoom++;
     this.redrawZoom();
-    //this.$rootScope.$broadcast('draw:viewportChanged');
+    this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
   }
 
   zoomOut() {
@@ -214,7 +195,7 @@ class DrawService extends StatefulService {
     }
 
     this.redrawZoom();
-    //this.$rootScope.$broadcast('draw:viewportChanged');
+    this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
   }
 
   relativeZoomIn(origin) {
@@ -276,9 +257,10 @@ class DrawService extends StatefulService {
   }
 
   notifyEntityUpdate(entity) {
-    /*this.$rootScope.$broadcast('draw:entityUpdated', {
-      entity,
-    });*/
+    this.publish({
+      type: this.DRAW_ACTIONS.ENTITYUPDATED,
+      entity: entity,
+    });
   }
 
   getViewportTransformMatrix() {

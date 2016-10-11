@@ -51,8 +51,9 @@ export class DrawAreaComponent {
       this.orientationLibrary = [];
       this.init();
     });
+  }
 
-    this.bindWindowEvents();
+  $onInit() {
     this.init();
   }
 
@@ -83,6 +84,8 @@ export class DrawAreaComponent {
 
       this.loadOrientation(orientation);
     });
+
+    this.AppModeService.setSelectMode();
   }
 
   loadOrientation(orientationToLoad) {

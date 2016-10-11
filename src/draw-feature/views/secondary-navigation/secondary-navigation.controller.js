@@ -18,6 +18,8 @@ class SecondaryNavigationController {
     });
 
     AppModeService.subscribe(this._handleModeChange.bind(this));
+
+    this.mode = this.AppModeService.getMode();
   }
 
   _handleModeChange() {
