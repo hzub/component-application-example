@@ -1,47 +1,51 @@
 import fabricModule from 'fabric';
 import _ from 'lodash';
 
+import { StatefulService } from 'shared/state';
 
 import utilZoom from './util.zoom.js';
 import utilConstraints from './util.constraints.js';
 
 const fabric = fabricModule.fabric;
 
-class DrawService {
+class DrawService extends StatefulService {
   static $inject = [
-    'DRAW_STATES',
     'DRAW_ACTIONS',
     '$rootScope',
-    'fontService'
+    'fontService',
+    'AppModeService',
   ];
 
-  constructor(DRAW_STATES, DRAW_ACTIONS, $rootScope, fontService) {
+  constructor(DRAW_ACTIONS, $rootScope, fontService, AppModeService) {
+    super('draw');
     Object.assign(this, {
-      DRAW_STATES,
       DRAW_ACTIONS,
       $rootScope,
       fontService,
+      AppModeService,
     });
 
     this._canvas = null;
-    this.state = DRAW_STATES.SELECT;
 
-    this._selectedEntity = undefined;
     this._lastDeletedEntity = undefined;
-    this.onSelectEntity.callbacks = [];
     this.idGenerator = 0;
     this.lockedObjects = [];
     this.printableAreaLines = [];
 
-    this.$rootScope.$on('draw:stateChanged', (e, params) => {
+    AppModeService.subscribe(cos => {
+      //TODO!
+      console.info("DRAWSERWIS ZMIANA", cos);
+    })
+
+    /*this.$rootScope.$on('draw:stateChanged', (e, params) => {
       switch (params.state) {
-      case this.DRAW_STATES.ADDSHAPE:
-      case this.DRAW_STATES.SELECTPRODUCT:
-      case this.DRAW_STATES.PAN:
+      case this.DRAW_MODES.ADDSHAPE:
+      case this.DRAW_MODES.SELECTPRODUCT:
+      case this.DRAW_MODES.PAN:
         this.deselectEntity();
         break;
       }
-    });
+    });*/
   }
 
   lockEntity(entity) {
@@ -74,40 +78,41 @@ class DrawService {
     }
   }
 
-  getState() {
+  /*getState() {
     return this.state;
-  }
+  }*/
 
   relativePan(x, y) {
     utilZoom.relativePan(this._canvas, this._zoom, x, y);
 
-    this.$rootScope.$broadcast('draw:viewportChanged');
+    //this.$rootScope.$broadcast('draw:viewportChanged');
+    this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
   }
 
   setState(state) {
-    this.state = state;
+    /*this.state = state;
     this.$rootScope.$broadcast('draw:stateChanged', {
       state,
-    });
+    });*/
 
-    this.changeCursorForState();
+    //this.changeCursorForState();
   }
 
   changeCursorForState() {
-    switch (this.getState()) {
-    case this.DRAW_STATES.PAN:
+    /*switch (this.getState()) {
+    case this.DRAW_MODES.PAN:
       this._canvas.defaultCursor = 'pointer';
       break;
-    case this.DRAW_STATES.ZOOM:
+    case this.DRAW_MODES.ZOOM:
       this._canvas.defaultCursor = 'zoom-in';
       break;
-    case this.DRAW_STATES.ADDTEXT:
+    case this.DRAW_MODES.ADDTEXT:
       this._canvas.defaultCursor = 'crosshair';
       break;
     default:
       this._canvas.defaultCursor = 'default';
       break;
-    }
+    }*/
   }
 
   getEntityId() {
@@ -115,24 +120,27 @@ class DrawService {
   }
 
   getSelectedEntity() {
-    return this._selectedEntity;
+    const state = this._state.getState();
+    return (state && state.selectedEntity) || null;
   }
 
-  onSelectEntity(cb) {
-    this.onSelectEntity.callbacks.push(cb);
-    return () => _.pull(this.onSelectEntity.callbacks, cb);
+  getPreviousSelectedEntity() {
+    const state = this._state.getState();
+    return (state && state.previousSelectedEntity) || null;
   }
 
   selectEntity(entity) {
-    const previousEntity = this._selectedEntity;
-
-    this._selectedEntity = entity;
+    const previousEntity = this.getPreviousSelectedEntity();
 
     if (this._lastDeletedEntity === entity) {
       return;
     }
 
-    this.onSelectEntity.callbacks.forEach(cb => cb(entity, previousEntity));
+    //this.onSelectEntity.callbacks.forEach(cb => cb(entity, previousEntity));
+    this._state.setState({
+      selectedEntity: entity,
+      previousSelectedEntity: previousEntity,
+    });
   }
 
   addImageByUrl(url) {
@@ -140,7 +148,7 @@ class DrawService {
       this.prepareNewEntity(oImg);
       this._canvas.add(oImg);
       this.selectEntity(oImg);
-      this.setState(this.DRAW_STATES.SELECT);
+      //this.setState(this.DRAW_MODES.SELECT);
     });
   }
 
@@ -149,7 +157,7 @@ class DrawService {
 
       const newClipartObject = new fabric
         .PathGroup(...args)
-        .set({left: 100, top: 100});
+        .set({ left: 100, top: 100 });
 
       this.prepareNewEntity(newClipartObject);
 
@@ -157,7 +165,7 @@ class DrawService {
 
       this._canvas.add(newClipartObject);
       this.selectEntity(newClipartObject);
-      this.setState(this.DRAW_STATES.SELECT);
+      //this.setState(this.DRAW_MODES.SELECT);
     });
   }
 
@@ -191,7 +199,7 @@ class DrawService {
   zoomIn() {
     this._zoom++;
     this.redrawZoom();
-    this.$rootScope.$broadcast('draw:viewportChanged');
+    //this.$rootScope.$broadcast('draw:viewportChanged');
   }
 
   zoomOut() {
@@ -202,7 +210,7 @@ class DrawService {
     }
 
     this.redrawZoom();
-    this.$rootScope.$broadcast('draw:viewportChanged');
+    //this.$rootScope.$broadcast('draw:viewportChanged');
   }
 
   relativeZoomIn(origin) {
@@ -229,18 +237,18 @@ class DrawService {
       return;
     }
     switch (command) {
-    case 'bringToFront':
-      object.bringToFront();
-      break;
-    case 'sendBackwards':
-      object.sendBackwards();
-      break;
-    case 'bringForward':
-      object.bringForward();
-      break;
-    case 'sendToBack':
-      object.sendToBack();
-      break;
+      case 'bringToFront':
+        object.bringToFront();
+        break;
+      case 'sendBackwards':
+        object.sendBackwards();
+        break;
+      case 'bringForward':
+        object.bringForward();
+        break;
+      case 'sendToBack':
+        object.sendToBack();
+        break;
     }
     this.render();
     this.deselectEntity();
@@ -264,9 +272,9 @@ class DrawService {
   }
 
   notifyEntityUpdate(entity) {
-    this.$rootScope.$broadcast('draw:entityUpdated', {
+    /*this.$rootScope.$broadcast('draw:entityUpdated', {
       entity,
-    });
+    });*/
   }
 
   getViewportTransformMatrix() {
@@ -288,7 +296,7 @@ class DrawService {
   prepareNewEntity(entity) {
     entity.id = this.getEntityId();
     entity.lockUniScaling = true;
-    entity.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
+    entity.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
   }
 
   addNewText(event) {
@@ -316,7 +324,7 @@ class DrawService {
     this._canvas.setActiveObject(text);
     this.selectEntity(text);
 
-    this.setState(this.DRAW_STATES.SELECT);
+    this.AppModeService.setSelectMode();
   }
 
   render() {
@@ -333,7 +341,7 @@ class DrawService {
     }
 
     this.printableAreaLines.forEach(line => {
-      line.set({opacity: doShow ? 1 : 0});
+      line.set({ opacity: doShow ? 1 : 0 });
     });
 
     this.render();

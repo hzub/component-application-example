@@ -1,7 +1,10 @@
 import _ from 'lodash';
+
+import { SubscriberComponent } from 'shared/pub-sub';
+
 import './object-editor-pane.less';
 
-export class ObjectEditorPaneComponent {
+export class ObjectEditorPaneComponent extends SubscriberComponent {
   static NAME = 'objectEditorPane';
   static OPTIONS = {
     controller: ObjectEditorPaneComponent,
@@ -22,6 +25,7 @@ export class ObjectEditorPaneComponent {
               fontService,
               drawService,
               drawTextService) {
+    super();
 
     _.assign(this, {
       $rootScope,
@@ -35,8 +39,13 @@ export class ObjectEditorPaneComponent {
     this._unsubs = [];
   }
 
+  _handleAction() {
+    this._updateSelectedEntity();
+  }
+
   $onInit() {
-    this._unsubs.push(this.drawService.onSelectEntity(() => this._updateSelectedEntity()));
+    //this._unsubs.push(this.drawService.onSelectEntity(() => this._updateSelectedEntity()));
+    this._subscribeTo([this.drawService]);
     this._updateSelectedEntity();
   }
 
