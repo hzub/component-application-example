@@ -1,7 +1,0 @@
-{
-  "backendPrefix": "http://foobar",
-  "env": "test",
-  "localStorageAuthKey": "designerApp_token",
-  "defaultState": "default",
-  "backendDateFormat": "YYYY-MM-DD\"T\"hh:mm:ss"
-}
