@@ -1,14 +1,16 @@
+import _ from 'lodash';
 import { StatefulService } from 'shared/state';
 
 export class AutosaveService extends StatefulService {
   static NAME = 'autosaveService';
 
-  constructor(drawService, DRAW_ACTIONS) {
+  constructor(drawService, saveService, DRAW_ACTIONS) {
     'ngInject';
     super('autosave');
     Object.assign(this, {
       drawService,
-      DRAW_ACTIONS
+      saveService,
+      DRAW_ACTIONS,
     });
     this.drawService.subscribe(this._handleActions.bind(this));
     this._state.setState({
@@ -16,6 +18,9 @@ export class AutosaveService extends StatefulService {
     });
 
     this._lastSavedState = '';
+    this._throttledAutosave = _.throttle(this._doAutosave,
+      1000, // TODO: de-mock autosave interval
+    );
   }
 
   start() {
@@ -36,14 +41,14 @@ export class AutosaveService extends StatefulService {
     });
   }
 
-  doAutosave() {
-    angular.noop(); // TODO: handle autosave
+  _doAutosave() {
+    this.saveService.saveCanvas();
   }
 
   _handleActions(action) {
     switch (action.type) {
       case this.DRAW_ACTIONS.CONTENTSCHANGED:
-        this.doAutosave();
+        this._throttledAutosave();
         break;
       default:
     }

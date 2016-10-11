@@ -36,8 +36,13 @@ class DrawTextService {
   }
 
   restoreText(object) {
-    const font = this.fontService.findFontByFaceName(object.fontFamily);
-    this.updateFont(object, font);
+    this.fontService.findFontByFaceName(object.fontFamily).then(font => {
+      if (font) {
+        this.updateFont(object, font)
+      } else {
+        this.updateFont(object, this.fontService.getDefaultFont());
+      }
+    });
   }
 
   updateText(entity, newText) {

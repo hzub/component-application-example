@@ -8,6 +8,7 @@ class DrawEditorController {
     drawService,
     navigationService,
     userDesignsService,
+    saveService,
     SELECT_DESIGN_POPUP_OPTIONS
   ) {
     'ngInject';
@@ -17,6 +18,7 @@ class DrawEditorController {
       drawService,
       navigationService,
       userDesignsService,
+      saveService,
       SELECT_DESIGN_POPUP_OPTIONS,
     });
 
@@ -27,14 +29,16 @@ class DrawEditorController {
       this.showPreview = state === 'PAN' || state === 'ZOOM';
     });
 
-    this.navigationService.setPrimaryButtons([{
-      label: 'Load design',
-      click: () => {
-        this.$uibModal.open(this.SELECT_DESIGN_POPUP_OPTIONS).result.then(designObject => {
-          this.userDesignsService.load(designObject);
-        });
-      }
-    }]);
+    this.navigationService.setPrimaryButtons(
+      [{
+        label: 'Load design',
+        click: () => {
+          this.$uibModal.open(this.SELECT_DESIGN_POPUP_OPTIONS).result.then(designObject => {
+            this.userDesignsService.load(designObject);
+          });
+        }
+      }]
+    );
   }
 }
 

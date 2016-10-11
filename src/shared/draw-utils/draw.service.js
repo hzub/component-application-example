@@ -363,10 +363,6 @@ class DrawService extends StatefulService {
 
     canvasObjects.forEach(obj => this.prepareNewEntity(obj));
 
-    this._state.setState({
-      objects: canvasObjects,
-    });
-
     this.publish({
       type: this.DRAW_ACTIONS.DESIGNRENDERED,
     });
@@ -378,6 +374,10 @@ class DrawService extends StatefulService {
 
   getObjects() {
     return this._canvas.getObjects();
+  }
+
+  serializeCanvas() {
+    return this._canvas.toJSON();
   }
 }
 

@@ -17,7 +17,8 @@ export class DrawAreaComponent {
     drawTextService,
     productsService,
     stackSelectorService,
-    userDesignsService) {
+    userDesignsService,
+    saveService) {
     'ngInject';
     Object.assign(this, {
       $rootScope,
@@ -29,6 +30,7 @@ export class DrawAreaComponent {
       productsService,
       stackSelectorService,
       userDesignsService,
+      saveService,
     });
 
     extendFabric(this);
@@ -44,10 +46,23 @@ export class DrawAreaComponent {
       this.init();
     });
 
+    // Subscribe to newly loaded designs
     this.userDesignsService.subscribe(this.actionBroker.bind(this));
 
+    // Initial init of editor
     this.bindWindowEvents();
     this.init();
+
+    // Try to restore saved canvas
+    const canvasObject = this.saveService.restoreCanvas();
+    if (canvasObject) {
+      this.drawService.loadCanvasFromObject(canvasObject);
+
+      const orientations = this.productsService.getAvailableOrientations();
+
+      // TODO: do it properly after load/save functionalities are clarified
+      this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
+    }
   }
 
   actionBroker(action) {
