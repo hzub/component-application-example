@@ -1,0 +1,15 @@
+<div class="orientation-select">
+  <div class="orientation-select__title">
+    <h2>Select orientation</h2>
+  </div>
+
+  <div class="orientation-select__list">
+    <a ng-repeat-start="orientation in $ctrl.orientations"
+       ng-click="$ctrl.selectOrientation(orientation)"
+       ng-class="{isSelected: $ctrl.selectedOrientation === orientation.name}">
+      <img ng-src="{{orientation.background_url}}" />
+      <div class="orientation-list__label">{{orientation.name}} ({{orientation.width}}x{{orientation.height}})</div>
+    </a>
+    <div class="orientation-select__list-line" ng-repeat-end ng-hide="$last"></div>
+  </div>
+</div>
