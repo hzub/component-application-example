@@ -14,7 +14,9 @@ import {
   OBJECT_EDITOR_PANE,
   PRODUCT_SELECT,
   TEXT_EDITOR,
-  ORIENTATION_SELECT
+
+  ORIENTATION_SELECT,
+  ZOOM_CONTROL
 } from 'components';
 
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive';
@@ -38,7 +40,10 @@ export const DRAW_FEATURE = angular
     OBJECT_EDITOR_PANE,
     PRODUCT_SELECT,
     TEXT_EDITOR,
-    ORIENTATION_SELECT
+
+    ORIENTATION_SELECT,
+    ZOOM_CONTROL
+
   ])
   .config(RoutingConfiguration)
   .service('stackSelectorService', StackSelectorService)

@@ -1,0 +1,33 @@
+zoom-control {
+  display: block;
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+}
+
+
+.zoom-control {
+  height: 60px;
+  background: #303b40;
+  opacity: .8;
+  color: #eeeeee;
+  border-radius: 30px;
+  padding: 0 10px;
+  font-size: 18px;
+
+  &__button {
+    cursor: pointer;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  &__button,
+  &__percentage {
+    vertical-align: baseline;
+    display: inline-block;
+    margin: 18px 10px 0;
+  }
+
+}

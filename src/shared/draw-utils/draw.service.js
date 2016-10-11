@@ -188,6 +188,10 @@ class DrawService {
     }
   }
 
+  getZoom() {
+    return this._zoom;
+  }
+
   zoomIn() {
     this._zoom++;
     this.redrawZoom();
