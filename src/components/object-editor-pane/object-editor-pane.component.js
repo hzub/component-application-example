@@ -13,22 +13,19 @@ export class ObjectEditorPaneComponent extends SubscriberComponent {
   }
 
   static $inject = [
-    '$rootScope',
     '$element',
     'fontService',
     'drawService',
     'drawTextService'
   ];
 
-  constructor($rootScope,
-              $element,
+  constructor($element,
               fontService,
               drawService,
               drawTextService) {
     super();
 
     _.assign(this, {
-      $rootScope,
       $element,
       fontService,
       drawService,

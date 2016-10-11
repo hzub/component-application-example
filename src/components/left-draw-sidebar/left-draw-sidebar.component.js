@@ -11,30 +11,20 @@ export class LeftDrawSidebarComponent extends SubscriberComponent {
   }
 
   static $inject = [
-    '$rootScope',
     'AppModeService',
     'drawService',
     'APP_MODES',
   ];
 
-  constructor($rootScope, AppModeService, drawService, APP_MODES) {
+  constructor(AppModeService, drawService, APP_MODES) {
     super();
     Object.assign(this, {
-      $rootScope,
       AppModeService,
       drawService,
       APP_MODES,
     });
 
     this._resetPanelVisibility();
-
-    /*this.$rootScope.$on('draw:stateChanged', (e, params) => {
-      this.routeNewState(params.state);
-    });
-
-    this.drawService.onSelectEntity(selection => {
-      this.routeNewSelection(selection);
-    });*/
 
     this._subscribeTo([this.AppModeService, this.drawService]);
   }

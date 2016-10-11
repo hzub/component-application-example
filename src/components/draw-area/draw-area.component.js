@@ -55,6 +55,7 @@ export class DrawAreaComponent {
 
   $onInit() {
     this.init();
+    this.bindWindowEvents();
   }
 
   init() {
