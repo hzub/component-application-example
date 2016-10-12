@@ -4,30 +4,21 @@ import './draw-editor.styles.less';
 class DrawEditorController {
   constructor(
     $uibModal,
-    $rootScope,
-    drawService,
+    AppModeService,
     navigationService,
     userDesignsService,
-    saveService,
     SELECT_DESIGN_POPUP_OPTIONS
   ) {
     'ngInject';
     Object.assign(this, {
       $uibModal,
-      $rootScope,
-      drawService,
+      AppModeService,
       navigationService,
       userDesignsService,
-      saveService,
       SELECT_DESIGN_POPUP_OPTIONS,
     });
 
     this.showPreview = false;
-
-    $rootScope.$on('draw:stateChanged', (e, params) => {
-      const state = params.state;
-      this.showPreview = state === 'PAN' || state === 'ZOOM';
-    });
 
     this.navigationService.setPrimaryButtons(
       [{
@@ -39,6 +30,13 @@ class DrawEditorController {
         }
       }]
     );
+
+    this.AppModeService.subscribe(this._handleAction.bind(this));
+  }
+
+  _handleAction() {
+    const state = this.AppModeService.getMode();
+    this.showPreview = state === this.APP_MODES.PAN || state === this.APP_MODES.ZOOM;
   }
 }
 

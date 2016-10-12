@@ -1,29 +1,34 @@
+import $ from 'jquery';
+import _ from 'lodash';
+import fabricModule from 'fabric';
 import { extendFabric } from './fabric.extensions';
 
+const fabric = fabricModule.fabric;
 
 export class DrawAreaComponent {
   static NAME = 'drawArea';
   static OPTIONS = {
     controller: DrawAreaComponent,
     template: require('./draw-area.template.html'),
-    bindings: {}
-  }
+    bindings: {},
+  };
 
-  constructor($rootScope,
+  constructor(
+    $rootScope,
     $element,
-    DRAW_STATES,
     DESIGNS_ACTIONS,
     drawService,
     drawTextService,
     productsService,
     stackSelectorService,
     userDesignsService,
-    saveService) {
+    saveService
+  ) {
     'ngInject';
+
     Object.assign(this, {
       $rootScope,
       $element,
-      DRAW_STATES,
       DESIGNS_ACTIONS,
       drawService,
       drawTextService,
@@ -46,12 +51,12 @@ export class DrawAreaComponent {
       this.init();
     });
 
+
     // Subscribe to newly loaded designs
     this.userDesignsService.subscribe(this.actionBroker.bind(this));
 
     // Initial init of editor
     this.bindWindowEvents();
-    this.init();
 
     // Try to restore saved canvas
     const canvasObject = this.saveService.restoreCanvas();
@@ -77,8 +82,11 @@ export class DrawAreaComponent {
 
   loadDesign(designData) {
     const canvasObject = designData.data.canvas;
-
     this.drawService.loadCanvasFromObject(canvasObject);
+  }
+  $onInit() {
+    this.init();
+    this.bindWindowEvents();
   }
 
   init() {
@@ -104,10 +112,12 @@ export class DrawAreaComponent {
 
     this.productsService.onOrientationChange(orientation => {
       this.drawService.selectEntity(null);
-      this.drawService.setState('SELECT');
+      this.AppModeService.setSelectMode();
 
       this.loadOrientation(orientation);
     });
+
+    this.AppModeService.setSelectMode();
   }
 
   loadOrientation(orientationToLoad) {
@@ -176,24 +186,27 @@ export class DrawAreaComponent {
 
     canvas.on('mouse:down', options => {
       this.$rootScope.$apply(() => {
-        const drawState = this.drawService.getState();
+        const appMode = this.AppModeService.getMode();
 
-        if (drawState === 'PAN') {
-          this.panning = true;
-          this.drawService.lockEntity(options.target);
-        } else if (drawState === 'ZOOM') {
-          this.zooming = true;
-          this.zoomOrigin = [options.e.offsetX, options.e.offsetY];
-          this.drawService.lockEntity(options.target);
-        } else if (drawState === 'ADDTEXT') {
-          this.drawService.lockEntity(options.target);
-          this.drawService.addNewText(options);
-        } else {
-          this.drawService.unlockEntities();
-
-          this.drawService.setState(this.DRAW_STATES.SELECT);
-
-          this.drawService.selectEntity(options.target);
+        switch (appMode) {
+          case this.APP_MODES.PAN:
+            this.panning = true;
+            this.drawService.lockEntity(options.target);
+            break;
+          case this.APP_MODES.ZOOM:
+            this.zooming = true;
+            this.zoomOrigin = [options.e.offsetX, options.e.offsetY];
+            this.drawService.lockEntity(options.target);
+            break;
+          case this.APP_MODES.ADDTEXT:
+            this.drawService.lockEntity(options.target);
+            this.drawService.addNewText(options);
+            break;
+          default:
+            this.drawService.unlockEntities();
+            this.AppModeService.setSelectMode();
+            this.drawService.selectEntity(options.target);
+            break;
         }
       });
     });
@@ -242,7 +255,8 @@ export class DrawAreaComponent {
 
     window.addEventListener('mousewheel', (e) => {
       if (
-        this.drawService.getState() === 'PAN' && this.isInDrawArea(e.target)
+        this.AppModeService.getMode() === this.APP_MODES.PAN &&
+        this.isInDrawArea(e.target)
       ) {
         if (e.deltaY < 0) {
           this.drawService.relativeZoomIn([e.offsetX, e.offsetY]);

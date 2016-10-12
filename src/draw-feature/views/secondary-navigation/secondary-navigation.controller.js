@@ -5,56 +5,54 @@ class SecondaryNavigationController {
   static $view = $view;
 
   constructor(
-    $rootScope,
+    AppModeService,
     DRAW_STATES,
     drawService,
   ) {
     'ngInject';
     Object.assign(this, {
-      $rootScope,
+      AppModeService,
       DRAW_STATES,
       drawService,
     });
 
-    this.state = this.drawService.getState();
+    this.AppModeService.subscribe(this._handleModeChange.bind(this));
 
-    this.$rootScope.$on('draw:stateChanged', (e, params) => {
-      this.state = params.state;
-    });
+    this.mode = this.AppModeService.getMode();
   }
 
-  getButtonStyle(state, a, b) {
-    return this.state === state ? a : b;
+  _handleModeChange() {
+    this.mode = this.AppModeService.getMode();
+  }
+
+  getButtonStyle(mode, a, b) {
+    return this.mode === mode ? a : b;
   }
 
   addText() {
-    this.drawService.setState(this.DRAW_STATES.ADDTEXT);
+    this.AppModeService.setAddTextMode();
   }
 
   select() {
     this.drawService.selectEntity(null);
-    this.drawService.setState('SELECT');
+    this.AppModeService.setSelectMode();
   }
 
   selectProduct() {
     this.drawService.selectEntity(null);
-    this.drawService.setState(this.DRAW_STATES.SELECTPRODUCT);
+    this.AppModeService.setSelectProductMode();
   }
 
   addShape() {
-    this.drawService.setState(this.DRAW_STATES.ADDSHAPE)
-  }
-
-  addTestBox() {
-    this.drawService.addBox(100, 50);
+    this.AppModeService.setAddShapeMode();
   }
 
   zoom() {
-    this.drawService.setState('ZOOM');
+    this.AppModeService.setZoomMode();
   }
 
   pan() {
-    this.drawService.setState('PAN');
+    this.AppModeService.setPanMode();
   }
 }
 

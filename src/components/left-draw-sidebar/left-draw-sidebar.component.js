@@ -1,6 +1,8 @@
 import './left-draw-sidebar.less';
 
-export class LeftDrawSidebarComponent {
+import { SubscriberComponent } from 'shared/pub-sub';
+
+export class LeftDrawSidebarComponent extends SubscriberComponent {
   static NAME = 'leftDrawSidebar';
   static OPTIONS = {
     controller: LeftDrawSidebarComponent,
@@ -9,70 +11,87 @@ export class LeftDrawSidebarComponent {
   }
 
   static $inject = [
-    '$rootScope',
-    'DRAW_STATES',
-    'DRAW_ACTIONS',
-    'drawService'
+    'AppModeService',
+    'drawService',
+    'APP_MODES',
   ];
 
-  constructor($rootScope, DRAW_STATES, DRAW_ACTIONS, drawService) {
+  constructor(AppModeService, drawService, APP_MODES) {
+    super();
     Object.assign(this, {
-      $rootScope,
-      DRAW_STATES,
-      DRAW_ACTIONS,
+      AppModeService,
       drawService,
+      APP_MODES,
     });
 
     this._resetPanelVisibility();
 
-    this.$rootScope.$on('draw:stateChanged', (e, params) => {
-      this.routeNewState(params.state);
-    });
+    this._subscribeTo([this.AppModeService, this.drawService]);
+  }
 
-    this.drawService.onSelectEntity(selection => {
-      this.routeNewSelection(selection);
-    });
+  _handleAction(action) {
+    switch (action.type) {
+      case this.AppModeService._state.ACTIONS.STATE_CHANGED:
+        this._handleModeAction(action);
+        break;
+      case this.drawService._state.ACTIONS.STATE_CHANGED:
+        this._handleDrawServiceAction(action);
+        break;
+      default:
+        break;
+    }
+  }
+
+  _handleModeAction(action) {
+    const appMode = this.AppModeService.getMode();
+    this.routeNewAppMode(appMode);
+  }
+
+  _handleDrawServiceAction() {
+    this.routeNewSelection();
   }
 
   isMode(mode) {
     return this.mode === mode;
   }
 
-  routeNewState(state) {
-    this.helpVisibilityState = state;
+  routeNewAppMode(appMode) {
+    this.helpVisibilityState = appMode;
 
-    switch (state) {
-    case this.DRAW_STATES.SELECTPRODUCT:
-      this._resetPanelVisibility();
-      this._setPanelVisibility({product: true});
-      break;
-    case this.DRAW_STATES.ADDSHAPE:
-      this._resetPanelVisibility();
-      this._setPanelVisibility({shape: true});
-      break;
-    case this.DRAW_STATES.SELECT:
-      this._setPanelVisibility({product: false, shape: false,});
-      break;
-    default:
-      this._resetPanelVisibility();
-      break;
+    switch (appMode) {
+      case this.APP_MODES.SELECTPRODUCT:
+        this._resetPanelVisibility();
+        this._setPanelVisibility({ product: true });
+        break;
+      case this.APP_MODES.ADDSHAPE:
+        this._resetPanelVisibility();
+        this._setPanelVisibility({ shape: true });
+        break;
+      case this.APP_MODES.SELECT:
+        this._setPanelVisibility({ product: false, shape: false });
+        break;
+      default:
+        this._resetPanelVisibility();
+        break;
     }
   }
 
-  routeNewSelection(selection) {
+  routeNewSelection() {
+    const selection = this.drawService.getSelectedEntity();
+
     if (!selection) {
       return;
     }
 
     switch (selection.type) {
-    case 'text':
-      this._setPanelVisibility({text: true, shape: false, object: true,});
-      break;
-    case 'path-group':
-      this._setPanelVisibility({text: false, shape: false, object: true,});
-      break;
-    default:
-      this._resetPanelVisibility();
+      case 'text':
+        this._setPanelVisibility({ text: true, shape: false, object: true, });
+        break;
+      case 'path-group':
+        this._setPanelVisibility({ text: false, shape: false, object: true, });
+        break;
+      default:
+        this._resetPanelVisibility();
     }
   }
 

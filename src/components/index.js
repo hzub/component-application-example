@@ -12,3 +12,5 @@ export { GLOBAL_SPINNER } from './global-spinner';
 export { IMAGE_SELECT } from './image-select';
 export { IMAGE_UPLOAD } from './image-upload';
 export { PRIMARY_NAV } from './primary-nav';
+export { ORIENTATION_SELECT } from './orientation-select';
+export { ZOOM_CONTROL } from './zoom-control';

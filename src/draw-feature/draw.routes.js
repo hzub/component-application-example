@@ -1,6 +1,5 @@
 import drawEditorView from './views/draw-editor/draw-editor.controller.js';
 import secondaryNavigationView from './views/secondary-navigation/secondary-navigation.controller';
-import orientationSelectView from './views/orientation-select/orientation-select.controller';
 
 RoutingConfiguration.$inject = [
   '$stateProvider',
@@ -21,11 +20,6 @@ export function RoutingConfiguration($stateProvider) {
           templateUrl: secondaryNavigationView.$view,
           controller: secondaryNavigationView,
           controllerAs: 'vmNavigation',
-        },
-        bottomBar: {
-          templateUrl: orientationSelectView.$view,
-          controller: orientationSelectView,
-          controllerAs: 'vmOrientationSelect',
         },
         '': {
           template: '<ui-view></ui-view>',

@@ -17,6 +17,8 @@ import {
   PRODUCT_SELECT,
   TEXT_EDITOR,
   SELECT_DESIGN_POPUP,
+  ORIENTATION_SELECT,
+  ZOOM_CONTROL,
 } from 'components';
 
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive';
@@ -41,6 +43,9 @@ export const DRAW_FEATURE = angular
     PRODUCT_SELECT,
     TEXT_EDITOR,
     SELECT_DESIGN_POPUP,
+
+    ORIENTATION_SELECT,
+    ZOOM_CONTROL,
   ])
   .config(RoutingConfiguration)
   .service('stackSelectorService', StackSelectorService)
