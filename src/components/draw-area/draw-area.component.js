@@ -22,7 +22,9 @@ export class DrawAreaComponent {
     productsService,
     stackSelectorService,
     userDesignsService,
-    saveService
+    saveService,
+    AppModeService,
+    APP_MODES
   ) {
     'ngInject';
 
@@ -36,6 +38,8 @@ export class DrawAreaComponent {
       stackSelectorService,
       userDesignsService,
       saveService,
+      AppModeService,
+      APP_MODES,
     });
 
     extendFabric(this);
@@ -51,23 +55,9 @@ export class DrawAreaComponent {
       this.init();
     });
 
-
     // Subscribe to newly loaded designs
     this.userDesignsService.subscribe(this.actionBroker.bind(this));
 
-    // Initial init of editor
-    this.bindWindowEvents();
-
-    // Try to restore saved canvas
-    const canvasObject = this.saveService.restoreCanvas();
-    if (canvasObject) {
-      this.drawService.loadCanvasFromObject(canvasObject);
-
-      const orientations = this.productsService.getAvailableOrientations();
-
-      // TODO: do it properly after load/save functionalities are clarified
-      this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
-    }
   }
 
   actionBroker(action) {
@@ -83,10 +73,25 @@ export class DrawAreaComponent {
   loadDesign(designData) {
     const canvasObject = designData.data.canvas;
     this.drawService.loadCanvasFromObject(canvasObject);
+
+    // TODO: do it properly after load/save functionalities are clarified
+    this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
   }
+
   $onInit() {
     this.init();
     this.bindWindowEvents();
+
+    // Try to restore saved canvas
+    const canvasObject = this.saveService.restoreCanvas();
+    if (canvasObject) {
+      this.drawService.loadCanvasFromObject(canvasObject);
+
+      const orientations = this.productsService.getAvailableOrientations();
+
+      // TODO: do it properly after load/save functionalities are clarified
+      this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
+    }
   }
 
   init() {

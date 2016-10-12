@@ -6,13 +6,11 @@ class SecondaryNavigationController {
 
   constructor(
     AppModeService,
-    DRAW_STATES,
     drawService,
   ) {
     'ngInject';
     Object.assign(this, {
       AppModeService,
-      DRAW_STATES,
       drawService,
     });
 

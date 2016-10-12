@@ -4,6 +4,7 @@ import './draw-editor.styles.less';
 class DrawEditorController {
   constructor(
     $uibModal,
+    APP_MODES,
     AppModeService,
     navigationService,
     userDesignsService,
@@ -12,6 +13,7 @@ class DrawEditorController {
     'ngInject';
     Object.assign(this, {
       $uibModal,
+      APP_MODES,
       AppModeService,
       navigationService,
       userDesignsService,
