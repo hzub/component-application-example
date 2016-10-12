@@ -16,13 +16,15 @@ export class ObjectEditorPaneComponent extends SubscriberComponent {
     '$element',
     'fontService',
     'drawService',
-    'drawTextService'
+    'drawTextService',
+    'DRAW_ACTIONS',
   ];
 
   constructor($element,
               fontService,
               drawService,
-              drawTextService) {
+              drawTextService,
+              DRAW_ACTIONS) {
     super();
 
     _.assign(this, {
@@ -30,29 +32,31 @@ export class ObjectEditorPaneComponent extends SubscriberComponent {
       fontService,
       drawService,
       drawTextService,
+      DRAW_ACTIONS,
     });
 
     this.selectedEntity = null;
     this._unsubs = [];
   }
 
-  _handleAction() {
-    this._updateSelectedEntity();
-  }
-
   $onInit() {
-    //this._unsubs.push(this.drawService.onSelectEntity(() => this._updateSelectedEntity()));
     this._subscribeTo([this.drawService]);
     this._updateSelectedEntity();
   }
 
-  $onDestroy() {
-    this._unsubs.forEach(f => f());
-    this._unsubs = [];
-  }
-
   render() {
     this.drawService.render();
+  }
+
+  _handleAction(action) {
+    switch (action.type) {
+    case this.DRAW_ACTIONS.VIEWPORTCHANGED:
+    case this.DRAW_ACTIONS.ENTITYUPDATED:
+      this._updateSelectedEntity();
+      break;
+    default:
+      break;
+    }
   }
 
   _updateSelectedEntity() {
