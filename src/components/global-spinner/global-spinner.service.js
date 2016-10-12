@@ -1,13 +1,37 @@
-import { PubSub } from 'shared';
+import _ from 'lodash';
 
-export class GlobalSpinnerService extends PubSub {
+import { StatefulService } from 'shared/state';
+
+export class GlobalSpinnerService extends StatefulService {
   static NAME = 'globalSpinnerService';
 
-  show() {
-    this.publish(true);
+  constructor() {
+    super('globalSpinner');
+    this._promises = [];
+
+    this._state.setState({
+      spinnerShown: false,
+    });
   }
 
-  hide() {
-    this.publish(false);
+  _check() {
+    this._state.setState({
+      spinnerShown: this._promises.length > 0,
+    });
+  }
+
+  addWaiter(promise) {
+    this._promises.push(promise);
+    this._check();
+    const resolver = () => {
+      _.pull(this._promises, promise);
+      this._check();
+    };
+    promise.then(resolver, resolver);
+  }
+
+  isSpinnerShown() {
+    const state = this._state.getState();
+    return (state && state.spinnerShown) || false;
   }
 }

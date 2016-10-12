@@ -1,30 +1,28 @@
+import { SubscriberComponent } from 'shared/pub-sub';
+
 import './global-spinner.less';
 
-export class GlobalSpinnerComponent {
+export class GlobalSpinnerComponent extends SubscriberComponent {
   static NAME = 'globalSpinner';
 
   static OPTIONS = {
     controller: GlobalSpinnerComponent,
     template: require('./global-spinner.template.html'),
-    bindings: {}
-  }
+    bindings: {},
+  };
 
-  static $inject = [
-    '$element',
-    'globalSpinnerService'
-  ];
-
-  constructor($element, globalSpinnerService) {
+  constructor(globalSpinnerService) {
+    'ngInject';
+    super();
     Object.assign(this, {
       globalSpinnerService
     });
 
-    this.unsubscribeFn = this.globalSpinnerService.subscribe(doShow => {
-      this.isShown = doShow;
-    });
+    this._subscribeTo([this.globalSpinnerService]);
   }
 
-  $onDestroy() {
-    this.unsubscribeFn();
+  _handleAction() {
+    this.isShown = this.globalSpinnerService.isSpinnerShown();
   }
+
 }

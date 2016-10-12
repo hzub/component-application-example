@@ -17,7 +17,6 @@ class ProductsService {
     this.fonts = undefined;
     this.defaultFont = undefined;
     this.fontsPromise = this._getFonts();
-    this.pendingPromises = [];
   }
 
   findFontByFaceName(name) {
@@ -77,21 +76,13 @@ class ProductsService {
   loadFont(font) {
     const promises = [];
 
-    this.globalSpinnerService.show();
-
     _.each(font.variants, variant => {
       this.angularLoad.loadCSS(variant.stylesheet);
       const observer = new FontFaceObserver(variant.fontface).load();
 
       promises.push(observer);
-      this.pendingPromises.push(observer);
+      this.globalSpinnerService.addWaiter(observer);
 
-      observer.then(() => {
-        _.pull(this.pendingPromises, observer);
-        if (!this.pendingPromises.length) {
-          this.globalSpinnerService.hide();
-        }
-      });
     });
 
     return this.$q.all(promises);
