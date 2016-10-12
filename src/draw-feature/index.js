@@ -24,6 +24,7 @@ import { StackSelectorService } from './directives/stack-selector/stack-selector
 import { RoutingConfiguration } from './draw.routes';
 
 
+
 export const DRAW_FEATURE = angular
   .module('draw-feature', [
     CORE,
