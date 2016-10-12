@@ -50,6 +50,7 @@ export class ObjectEditorPaneComponent extends SubscriberComponent {
 
   _handleAction(action) {
     switch (action.type) {
+    case this.drawService.ACTIONS.STATE_CHANGED:
     case this.DRAW_ACTIONS.VIEWPORTCHANGED:
     case this.DRAW_ACTIONS.ENTITYUPDATED:
       this._updateSelectedEntity();

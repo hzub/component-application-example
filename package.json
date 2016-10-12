@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test ./node_modules/.bin/karma start ./karma.conf.js --single-run",
     "test-server": "cross-env NODE_ENV=test ./node_modules/.bin/karma start ./karma.conf.js --single-run --watch",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --devtool source-map --hot --inline --content-base=./src/ --config ./webpack_configs/webpack.config.dev.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --devtool source-map --hot --colors --inline --content-base=./src/ --config ./webpack_configs/webpack.config.dev.js",
     "build-staging": "cross-env NODE_ENV=production webpack --progress --optimize-minimize --config ./webpack_configs/webpack.config.staging.js",
     "build-prod": "cross-env NODE_ENV=production webpack --progress --optimize-minimize --config ./webpack_configs/webpack.config.prod.js",
     "lint": "eslint ./src/"
