@@ -1,7 +1,10 @@
 import _ from 'lodash';
+
+import { SubscriberComponent } from 'shared/pub-sub';
+
 import './object-editor-pane.less';
 
-export class ObjectEditorPaneComponent {
+export class ObjectEditorPaneComponent extends SubscriberComponent {
   static NAME = 'objectEditorPane';
   static OPTIONS = {
     controller: ObjectEditorPaneComponent,
@@ -10,25 +13,26 @@ export class ObjectEditorPaneComponent {
   }
 
   static $inject = [
-    '$rootScope',
     '$element',
     'fontService',
     'drawService',
-    'drawTextService'
+    'drawTextService',
+    'DRAW_ACTIONS',
   ];
 
-  constructor($rootScope,
-              $element,
+  constructor($element,
               fontService,
               drawService,
-              drawTextService) {
+              drawTextService,
+              DRAW_ACTIONS) {
+    super();
 
     _.assign(this, {
-      $rootScope,
       $element,
       fontService,
       drawService,
       drawTextService,
+      DRAW_ACTIONS,
     });
 
     this.selectedEntity = null;
@@ -36,17 +40,24 @@ export class ObjectEditorPaneComponent {
   }
 
   $onInit() {
-    this._unsubs.push(this.drawService.onSelectEntity(() => this._updateSelectedEntity()));
+    this._subscribeTo([this.drawService]);
     this._updateSelectedEntity();
-  }
-
-  $onDestroy() {
-    this._unsubs.forEach(f => f());
-    this._unsubs = [];
   }
 
   render() {
     this.drawService.render();
+  }
+
+  _handleAction(action) {
+    switch (action.type) {
+    case this.drawService.ACTIONS.STATE_CHANGED:
+    case this.DRAW_ACTIONS.VIEWPORTCHANGED:
+    case this.DRAW_ACTIONS.ENTITYUPDATED:
+      this._updateSelectedEntity();
+      break;
+    default:
+      break;
+    }
   }
 
   _updateSelectedEntity() {

@@ -1,21 +1,23 @@
 import $view from './draw-editor.view.html';
 import './draw-editor.styles.less';
 
-const $inject = ['$rootScope', 'drawService'];
+const $inject = ['APP_MODES', 'AppModeService'];
 
 class DrawEditorController {
-  constructor($rootScope, drawService) {
+  constructor(APP_MODES, AppModeService) {
     Object.assign(this, {
-      $rootScope,
-      drawService,
+      APP_MODES,
+      AppModeService,
     });
 
     this.showPreview = false;
 
-    $rootScope.$on('draw:stateChanged', (e, params) => {
-      const state = params.state;
-      this.showPreview = state === 'PAN' || state === 'ZOOM';
-    });
+    AppModeService.subscribe(this._handleAction.bind(this));
+  }
+
+  _handleAction() {
+    const state = this.AppModeService.getMode();
+    this.showPreview = state === this.APP_MODES.PAN || state === this.APP_MODES.ZOOM;
   }
 }
 

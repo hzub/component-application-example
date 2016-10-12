@@ -15,6 +15,8 @@ export class StatefulService extends PubSub {
       ? new PersistableState(statePath, actionsPrefix)
       : new State(statePath, actionsPrefix);
 
+    this.ACTIONS = _.assign(this.ACTIONS || {}, this._state.ACTIONS);
+
     this._state.subscribe(a => this.publish(a));
   }
 }

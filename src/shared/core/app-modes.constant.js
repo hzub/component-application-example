@@ -1,4 +1,4 @@
-export const DRAW_STATES = {
+export const APP_MODES = {
   ADDTEXT: 'ADDTEXT',
   SELECTPRODUCT: 'SELECTPRODUCT',
   ADDSHAPE: 'ADDSHAPE',
