@@ -16,7 +16,7 @@ export class ZoomControlComponent extends SubscriberComponent {
   ];
 
   /**
-   * @param {angular.IRootScopeService} DRAW_ACTIONS
+   * @param DRAW_ACTIONS
    * @param {DrawService} drawService
    */
   constructor(DRAW_ACTIONS, drawService) {
@@ -35,10 +35,6 @@ export class ZoomControlComponent extends SubscriberComponent {
     if (action.type === this._DRAW_ACTIONS.VIEWPORTCHANGED) {
       this.percentage = this._drawService.getZoom();
     }
-  }
-
-  $onDestroy() {
-    this._unsub();
   }
 
   increase() {
