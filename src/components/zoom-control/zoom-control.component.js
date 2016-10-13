@@ -24,7 +24,7 @@ export class ZoomControlComponent extends SubscriberComponent {
     this._DRAW_ACTIONS = DRAW_ACTIONS;
     this._drawService = drawService;
 
-    this.percentage = drawService.getZoom();
+    this._setPercentage();
   }
 
   $onInit() {
@@ -32,8 +32,10 @@ export class ZoomControlComponent extends SubscriberComponent {
   }
 
   _handleAction(action) {
-    if (action.type === this._DRAW_ACTIONS.VIEWPORTCHANGED) {
-      this.percentage = this._drawService.getZoom();
+    switch (action.type) {
+    case this._DRAW_ACTIONS.VIEWPORTCHANGED:
+      this._setPercentage();
+      break;
     }
   }
 
@@ -43,5 +45,9 @@ export class ZoomControlComponent extends SubscriberComponent {
 
   decrease() {
     this._drawService.zoomOut();
+  }
+
+  _setPercentage() {
+    this.percentage = this._drawService.getZoomPercentage();
   }
 }
