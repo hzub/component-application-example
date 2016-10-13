@@ -5,7 +5,10 @@
   </div>
 
   <div class="zoom-control__percentage">
-    <span>{{ $ctrl.percentage }} %</span>
+    <input class="zoom-control__percentage__input"
+           ng-model-options="{ 'debounce': { 'default': 500, 'blur': 0 } }"
+           ng-change="$ctrl.setZoom()"
+           ng-model="$ctrl.percentage"> %
   </div>
 
   <div class="zoom-control__button" ng-click="$ctrl.increase()">

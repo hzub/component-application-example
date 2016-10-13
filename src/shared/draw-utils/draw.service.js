@@ -185,6 +185,12 @@ class DrawService extends StatefulService {
     return this._zoom;
   }
 
+  setZoomPercentage(percentage) {
+    this._zoom = utilZoom.getBaseLog(utilZoom.zoomFactor, percentage / 100) + 1;
+    this.redrawZoom();
+    this.publish({type: this.DRAW_ACTIONS.VIEWPORTCHANGED});
+  }
+
   zoomIn() {
     this._zoom++;
     this.redrawZoom();

@@ -39,6 +39,11 @@ export class ZoomControlComponent extends SubscriberComponent {
     }
   }
 
+  setZoom() {
+    this.percentage = this._fixPercentageValue(this.percentage);
+    this._drawService.setZoomPercentage(this.percentage);
+  }
+
   increase() {
     this._drawService.zoomIn();
   }
@@ -49,5 +54,10 @@ export class ZoomControlComponent extends SubscriberComponent {
 
   _setPercentage() {
     this.percentage = this._drawService.getZoomPercentage();
+  }
+
+  _fixPercentageValue(percentage) {
+    const number = Number(percentage.toString().replace(/^0+|[^\d]/g, ''));
+    return number > 1000 ? 1000 : number;
   }
 }
