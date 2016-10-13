@@ -1,11 +1,14 @@
+import _ from 'lodash';
+
+import { SubscriberComponent } from 'shared/pub-sub';
 import './text-editor.less';
 
-const STATES = {
+const VIEW_MODES = {
   DEFAULT: 'DEFAULT',
   FONT: 'FONT',
 };
 
-export class TextEditorComponent {
+export class TextEditorComponent extends SubscriberComponent {
   static NAME = 'textEditor';
   static OPTIONS = {
     controller: TextEditorComponent,
@@ -14,15 +17,17 @@ export class TextEditorComponent {
   }
 
   static $inject = [
-    '$rootScope',
+    'DRAW_ACTIONS',
     '$element',
     'fontService',
     'drawService',
-    'drawTextService'
+    'drawTextService',
   ];
-  constructor($rootScope, $element, fontService, drawService, drawTextService) {
+
+  constructor(DRAW_ACTIONS, $element, fontService, drawService, drawTextService) {
+    super();
     Object.assign(this, {
-      $rootScope,
+      DRAW_ACTIONS,
       $element,
       fontService,
       drawService,
@@ -33,28 +38,41 @@ export class TextEditorComponent {
     this.selectedEntity = null;
     this.colorValue = 'red';
 
-    this.state = STATES.DEFAULT;
-
-    this.drawService.onSelectEntity(this.entitySelected.bind(this));
+    this.viewMode = VIEW_MODES.DEFAULT;
 
     this.fontService.getFonts().then(fonts => {
       this.fonts = fonts;
     });
 
-    this.$rootScope.$on('draw:entityUpdated', (e, params) => {
-      if (this.selectedEntity && params.entity.id === this.selectedEntity.id) {
-        this.selectedEntity = params.entity;
-        this.restoreModel();
-      }
-    });
+    this._subscribeTo([this.drawService]);
+  }
+
+  _handleEntityUpdated(action) {
+    if (this.selectedEntity && action.entity.id === this.selectedEntity.id) {
+      this.selectedEntity = action.entity;
+      this.restoreModel();
+    }
+  }
+
+  _handleAction(action) {
+    switch (action.type) {
+      case this.DRAW_ACTIONS.ENTITYUPDATED:
+        this._handleEntityUpdated(action);
+        break;
+      case this.drawService._state.ACTIONS.STATE_CHANGED:
+        this.entitySelected();
+        break;
+      default:
+        break;
+    }
   }
 
   saveFont() {
-    this.state = STATES.DEFAULT;
+    this.viewMode = VIEW_MODES.DEFAULT;
   }
 
   selectFont() {
-    this.state = STATES.FONT;
+    this.viewMode = VIEW_MODES.FONT;
   }
 
   changeFont(font) {
@@ -132,8 +150,11 @@ export class TextEditorComponent {
     this.fontCategory = _.find(this.fonts, { id: this.fontValue.categories[0].id });
   }
 
-  entitySelected(entity, previousEntity) {
-    this.state = STATES.DEFAULT;
+  entitySelected() {
+    const entity = this.drawService.getSelectedEntity();
+    const previousEntity = this.drawService.getPreviousSelectedEntity();
+
+    this.viewMode = VIEW_MODES.DEFAULT;
 
     if (previousEntity && previousEntity === this.selectedEntity) {
       if (this.selectedEntity.type === 'text' && !this.selectedEntity.text) {

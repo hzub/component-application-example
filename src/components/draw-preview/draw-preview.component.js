@@ -14,14 +14,14 @@ export class DrawPreviewComponent {
   }
 
   static $inject = [
-    '$rootScope',
+    'DRAW_ACTIONS',
     '$element',
-    'drawService'
+    'drawService',
   ];
 
-  constructor($rootScope, $element, drawService) {
+  constructor(DRAW_ACTIONS, $element, drawService) {
     Object.assign(this, {
-      $rootScope,
+      DRAW_ACTIONS,
       $element,
       drawService,
     });
@@ -50,8 +50,8 @@ export class DrawPreviewComponent {
     });
 
     /*
-    * TODO: Unsubscribe on $destroy
-    * */
+     * TODO: Unsubscribe on $destroy
+     * */
     $(window).on('mouseup', () => {
       this.clickOffset = undefined;
     });
@@ -102,6 +102,11 @@ export class DrawPreviewComponent {
       this.render();
     }, 50);
 
-    this.$rootScope.$on('draw:viewportChanged', throttledUpdate);
+    //this.DRAW_ACTIONS.$on('draw:viewportChanged', throttledUpdate);
+    this.drawService.subscribe(action => {
+      if (action.type === this.DRAW_ACTIONS.VIEWPORTCHANGED) {
+        throttledUpdate();
+      }
+    });
   }
 }

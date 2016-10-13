@@ -1,6 +1,8 @@
 import './zoom-control.less';
 
-export class ZoomControlComponent {
+import { SubscriberComponent } from 'shared/pub-sub';
+
+export class ZoomControlComponent extends SubscriberComponent {
   static NAME = 'zoomControl';
   static OPTIONS = {
     controller: ZoomControlComponent,
@@ -9,29 +11,37 @@ export class ZoomControlComponent {
   }
 
   static $inject = [
-    '$rootScope',
+    'DRAW_ACTIONS',
     'drawService'
   ];
 
   /**
-   * @param {angular.IRootScopeService} $rootScope
+   * @param DRAW_ACTIONS
    * @param {DrawService} drawService
    */
-  constructor($rootScope, drawService) {
-    this._$rootScope = $rootScope;
+  constructor(DRAW_ACTIONS, drawService) {
+    super();
+    this._DRAW_ACTIONS = DRAW_ACTIONS;
     this._drawService = drawService;
 
-    this.percentage = drawService.getZoom();
+    this._setPercentage();
   }
 
   $onInit() {
-    this._unsub = this._$rootScope.$on('draw:viewportChanged', () => {
-      this.percentage = this._drawService.getZoom()
-    });
+    this._subscribeTo([this._drawService]);
   }
 
-  $onDestroy() {
-    this._unsub();
+  _handleAction(action) {
+    switch (action.type) {
+    case this._DRAW_ACTIONS.VIEWPORTCHANGED:
+      this._setPercentage();
+      break;
+    }
+  }
+
+  setZoom() {
+    this.percentage = this._fixPercentageValue(this.percentage);
+    this._drawService.setZoomPercentage(this.percentage);
   }
 
   increase() {
@@ -40,5 +50,14 @@ export class ZoomControlComponent {
 
   decrease() {
     this._drawService.zoomOut();
+  }
+
+  _setPercentage() {
+    this.percentage = this._drawService.getZoomPercentage();
+  }
+
+  _fixPercentageValue(percentage) {
+    const number = Number(percentage.toString().replace(/^0+|[^\d]/g, ''));
+    return number > 1000 ? 1000 : number;
   }
 }

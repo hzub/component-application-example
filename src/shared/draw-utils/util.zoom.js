@@ -57,6 +57,11 @@ class utilZoom {
 
     canvas.setViewportTransform(viewportTransform);
   }
+
+  static getBaseLog(x, y) {
+    return Math.log(y) / Math.log(x);
+  }
+
 }
 
 utilZoom.zoomFactor = FACTOR;
