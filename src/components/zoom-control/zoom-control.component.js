@@ -1,5 +1,5 @@
 import './zoom-control.less';
-
+import { ZOOM_PERCENTAGES } from './zoom-percentages';
 import { SubscriberComponent } from 'shared/pub-sub';
 
 export class ZoomControlComponent extends SubscriberComponent {
@@ -25,6 +25,10 @@ export class ZoomControlComponent extends SubscriberComponent {
     this._drawService = drawService;
 
     this._setPercentage();
+    this.dropdown = {
+      open: null,
+      options: ZOOM_PERCENTAGES
+    };
   }
 
   $onInit() {
@@ -39,9 +43,23 @@ export class ZoomControlComponent extends SubscriberComponent {
     }
   }
 
+  openDropDown() {
+    this.dropdown.open = true;
+  }
+
+  closeDropDown() {
+    this.dropdown.open = false;
+  }
+
+  selectPercentageOption(value) {
+    this.percentage = value;
+    this.setZoom();
+  }
+
   setZoom() {
     this.percentage = this._fixPercentageValue(this.percentage);
     this._drawService.setZoomPercentage(this.percentage);
+    this.closeDropDown();
   }
 
   increase() {
