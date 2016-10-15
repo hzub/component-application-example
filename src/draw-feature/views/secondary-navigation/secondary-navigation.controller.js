@@ -12,6 +12,12 @@ class SecondaryNavigationController {
 
   static $view = $view;
 
+  /**
+   *
+   * @param $rootScope
+   * @param {AppModeService} AppModeService
+   * @param drawService
+   */
   constructor($rootScope, AppModeService, drawService) {
     Object.assign(this, {
       $rootScope, AppModeService, drawService,
@@ -20,6 +26,7 @@ class SecondaryNavigationController {
     AppModeService.subscribe(this._handleModeChange.bind(this));
 
     this.mode = this.AppModeService.getMode();
+    this.modes = AppModeService.getModes();
   }
 
   _handleModeChange() {
@@ -34,11 +41,6 @@ class SecondaryNavigationController {
     this.AppModeService.setAddTextMode();
   }
 
-  select() {
-    this.drawService.selectEntity(null);
-    this.AppModeService.setSelectMode();
-  }
-
   selectProduct() {
     this.drawService.selectEntity(null);
     this.AppModeService.setSelectProductMode();
@@ -48,13 +50,10 @@ class SecondaryNavigationController {
     this.AppModeService.setAddShapeMode();
   }
 
-  zoom() {
-    this.AppModeService.setZoomMode();
+  setBackgroundEdit() {
+    this.AppModeService.setBackgroundEditMode();
   }
 
-  pan() {
-    this.AppModeService.setPanMode();
-  }
 }
 
 

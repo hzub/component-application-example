@@ -30,6 +30,7 @@
     "toastr": "^2.1.2"
   },
   "devDependencies": {
+    "@iamadamjowett/angular-click-outside": "^2.9.2",
     "angular-mocks": "^1.5.8",
     "babel-core": "^6.14.0",
     "babel-eslint": "^7.0.0",
