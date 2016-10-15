@@ -352,6 +352,14 @@ class DrawService extends StatefulService {
     this._zoom = 1;
     this._canvas = canvas;
   }
+
+  getBackgroundColor() {
+
+  }
+  setBackgroundColor(color) {
+    this._canvas.setBackgroundColor(color);
+    this.render();
+  }
 }
 
 export default DrawService;

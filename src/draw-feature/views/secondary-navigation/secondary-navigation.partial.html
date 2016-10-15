@@ -1,11 +1,26 @@
 <div class="secondary-nav__buttons">
-    <button class="btn " ng-click="vmNavigation.selectProduct()" ng-class="vmNavigation.getButtonStyle('SELECTPRODUCT', 'btn-primary', 'btn-link')">
-        <i class="fa fa-shopping-cart"></i> Select product
-    </button>
-    <button class="btn " ng-click="vmNavigation.addText()" ng-class="vmNavigation.getButtonStyle('ADDTEXT', 'btn-primary', 'btn-link')">
-        <i class="fa fa-font"></i> Add text
-    </button>
-    <button class="btn" ng-click="vmNavigation.addShape()" ng-class="vmNavigation.getButtonStyle('ADDSHAPE', 'btn-primary', 'btn-link')">
-        <i class="fa fa-asterisk"></i> Add shape
-    </button>
+  <button class="btn "
+          ng-click="vmNavigation.selectProduct()"
+          ng-class="vmNavigation.getButtonStyle('SELECTPRODUCT', 'btn-primary', 'btn-link')">
+    <i class="fa fa-shopping-cart"></i>
+    Select product
+  </button>
+  <button class="btn "
+          ng-click="vmNavigation.addText()"
+          ng-class="vmNavigation.getButtonStyle('ADDTEXT', 'btn-primary', 'btn-link')">
+    <i class="fa fa-font"></i>
+    Add text
+  </button>
+  <button class="btn"
+          ng-click="vmNavigation.addShape()"
+          ng-class="vmNavigation.getButtonStyle('ADDSHAPE', 'btn-primary', 'btn-link')">
+    <i class="fa fa-asterisk"></i>
+    Add shape
+  </button>
+  <button class="btn"
+          ng-click="vmNavigation.setBackgroundEdit()"
+          ng-class="vmNavigation.getButtonStyle(vmNavigation.modes.BACKGROUND_EDIT, 'btn-primary', 'btn-link')">
+    <i class="fa fa-asterisk"></i>
+    Edit Background
+  </button>
 </div>

@@ -16,7 +16,8 @@ import {
   TEXT_EDITOR,
 
   ORIENTATION_SELECT,
-  ZOOM_CONTROL
+  ZOOM_CONTROL,
+  BACKGROUND_EDITOR_PANE,
 } from 'components';
 
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive';
@@ -40,7 +41,8 @@ export const DRAW_FEATURE = angular
     TEXT_EDITOR,
 
     ORIENTATION_SELECT,
-    ZOOM_CONTROL
+    ZOOM_CONTROL,
+    BACKGROUND_EDITOR_PANE
 
   ])
   .config(RoutingConfiguration)

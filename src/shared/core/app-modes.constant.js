@@ -5,4 +5,5 @@ export const APP_MODES = {
   SELECT: 'SELECT',
   PAN: 'PAN',
   ZOOM: 'ZOOM',
+  BACKGROUND_EDIT: 'BACKGROUND_EDIT'
 };
