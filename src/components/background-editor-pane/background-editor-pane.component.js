@@ -18,9 +18,19 @@ export class BackgroundEditorPaneComponent {
    */
   constructor(drawService) {
     this._drawService = drawService;
+    this._DEFAULT_COLOR = '#ffffff';
+
+    this.color = null;
   }
 
   updateColor(color) {
-    this._drawService.setBackgroundColor(color.value);
+    this._drawService.setBackgroundColor(color);
+  }
+
+  $onInit() {
+    const color = this._drawService.getBackgroundColor();
+    this.color = angular.isObject(color)
+      ? this._DEFAULT_COLOR
+      : color;
   }
 }

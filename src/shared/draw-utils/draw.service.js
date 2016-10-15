@@ -354,7 +354,7 @@ class DrawService extends StatefulService {
   }
 
   getBackgroundColor() {
-
+    return this._canvas.backgroundColor;
   }
   setBackgroundColor(color) {
     this._canvas.setBackgroundColor(color);
