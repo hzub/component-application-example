@@ -10,8 +10,6 @@ class DrawEditorController {
       AppModeService,
     });
 
-    this.showPreview = false;
-
     AppModeService.subscribe(this._handleAction.bind(this));
   }
 

@@ -27,7 +27,7 @@ export class ZoomControlComponent extends SubscriberComponent {
     this._setPercentage();
     this.dropdown = {
       open: null,
-      options: ZOOM_PERCENTAGES
+      options: ZOOM_PERCENTAGES.reverse()
     };
   }
 

@@ -10,15 +10,15 @@ zoom-control {
   background: #303b40;
   border-radius: 30px;
   color: #eeeeee;
-  font-size: 18px;
-  height: 60px;
+  font-size: 16px;
+  height: 42px;
   opacity: .8;
   padding: 0 10px;
 
   draw-preview {
     position: absolute;
-    right: 12px;
-    bottom: 65px;
+    right: 0;
+    bottom: 75px;
     cursor: move;
   }
 
@@ -26,9 +26,9 @@ zoom-control {
     cursor: pointer;
 
     i {
-      padding: 10px 10px 8px;
+      padding: 7px 8px 7px;
       border-radius: 100%;
-      margin: 12px 3px 10px;
+      margin: 6px 3px 6px;
       transition: background .2s;
 
       &:hover {
@@ -53,7 +53,7 @@ zoom-control {
 
     &__input-container {
       cursor: pointer;
-      padding: 17px 5px;
+      padding: 10px 5px;
     }
 
     &__input {
@@ -67,7 +67,7 @@ zoom-control {
     &__dropdown {
       background: #303b40;
       position: absolute;
-      bottom: 65px;
+      bottom: 50px;
       left: -10px;
       width: ~"calc(100% + 20px)";
       border-radius: 5px;

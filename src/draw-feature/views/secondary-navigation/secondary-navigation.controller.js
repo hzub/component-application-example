@@ -34,11 +34,6 @@ class SecondaryNavigationController {
     this.AppModeService.setAddTextMode();
   }
 
-  select() {
-    this.drawService.selectEntity(null);
-    this.AppModeService.setSelectMode();
-  }
-
   selectProduct() {
     this.drawService.selectEntity(null);
     this.AppModeService.setSelectProductMode();
@@ -48,13 +43,6 @@ class SecondaryNavigationController {
     this.AppModeService.setAddShapeMode();
   }
 
-  zoom() {
-    this.AppModeService.setZoomMode();
-  }
-
-  pan() {
-    this.AppModeService.setPanMode();
-  }
 }
 
 
