@@ -13,19 +13,17 @@ export class DrawAreaComponent {
     bindings: {},
   };
 
-  constructor(
-    $rootScope,
-    $element,
-    DESIGNS_ACTIONS,
-    drawService,
-    drawTextService,
-    productsService,
-    stackSelectorService,
-    userDesignsService,
-    saveService,
-    AppModeService,
-    APP_MODES
-  ) {
+  constructor($rootScope,
+              $element,
+              DESIGNS_ACTIONS,
+              drawService,
+              drawTextService,
+              productsService,
+              stackSelectorService,
+              userDesignsService,
+              saveService,
+              AppModeService,
+              APP_MODES) {
     'ngInject';
 
     Object.assign(this, {
@@ -62,11 +60,11 @@ export class DrawAreaComponent {
 
   actionBroker(action) {
     switch (action.type) {
-      case this.DESIGNS_ACTIONS.DESIGNLOADED:
-        this.loadDesign(action.data);
-        break;
-      default:
-        break;
+    case this.DESIGNS_ACTIONS.DESIGNLOADED:
+      this.loadDesign(action.data);
+      break;
+    default:
+      break;
     }
   }
 
@@ -75,7 +73,11 @@ export class DrawAreaComponent {
     this.drawService.loadCanvasFromObject(canvasObject);
 
     // TODO: do it properly after load/save functionalities are clarified
-    this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
+    console.warn('// TODO: do it properly after load/save functionalities are clarified');
+
+    if (typeof orientations !== 'undefined' && _.isArray(orientations)) {
+      this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
+    }
   }
 
   $onInit() {
@@ -194,24 +196,24 @@ export class DrawAreaComponent {
         const appMode = this.AppModeService.getMode();
 
         switch (appMode) {
-          case this.APP_MODES.PAN:
-            this.panning = true;
-            this.drawService.lockEntity(options.target);
-            break;
-          case this.APP_MODES.ZOOM:
-            this.zooming = true;
-            this.zoomOrigin = [options.e.offsetX, options.e.offsetY];
-            this.drawService.lockEntity(options.target);
-            break;
-          case this.APP_MODES.ADDTEXT:
-            this.drawService.lockEntity(options.target);
-            this.drawService.addNewText(options);
-            break;
-          default:
-            this.drawService.unlockEntities();
-            this.AppModeService.setSelectMode();
-            this.drawService.selectEntity(options.target);
-            break;
+        case this.APP_MODES.PAN:
+          this.panning = true;
+          this.drawService.lockEntity(options.target);
+          break;
+        case this.APP_MODES.ZOOM:
+          this.zooming = true;
+          this.zoomOrigin = [options.e.offsetX, options.e.offsetY];
+          this.drawService.lockEntity(options.target);
+          break;
+        case this.APP_MODES.ADDTEXT:
+          this.drawService.lockEntity(options.target);
+          this.drawService.addNewText(options);
+          break;
+        default:
+          this.drawService.unlockEntities();
+          this.AppModeService.setSelectMode();
+          this.drawService.selectEntity(options.target);
+          break;
         }
       });
     });
