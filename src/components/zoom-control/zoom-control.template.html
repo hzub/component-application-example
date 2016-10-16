@@ -1,11 +1,29 @@
 <div class="zoom-control">
+  <draw-preview ng-show="$ctrl.percentage > 100"></draw-preview>
 
   <div class="zoom-control__button" ng-click="$ctrl.decrease()">
     <i class="fa fa-minus"></i>
   </div>
 
   <div class="zoom-control__percentage">
-    <span>{{ $ctrl.percentage }} %</span>
+    <div class="zoom-control__percentage__dropdown" ng-if="$ctrl.dropdown.open">
+      <div class="zoom-control__percentage__dropdown__item"
+           ng-repeat="item in $ctrl.dropdown.options"
+           ng-click="$ctrl.selectPercentageOption(item)">
+        {{ item }} %
+      </div>
+    </div>
+
+    <div class="zoom-control__percentage__input-container">
+      <span ng-click="$ctrl.openDropDown()">
+        <input class="zoom-control__percentage__input"
+               ng-model-options="{ 'debounce': { 'default': 500, 'blur': 0 } }"
+               ng-change="$ctrl.setZoom()"
+               ng-model="$ctrl.percentage">
+        %
+      </span>
+    </div>
+
   </div>
 
   <div class="zoom-control__button" ng-click="$ctrl.increase()">

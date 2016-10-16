@@ -34,23 +34,23 @@ class DrawService extends StatefulService {
   _handleModeChange() {
     const appMode = this.AppModeService.getMode();
     switch (appMode) {
-      case this.APP_MODES.ADDSHAPE:
-      case this.APP_MODES.SELECTPRODUCT:
-        this.deselectEntity();
-        break;
-      case this.APP_MODES.PAN:
-        this.deselectEntity();
-        this._canvas.defaultCursor = 'pointer';
-        break;
-      case this.APP_MODES.ZOOM:
-        this._canvas.defaultCursor = 'zoom-in';
-        break;
-      case this.APP_MODES.ADDTEXT:
-        this._canvas.defaultCursor = 'crosshair';
-        break;
-      default:
-        this._canvas.defaultCursor = 'default';
-        break;
+    case this.APP_MODES.ADDSHAPE:
+    case this.APP_MODES.SELECTPRODUCT:
+      this.deselectEntity();
+      break;
+    case this.APP_MODES.PAN:
+      this.deselectEntity();
+      this._canvas.defaultCursor = 'pointer';
+      break;
+    case this.APP_MODES.ZOOM:
+      this._canvas.defaultCursor = 'zoom-in';
+      break;
+    case this.APP_MODES.ADDTEXT:
+      this._canvas.defaultCursor = 'crosshair';
+      break;
+    default:
+      this._canvas.defaultCursor = 'default';
+      break;
     }
   }
 
@@ -86,7 +86,7 @@ class DrawService extends StatefulService {
   relativePan(x, y) {
     utilZoom.relativePan(this._canvas, this._zoom, x, y);
 
-    this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
+    this.publish({type: this.DRAW_ACTIONS.VIEWPORTCHANGED});
   }
 
 
@@ -137,7 +137,7 @@ class DrawService extends StatefulService {
     fabric.loadSVGFromURL(url, (...args) => {
       const newClipartObject = new fabric
         .PathGroup(...args)
-        .set({ left: 100, top: 100 });
+        .set({left: 100, top: 100});
 
       this.prepareNewEntity(newClipartObject);
 
@@ -176,14 +176,24 @@ class DrawService extends StatefulService {
     }
   }
 
+  getZoomPercentage() {
+    return Math.floor(Math.pow(utilZoom.zoomFactor, this._zoom - 1) * 100);
+  }
+
   getZoom() {
     return this._zoom;
+  }
+
+  setZoomPercentage(percentage) {
+    this._zoom = utilZoom.getBaseLog(utilZoom.zoomFactor, percentage / 100) + 1;
+    this.redrawZoom();
+    this.publish({type: this.DRAW_ACTIONS.VIEWPORTCHANGED});
   }
 
   zoomIn() {
     this._zoom++;
     this.redrawZoom();
-    this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
+    this.publish({type: this.DRAW_ACTIONS.VIEWPORTCHANGED});
   }
 
   zoomOut() {
@@ -194,7 +204,7 @@ class DrawService extends StatefulService {
     }
 
     this.redrawZoom();
-    this.publish({ type: this.DRAW_ACTIONS.VIEWPORTCHANGED });
+    this.publish({type: this.DRAW_ACTIONS.VIEWPORTCHANGED});
   }
 
   relativeZoomIn(origin) {
@@ -221,18 +231,18 @@ class DrawService extends StatefulService {
       return;
     }
     switch (command) {
-      case 'bringToFront':
-        object.bringToFront();
-        break;
-      case 'sendBackwards':
-        object.sendBackwards();
-        break;
-      case 'bringForward':
-        object.bringForward();
-        break;
-      case 'sendToBack':
-        object.sendToBack();
-        break;
+    case 'bringToFront':
+      object.bringToFront();
+      break;
+    case 'sendBackwards':
+      object.sendBackwards();
+      break;
+    case 'bringForward':
+      object.bringForward();
+      break;
+    case 'sendToBack':
+      object.sendToBack();
+      break;
       default:
         break;
     }
@@ -284,7 +294,7 @@ class DrawService extends StatefulService {
   prepareNewEntity(entity) {
     entity.id = this.getEntityId();
     entity.lockUniScaling = true;
-    entity.setControlsVisibility({ mtr: false, ml: false, mb: false, mr: false, mt: false });
+    entity.setControlsVisibility({mtr: false, ml: false, mb: false, mr: false, mt: false});
   }
 
   addNewText(event) {
@@ -330,7 +340,7 @@ class DrawService extends StatefulService {
     }
 
     this.printableAreaLines.forEach(line => {
-      line.set({ opacity: doShow ? 1 : 0 });
+      line.set({opacity: doShow ? 1 : 0});
     });
 
     this.render();

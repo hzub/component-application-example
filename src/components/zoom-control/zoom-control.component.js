@@ -1,5 +1,5 @@
 import './zoom-control.less';
-
+import { ZOOM_PERCENTAGES } from './zoom-percentages';
 import { SubscriberComponent } from 'shared/pub-sub';
 
 export class ZoomControlComponent extends SubscriberComponent {
@@ -24,7 +24,11 @@ export class ZoomControlComponent extends SubscriberComponent {
     this._DRAW_ACTIONS = DRAW_ACTIONS;
     this._drawService = drawService;
 
-    this.percentage = drawService.getZoom();
+    this._setPercentage();
+    this.dropdown = {
+      open: null,
+      options: ZOOM_PERCENTAGES
+    };
   }
 
   $onInit() {
@@ -32,9 +36,30 @@ export class ZoomControlComponent extends SubscriberComponent {
   }
 
   _handleAction(action) {
-    if (action.type === this._DRAW_ACTIONS.VIEWPORTCHANGED) {
-      this.percentage = this._drawService.getZoom();
+    switch (action.type) {
+    case this._DRAW_ACTIONS.VIEWPORTCHANGED:
+      this._setPercentage();
+      break;
     }
+  }
+
+  openDropDown() {
+    this.dropdown.open = true;
+  }
+
+  closeDropDown() {
+    this.dropdown.open = false;
+  }
+
+  selectPercentageOption(value) {
+    this.percentage = value;
+    this.setZoom();
+  }
+
+  setZoom() {
+    this.percentage = this._fixPercentageValue(this.percentage);
+    this._drawService.setZoomPercentage(this.percentage);
+    this.closeDropDown();
   }
 
   increase() {
@@ -43,5 +68,14 @@ export class ZoomControlComponent extends SubscriberComponent {
 
   decrease() {
     this._drawService.zoomOut();
+  }
+
+  _setPercentage() {
+    this.percentage = this._drawService.getZoomPercentage();
+  }
+
+  _fixPercentageValue(percentage) {
+    const number = Number(percentage.toString().replace(/^0+|[^\d]/g, ''));
+    return number > 1000 ? 1000 : number;
   }
 }
