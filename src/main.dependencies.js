@@ -9,6 +9,8 @@ import 'font-awesome/css/font-awesome.css';
 import 'toastr';
 import 'angular';
 import 'angular-load';
+import '@iamadamjowett/angular-click-outside';
+
 
 import 'angular-spectrum-colorpicker';
 
@@ -24,4 +26,5 @@ export default [
   angularUiBootstrap,
   'angularLoad',
   'angularSpectrumColorpicker',
+  'angular-click-outside',
 ];

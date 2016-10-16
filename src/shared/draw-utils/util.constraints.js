@@ -20,8 +20,8 @@ export default class utilConstraints {
     });
 
     const printableAreaLineDefinition = {
-      stroke: 'blue',
-      strokeDashArray: [5, 7],
+      stroke: '#aaaaaa',
+      strokeDashArray: [4, 6],
       selectable: false,
       hasControls: false,
       hoverCursor: 'default',

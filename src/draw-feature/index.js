@@ -19,6 +19,7 @@ import {
   SELECT_DESIGN_POPUP,
   ORIENTATION_SELECT,
   ZOOM_CONTROL,
+  BACKGROUND_EDITOR_PANE,
 } from 'components';
 
 import StackSelectorDirective from './directives/stack-selector/stack-selector.directive';
@@ -46,6 +47,8 @@ export const DRAW_FEATURE = angular
 
     ORIENTATION_SELECT,
     ZOOM_CONTROL,
+    BACKGROUND_EDITOR_PANE
+
   ])
   .config(RoutingConfiguration)
   .service('stackSelectorService', StackSelectorService)
