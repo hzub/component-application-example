@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { StatefulService } from 'shared/state';
 
 import { APP_MODES } from './app-modes.constant';
@@ -31,10 +33,22 @@ export class AppModeService extends StatefulService {
     this._setMode(APP_MODES.ZOOM);
   }
 
+
+  setBackgroundEditMode() {
+    this._setMode(APP_MODES.BACKGROUND_EDIT);
+  }
+
   _setMode(mode) {
     this._state.setState({
       mode,
     });
+  }
+
+  /**
+   * @return {APP_MODES}
+   */
+  getModes() {
+    return _.cloneDeep(APP_MODES);
   }
 
   getMode() {

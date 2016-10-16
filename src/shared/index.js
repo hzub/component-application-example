@@ -5,3 +5,4 @@ export { PubSub } from './pub-sub';
 export { SubscriberComponent } from './pub-sub';
 export { USER_DESIGNS } from './user-designs';
 export { NAVIGATION } from './navigation';
+export { StatefulService } from './state';

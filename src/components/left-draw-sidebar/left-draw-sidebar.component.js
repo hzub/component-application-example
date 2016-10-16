@@ -31,14 +31,14 @@ export class LeftDrawSidebarComponent extends SubscriberComponent {
 
   _handleAction(action) {
     switch (action.type) {
-      case this.AppModeService._state.ACTIONS.STATE_CHANGED:
-        this._handleModeAction(action);
-        break;
-      case this.drawService._state.ACTIONS.STATE_CHANGED:
-        this._handleDrawServiceAction(action);
-        break;
-      default:
-        break;
+    case this.AppModeService._state.ACTIONS.STATE_CHANGED:
+      this._handleModeAction(action);
+      break;
+    case this.drawService._state.ACTIONS.STATE_CHANGED:
+      this._handleDrawServiceAction(action);
+      break;
+    default:
+      break;
     }
   }
 
@@ -59,20 +59,24 @@ export class LeftDrawSidebarComponent extends SubscriberComponent {
     this.helpVisibilityState = appMode;
 
     switch (appMode) {
-      case this.APP_MODES.SELECTPRODUCT:
-        this._resetPanelVisibility();
-        this._setPanelVisibility({ product: true });
-        break;
-      case this.APP_MODES.ADDSHAPE:
-        this._resetPanelVisibility();
-        this._setPanelVisibility({ shape: true });
-        break;
-      case this.APP_MODES.SELECT:
-        this._setPanelVisibility({ product: false, shape: false });
-        break;
-      default:
-        this._resetPanelVisibility();
-        break;
+    case this.APP_MODES.SELECTPRODUCT:
+      this._resetPanelVisibility();
+      this._setPanelVisibility({product: true});
+      break;
+    case this.APP_MODES.ADDSHAPE:
+      this._resetPanelVisibility();
+      this._setPanelVisibility({shape: true});
+      break;
+    case this.APP_MODES.SELECT:
+      this._setPanelVisibility({product: false, shape: false});
+      break;
+    case this.APP_MODES.BACKGROUND_EDIT:
+      this._resetPanelVisibility();
+      this._setPanelVisibility({background: true});
+      break;
+    default:
+      this._resetPanelVisibility();
+      break;
     }
   }
 
@@ -84,14 +88,14 @@ export class LeftDrawSidebarComponent extends SubscriberComponent {
     }
 
     switch (selection.type) {
-      case 'text':
-        this._setPanelVisibility({ text: true, shape: false, object: true, });
-        break;
-      case 'path-group':
-        this._setPanelVisibility({ text: false, shape: false, object: true, });
-        break;
-      default:
-        this._resetPanelVisibility();
+    case 'text':
+      this._setPanelVisibility({text: true, shape: false, object: true,});
+      break;
+    case 'path-group':
+      this._setPanelVisibility({text: false, shape: false, object: true,});
+      break;
+    default:
+      this._resetPanelVisibility();
     }
   }
 
@@ -101,6 +105,7 @@ export class LeftDrawSidebarComponent extends SubscriberComponent {
 
   _resetPanelVisibility() {
     this.panelVisibility = {
+      background: false,
       text: false,
       product: false,
       object: false,

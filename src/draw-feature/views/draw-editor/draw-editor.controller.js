@@ -20,18 +20,14 @@ class DrawEditorController {
       SELECT_DESIGN_POPUP_OPTIONS,
     });
 
-    this.showPreview = false;
-
-    this.navigationService.setPrimaryButtons(
-      [{
+    this.navigationService.setPrimaryButtons([{
         label: 'Load design',
         click: () => {
           this.$uibModal.open(this.SELECT_DESIGN_POPUP_OPTIONS).result.then(designObject => {
             this.userDesignsService.load(designObject);
           });
         }
-      }]
-    );
+      }]);
 
     this.AppModeService.subscribe(this._handleAction.bind(this));
   }

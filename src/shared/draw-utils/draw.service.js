@@ -380,6 +380,14 @@ class DrawService extends StatefulService {
   serializeCanvas() {
     return this._canvas.toJSON();
   }
+
+  getBackgroundColor() {
+    return this._canvas.backgroundColor;
+  }
+  setBackgroundColor(color) {
+    this._canvas.setBackgroundColor(color);
+    this.render();
+  }
 }
 
 export default DrawService;

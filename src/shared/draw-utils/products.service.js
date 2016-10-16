@@ -2,10 +2,20 @@
 import mockBannerFrontUrl from 'assets/white-bg.png';
 import mockBannerBackUrl from 'assets/white-bg.png';
 
-const $inject = ['HttpService'];
+import { StatefulService } from 'shared/state';
 
-class ProductsService {
+
+export class ProductsService extends StatefulService {
+
+  ACTIONS = {
+    ORIENTATION_CHANGED: 'PRODUCT_ORIENTATION_CHANGED'
+  };
+
   constructor(HttpService) {
+    'ngInject';
+
+    super('products', true, 'PRODUCTS');
+
     Object.assign(this, {
       HttpService,
     });
@@ -18,11 +28,13 @@ class ProductsService {
   }
 
   getProduct() {
-    return this.HttpService.get('/designer/products/1').then(products => {
-      // TODO: remove mock
-      this.selectedProducts = products;
-      return products;
-    });
+    return this.HttpService
+      .get('/designer/products/1')
+      .then(products => {
+        // TODO: remove mock
+        this.selectedProducts = products;
+        return products;
+      });
   }
 
   changeProduct() {
@@ -45,6 +57,11 @@ class ProductsService {
     if (this.onOrientationChange.callbacks) {
       this.onOrientationChange.callbacks.forEach(cb => cb.call(this, orientation));
     }
+
+    this.publish({
+      type: this.ACTIONS.ORIENTATION_CHANGED,
+      orientation
+    });
   }
 
   onOrientationChange(cb) {
@@ -85,6 +102,3 @@ class ProductsService {
   }
 }
 
-ProductsService.$inject = $inject;
-
-export default ProductsService;
