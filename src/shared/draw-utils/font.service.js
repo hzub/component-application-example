@@ -19,6 +19,18 @@ class ProductsService {
     this.fontsPromise = this._getFonts();
   }
 
+  findFontByFaceName(name) {
+    return this.getFonts().then(() => {
+      let found = null;
+      this.fonts.forEach(category => {
+        found = found || _.find(category.fonts, font =>
+          !!_.find(font.variants, { fontface: name })
+        );
+      });
+      return found;
+    });
+  }
+
   getFonts() {
     return this.fontsPromise;
   }
@@ -63,15 +75,16 @@ class ProductsService {
 
   loadFont(font) {
     const promises = [];
-    this.globalSpinnerService.show();
+
     _.each(font.variants, variant => {
       this.angularLoad.loadCSS(variant.stylesheet);
       const observer = new FontFaceObserver(variant.fontface).load();
+
       promises.push(observer);
-      observer.then(() => {
-        this.globalSpinnerService.hide();
-      });
+      this.globalSpinnerService.addWaiter(observer);
+
     });
+
     return this.$q.all(promises);
   }
 

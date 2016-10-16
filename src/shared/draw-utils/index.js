@@ -2,7 +2,7 @@ import { DRAW_ACTIONS } from './draw-actions.constant';
 
 import DrawService from './draw.service.js';
 import FontService from './font.service.js';
-import ProductsService from './products.service.js';
+import { ProductsService } from './products.service.js';
 import DrawTextService from './draw-text.service.js';
 
 /**

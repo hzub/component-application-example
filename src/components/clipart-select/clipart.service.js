@@ -20,10 +20,14 @@ export class ClipartService {
   loadAll() {
     if (this._promise) return this._promise;
 
-    this._globalSpinnerService.show();
-    return this._promise = this._HttpService.get(this._PATH)
+
+    const promise = this._promise = this._HttpService.get(this._PATH)
       .then(data => this._handleResponse(data))
       .catch(error => this._handleError(error));
+
+    this._globalSpinnerService.addWaiter(promise);
+
+    return promise;
   }
 
   getState() {
@@ -51,14 +55,12 @@ export class ClipartService {
     });
 
     this._setState({groups, categories});
-    this._globalSpinnerService.hide();
     this._clearPromise();
   }
 
   _handleError(error) {
     this._setState({});
     this._clearPromise();
-    this._globalSpinnerService.hide();
   }
 
   _clearPromise() {

@@ -1,30 +1,27 @@
 import _ from 'lodash';
 import $ from 'jquery';
+import { SubscriberComponent } from 'shared';
 
 import './draw-preview.less';
 
 const PREVIEW_WIDTH = 150;
 
-export class DrawPreviewComponent {
+export class DrawPreviewComponent extends SubscriberComponent {
   static NAME = 'drawPreview';
   static OPTIONS = {
     controller: DrawPreviewComponent,
     template: require('./draw-preview.template.html'),
     bindings: {}
-  }
+  };
 
-  static $inject = [
-    'DRAW_ACTIONS',
-    '$element',
-    'drawService',
-  ];
+  constructor(DRAW_ACTIONS, $element, drawService, productsService) {
+    'ngInject';
 
-  constructor(DRAW_ACTIONS, $element, drawService) {
-    Object.assign(this, {
-      DRAW_ACTIONS,
-      $element,
-      drawService,
-    });
+    super();
+
+    this._DRAW_ACTIONS = DRAW_ACTIONS;
+    this._drawService = drawService;
+    this._productsService = productsService;
 
     this.outerElement = $($element).find('.outer');
     this.innerElement = $($element).find('.inner');
@@ -33,6 +30,41 @@ export class DrawPreviewComponent {
 
     this.hookEvents();
   }
+
+  $onInit() {
+    this._subscribeTo([this._drawService, this._productsService]);
+  }
+
+  update() {
+    const vpt = this._drawService.getViewportTransformMatrix();
+    const size = this._drawService.getDimensions();
+
+    const sizeRatio = size[0] / size[1];
+
+    const zoom = vpt[0];
+    const sourceWidth = size[0] / zoom;
+    const sourceHeight = size[1] / zoom;
+
+    const sourceX = vpt[4] / zoom;
+    const sourceY = vpt[5] / zoom;
+
+    const scaleRatio = PREVIEW_WIDTH / size[0];
+
+    this.targetWidth = sourceWidth * scaleRatio;
+    this.targetHeight = sourceHeight * scaleRatio;
+    this.targetX = -sourceX * scaleRatio;
+    this.targetY = -sourceY * scaleRatio;
+
+    this.containerWidth = PREVIEW_WIDTH;
+    this.containerHeight = PREVIEW_WIDTH / sizeRatio;
+
+    this.render();
+  }
+
+  createThrottledUpdate() {
+    return _.throttle(() => this.update(), 50);
+  }
+
 
   render() {
     this.outerElement.css('width', this.containerWidth + 'px');
@@ -58,8 +90,8 @@ export class DrawPreviewComponent {
 
     $(window).on('mousemove', e => {
       if (this.clickOffset) {
-        const vpt = this.drawService.getViewportTransformMatrix();
-        const size = this.drawService.getDimensions();
+        const vpt = this._drawService.getViewportTransformMatrix();
+        const size = this._drawService.getDimensions();
 
         const deltaX = e.clientX - this.clickOffset[0];
         const deltaY = e.clientY - this.clickOffset[1];
@@ -70,43 +102,17 @@ export class DrawPreviewComponent {
 
         const scaleRatio = PREVIEW_WIDTH / size[0];
 
-        this.drawService.relativePan(-deltaX * zoom / scaleRatio, -deltaY * zoom / scaleRatio);
+        this._drawService.relativePan(-deltaX * zoom / scaleRatio, -deltaY * zoom / scaleRatio);
       }
     });
   }
 
-  $onInit() {
-    const throttledUpdate = _.throttle(() => {
-      const vpt = this.drawService.getViewportTransformMatrix();
-      const size = this.drawService.getDimensions();
-
-      const sizeRatio = size[0] / size[1];
-
-      const zoom = vpt[0];
-      const sourceWidth = size[0] / zoom;
-      const sourceHeight = size[1] / zoom;
-
-      const sourceX = vpt[4] / zoom;
-      const sourceY = vpt[5] / zoom;
-
-      const scaleRatio = PREVIEW_WIDTH / size[0];
-
-      this.targetWidth = sourceWidth * scaleRatio;
-      this.targetHeight = sourceHeight * scaleRatio;
-      this.targetX = -sourceX * scaleRatio;
-      this.targetY = -sourceY * scaleRatio;
-
-      this.containerWidth = PREVIEW_WIDTH;
-      this.containerHeight = PREVIEW_WIDTH / sizeRatio;
-
-      this.render();
-    }, 50);
-
-    //this.DRAW_ACTIONS.$on('draw:viewportChanged', throttledUpdate);
-    this.drawService.subscribe(action => {
-      if (action.type === this.DRAW_ACTIONS.VIEWPORTCHANGED) {
-        throttledUpdate();
-      }
-    });
+  _handleAction(action) {
+    switch (action.type) {
+    case this._DRAW_ACTIONS.VIEWPORTCHANGED:
+    case this._productsService.ACTIONS.ORIENTATION_CHANGED:
+      this.createThrottledUpdate()();
+      break;
+    }
   }
 }

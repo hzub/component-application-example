@@ -1,16 +1,35 @@
 import $view from './draw-editor.view.html';
 import './draw-editor.styles.less';
 
-const $inject = ['APP_MODES', 'AppModeService'];
-
 class DrawEditorController {
-  constructor(APP_MODES, AppModeService) {
+  constructor(
+    $uibModal,
+    APP_MODES,
+    AppModeService,
+    navigationService,
+    userDesignsService,
+    SELECT_DESIGN_POPUP_OPTIONS
+  ) {
+    'ngInject';
     Object.assign(this, {
+      $uibModal,
       APP_MODES,
       AppModeService,
+      navigationService,
+      userDesignsService,
+      SELECT_DESIGN_POPUP_OPTIONS,
     });
 
-    AppModeService.subscribe(this._handleAction.bind(this));
+    this.navigationService.setPrimaryButtons([{
+        label: 'Load design',
+        click: () => {
+          this.$uibModal.open(this.SELECT_DESIGN_POPUP_OPTIONS).result.then(designObject => {
+            this.userDesignsService.load(designObject);
+          });
+        }
+      }]);
+
+    this.AppModeService.subscribe(this._handleAction.bind(this));
   }
 
   _handleAction() {
@@ -19,7 +38,6 @@ class DrawEditorController {
   }
 }
 
-DrawEditorController.$inject = $inject;
 DrawEditorController.$view = $view;
 
 export default DrawEditorController;

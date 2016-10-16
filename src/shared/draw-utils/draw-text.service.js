@@ -1,3 +1,5 @@
+import { DRAW_ACTIONS } from './draw-actions.constant.js';
+
 const $inject = ['drawService', 'fontService'];
 
 class DrawTextService {
@@ -5,6 +7,41 @@ class DrawTextService {
     Object.assign(this, {
       drawService,
       fontService,
+    });
+
+    this.drawService.subscribe(this.actionBroker.bind(this));
+  }
+
+  actionBroker(action) {
+    switch (action.type) {
+      case DRAW_ACTIONS.DESIGNRENDERED:
+        this.restoreTexts();
+        break;
+      default:
+        break;
+    }
+  }
+
+  restoreTexts() {
+    const entityList = this.drawService.getObjects();
+
+    entityList.forEach(object => {
+      switch (object.type) {
+        case 'text':
+          this.restoreText(object);
+          break;
+        default:
+      }
+    });
+  }
+
+  restoreText(object) {
+    this.fontService.findFontByFaceName(object.fontFamily).then(font => {
+      if (font) {
+        this.updateFont(object, font)
+      } else {
+        this.updateFont(object, this.fontService.getDefaultFont());
+      }
     });
   }
 

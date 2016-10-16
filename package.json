@@ -69,6 +69,7 @@
     "knob": "^1.0.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "ng-annotate-loader": "^0.2.0",
     "ng-file-upload": "^12.2.12",
     "ng-knob": "^1.0.1",
     "ngtemplate-loader": "^1.3.1",

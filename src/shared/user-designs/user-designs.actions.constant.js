@@ -1,0 +1,3 @@
+export const DESIGNS_ACTIONS = {
+  DESIGNLOADED: 'DESIGNLOADED',
+};

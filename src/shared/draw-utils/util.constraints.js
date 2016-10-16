@@ -1,6 +1,8 @@
 import fabricModule from 'fabric';
 import _ from 'lodash';
 
+import { SaveService } from 'shared/user-designs/save.service';
+
 const fabric = fabricModule.fabric;
 
 export default class utilConstraints {
@@ -76,6 +78,8 @@ export default class utilConstraints {
       topPrintableAreaLine,
       bottomPrintableAreaLine,
     ];
+
+    areaLines.forEach(SaveService.markForSerialization);
 
     canvas.add.call(canvas, ...areaLines);
 

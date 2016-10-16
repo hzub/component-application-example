@@ -52,6 +52,7 @@ export class AppModeService extends StatefulService {
   }
 
   getMode() {
-    return this._state.getState().mode;
+    const state = this._state.getState();
+    return (state && state.mode) || null;
   }
 }

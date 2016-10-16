@@ -1,40 +1,43 @@
+import $ from 'jquery';
+import _ from 'lodash';
+import fabricModule from 'fabric';
 import { extendFabric } from './fabric.extensions';
+
+const fabric = fabricModule.fabric;
 
 export class DrawAreaComponent {
   static NAME = 'drawArea';
   static OPTIONS = {
     controller: DrawAreaComponent,
     template: require('./draw-area.template.html'),
-    bindings: {}
-  }
+    bindings: {},
+  };
 
-  static $inject = [
-    '$rootScope',
-    '$element',
-    'drawService',
-    'drawTextService',
-    'productsService',
-    'stackSelectorService',
-    'AppModeService',
-    'APP_MODES'
-  ];
-
-  constructor($rootScope,
+  constructor(
+    $rootScope,
     $element,
+    DESIGNS_ACTIONS,
     drawService,
     drawTextService,
     productsService,
     stackSelectorService,
+    userDesignsService,
+    saveService,
     AppModeService,
-    APP_MODES) {
+    APP_MODES
+  ) {
+    'ngInject';
 
     Object.assign(this, {
       $rootScope,
       $element,
+      DESIGNS_ACTIONS,
       drawService,
       drawTextService,
       productsService,
       stackSelectorService,
+      userDesignsService,
+      saveService,
       AppModeService,
       APP_MODES,
     });
@@ -51,11 +54,44 @@ export class DrawAreaComponent {
       this.orientationLibrary = [];
       this.init();
     });
+
+    // Subscribe to newly loaded designs
+    this.userDesignsService.subscribe(this.actionBroker.bind(this));
+
+  }
+
+  actionBroker(action) {
+    switch (action.type) {
+      case this.DESIGNS_ACTIONS.DESIGNLOADED:
+        this.loadDesign(action.data);
+        break;
+      default:
+        break;
+    }
+  }
+
+  loadDesign(designData) {
+    const canvasObject = designData.data.canvas;
+    this.drawService.loadCanvasFromObject(canvasObject);
+
+    // TODO: do it properly after load/save functionalities are clarified
+    this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
   }
 
   $onInit() {
     this.init();
     this.bindWindowEvents();
+
+    // Try to restore saved canvas
+    const canvasObject = this.saveService.restoreCanvas();
+    if (canvasObject) {
+      this.drawService.loadCanvasFromObject(canvasObject);
+
+      const orientations = this.productsService.getAvailableOrientations();
+
+      // TODO: do it properly after load/save functionalities are clarified
+      this.drawService.drawCanvasConstraints(this.drawService._canvas, orientations[0]);
+    }
   }
 
   init() {
@@ -189,8 +225,11 @@ export class DrawAreaComponent {
 
     canvas.on('object:modified', event => {
       this.$rootScope.$apply(() => {
-        if (event.target && event.target.type === 'text') {
-          this.drawTextService.resizeUniform(event.target);
+        if (event.target) {
+          this.drawService.objectModified(event.target);
+          if (event.target.type === 'text') {
+            this.drawTextService.resizeUniform(event.target);
+          }
         }
       });
     });

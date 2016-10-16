@@ -9,15 +9,9 @@ import utilConstraints from './util.constraints.js';
 const fabric = fabricModule.fabric;
 
 class DrawService extends StatefulService {
-  static $inject = [
-    'APP_MODES',
-    'DRAW_ACTIONS',
-    '$rootScope',
-    'fontService',
-    'AppModeService',
-  ];
 
   constructor(APP_MODES, DRAW_ACTIONS, $rootScope, fontService, AppModeService) {
+    'ngInject';
     super('draw');
     Object.assign(this, {
       APP_MODES,
@@ -86,7 +80,6 @@ class DrawService extends StatefulService {
       entity.lockMovementY = false;
       entity.lockScalingX = false;
       entity.lockRotation = false;
-
     }
   }
 
@@ -95,6 +88,7 @@ class DrawService extends StatefulService {
 
     this.publish({type: this.DRAW_ACTIONS.VIEWPORTCHANGED});
   }
+
 
   getEntityId() {
     return ++this.idGenerator;
@@ -106,6 +100,12 @@ class DrawService extends StatefulService {
 
   getPreviousSelectedEntity() {
     return this._previousSelectedEntity || null;
+  }
+
+  objectModified() {
+    this.publish({
+      type: this.DRAW_ACTIONS.CONTENTSCHANGED,
+    });
   }
 
   selectEntity(entity) {
@@ -135,7 +135,6 @@ class DrawService extends StatefulService {
 
   addSVGByUrl(url) {
     fabric.loadSVGFromURL(url, (...args) => {
-
       const newClipartObject = new fabric
         .PathGroup(...args)
         .set({left: 100, top: 100});
@@ -227,7 +226,7 @@ class DrawService extends StatefulService {
   }
 
   setStackPosition(command) {
-    var object = this._canvas.getActiveObject();
+    const object = this._canvas.getActiveObject();
     if (object == null) {
       return;
     }
@@ -244,7 +243,10 @@ class DrawService extends StatefulService {
     case 'sendToBack':
       object.sendToBack();
       break;
+      default:
+        break;
     }
+    this.objectModified(object);
     this.render();
     this.deselectEntity();
   }
@@ -269,7 +271,7 @@ class DrawService extends StatefulService {
   notifyEntityUpdate(entity) {
     this.publish({
       type: this.DRAW_ACTIONS.ENTITYUPDATED,
-      entity: entity,
+      entity,
     });
   }
 
@@ -320,6 +322,7 @@ class DrawService extends StatefulService {
     this._canvas.setActiveObject(text);
     this.selectEntity(text);
 
+    this.objectModified(text);
     this.AppModeService.setSelectMode();
   }
 
@@ -351,6 +354,31 @@ class DrawService extends StatefulService {
   setCanvas(canvas) {
     this._zoom = 1;
     this._canvas = canvas;
+  }
+
+  loadCanvasFromObject(canvasObjectData) {
+    this._canvas.clear();
+    this._canvas.loadFromJSON(_.cloneDeep(canvasObjectData));
+
+    const canvasObjects = this._canvas.getObjects();
+
+    canvasObjects.forEach(obj => this.prepareNewEntity(obj));
+
+    this.publish({
+      type: this.DRAW_ACTIONS.DESIGNRENDERED,
+    });
+
+    this.publish({
+      type: this.DRAW_ACTIONS.CONTENTSCHANGED,
+    });
+  }
+
+  getObjects() {
+    return this._canvas.getObjects();
+  }
+
+  serializeCanvas() {
+    return this._canvas.toJSON();
   }
 
   getBackgroundColor() {

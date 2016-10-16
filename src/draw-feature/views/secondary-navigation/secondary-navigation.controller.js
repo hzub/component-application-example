@@ -1,14 +1,6 @@
 import $view from './secondary-navigation.partial.html';
 
-const $inject = ['$rootScope', 'drawService'];
-
 class SecondaryNavigationController {
-
-  static $inject = [
-    '$rootScope',
-    'AppModeService',
-    'drawService',
-  ];
 
   static $view = $view;
 
@@ -18,12 +10,17 @@ class SecondaryNavigationController {
    * @param {AppModeService} AppModeService
    * @param drawService
    */
-  constructor($rootScope, AppModeService, drawService) {
+  constructor(
+    AppModeService,
+    drawService,
+  ) {
+    'ngInject';
     Object.assign(this, {
-      $rootScope, AppModeService, drawService,
+      AppModeService,
+      drawService,
     });
 
-    AppModeService.subscribe(this._handleModeChange.bind(this));
+    this.AppModeService.subscribe(this._handleModeChange.bind(this));
 
     this.mode = this.AppModeService.getMode();
     this.modes = AppModeService.getModes();

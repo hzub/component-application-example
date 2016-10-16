@@ -10,19 +10,18 @@ export class ZoomControlComponent extends SubscriberComponent {
     bindings: {}
   }
 
-  static $inject = [
-    'DRAW_ACTIONS',
-    'drawService'
-  ];
-
   /**
    * @param DRAW_ACTIONS
    * @param {DrawService} drawService
+   * @param {ProductsService} productsService
    */
-  constructor(DRAW_ACTIONS, drawService) {
+  constructor(DRAW_ACTIONS, drawService, productsService) {
+    'ngInject';
+
     super();
     this._DRAW_ACTIONS = DRAW_ACTIONS;
     this._drawService = drawService;
+    this._productsService = productsService;
 
     this._setPercentage();
     this.dropdown = {
@@ -32,13 +31,18 @@ export class ZoomControlComponent extends SubscriberComponent {
   }
 
   $onInit() {
-    this._subscribeTo([this._drawService]);
+    this._subscribeTo([this._drawService, this._productsService]);
   }
 
   _handleAction(action) {
     switch (action.type) {
     case this._DRAW_ACTIONS.VIEWPORTCHANGED:
       this._setPercentage();
+      break;
+
+    case this._productsService.ACTIONS.ORIENTATION_CHANGED:
+      this._setPercentage();
+      this.setZoom();
       break;
     }
   }
